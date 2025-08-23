@@ -1,0 +1,35 @@
+Table allocation done 1 time(s), state = INITIAL
+Number of stages in table allocation: 6
+  Number of stages for ingress table allocation: 6
+  Number of stages for egress table allocation: 0
+Critical path length through the table dependency graph: 6
+Number of tables allocated: 22
++-------+-----------------+---------------------------------+
+| Stage | Min / Max Stage |           Table Name            |
++-------+-----------------+---------------------------------+
+|   0   |    [ 0, 6 ]     |       tbl_flep_process377       |
+|   0   |    [ 0, 7 ]     |        Ingress.fwd_port         |
+|   0   |   [ 0, 10 ]     |      Ingress.is_verify_tbl      |
+|   1   |    [ -, - ]     |         tbl_setfleptopo         |
+|   1   |    [ -, - ]     |       tbl_flep_process397       |
+|   1   |    [ -, - ]     |       tbl_flep_process407       |
+|   1   |   [ 1, 10 ]     |            tbl_drop             |
+|   2   |    [ 2, 8 ]     |       tbl_flep_process410       |
+|   2   |   [ 2, 10 ]     |       tbl_flep_process399       |
+|   2   |   [ 2, 10 ]     | Ingress.multicast_send_fleptopo |
+|   3   |    [ 3, 9 ]     |     Ingress.get_port_index      |
+|   4   |   [ 4, 10 ]     |       tbl_flep_process229       |
+|   4   |   [ 4, 10 ]     |       tbl_flep_process214       |
+|   4   |   [ 4, 10 ]     |       tbl_flep_process199       |
+|   4   |   [ 4, 10 ]     |       tbl_flep_process442       |
+|   4   |   [ 4, 11 ]     |     Ingress.flep_processing     |
+|   5   |   [ 5, 11 ]     |     tbl_flep_decapsulation      |
+|   5   |   [ 2, 11 ]     |      Ingress.key_match_tbl      |
+|   5   |   [ 2, 11 ]     |       tbl_flep_process184       |
+|   5   |   [ 2, 11 ]     |       tbl_flep_process169       |
+|   5   |   [ 2, 11 ]     |      tbl_flep_process154_0      |
+|   5   |   [ 2, 11 ]     |       tbl_flep_process154       |
++-------+-----------------+---------------------------------+
+
+NOTES:  - A '*' next to the min / max stage column indicates the table is placed outside its allowed scope
+

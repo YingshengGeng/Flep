@@ -1,0 +1,82 @@
+#pipeline pipe
+#stage 0
+^- ---- --- - ----- ---- -- - - --- --- ---- - - - -- tbl_flep_encap459(0,4) : ingress
+-^ ---- --- - ----- ---- -- - - --- --- ---- - - - -- fwd_port_0(0,5) : ingress
+#stage 1
+AB ^--- --- - ----- ---- -- - - --- --- ---- - - - -- tbl_setfleptopo(1,5) : ingress
+C- D^-- --- - ----- ---- -- - - --- --- ---- - - - -- tbl_flep_encap479(1,5) : ingress
+E- -F^- --- - ----- ---- -- - - --- --- ---- - - - -- tbl_flep_encap489(1,5) : ingress
+-- --G^ --- - ----- ---- -- - - --- --- ---- - - - -- tbl_drop(1,8) : ingress
+#stage 2
+-H -I-- ^-- - ----- ---- -- - - --- --- ---- - - - -- tbl_flep_encap481(2,8) : ingress
+E- --I- -^- - ----- ---- -- - - --- --- ---- - - - -- tbl_flep_encap492(2,6) : ingress
+-- J--- --^ - ----- ---- -- - - --- --- ---- - - - -- multicast_send_fleptopo_0(2,8) : ingress
+#stage 3
+-- --G- -K- ^ ----- ---- -- - - --- --- ---- - - - -- get_port_index_0(3,7) : ingress
+#stage 4
+-- --G- -K- K ^---- ---- -- - - --- --- ---- - - - -- tbl_flep_encap286(4,8) : ingress
+-- --G- -K- K -^--- ---- -- - - --- --- ---- - - - -- tbl_flep_encap271(4,8) : ingress
+-- --J- --- K --^-- ---- -- - - --- --- ---- - - - -- tbl_flep_encap256(4,8) : ingress
+AB C--B BBB B BBB^- ---- -- - - --- --- ---- - - - -- flep_ipv4_classifier_0(4,8) : ingress
+L- C--- --- - ---F^ ---- -- - - --- --- ---- - - - -- flep_ipv6_classifier_0(4,8) : ingress
+#stage 5
+-H ---- H-- - ----M ^--- -- - - --- --- ---- - - - -- ipv6_lpm_0(5,9) : ingress
+-H ---- H-- - ---M- -^-- -- - - --- --- ---- - - - -- ipv4_lpm_0(5,9) : ingress
+B- ---B BBB B BBBEE BB^- -- - - --- --- ---- - - - -- cond-29(5,9) : ingress
+N- H--- --- - ---CC --O^ -- - - --- --- ---- - - - -- tbl_flep_encap519(5,9) : ingress
+#stage 6
+PQ E--B QBB B BBBEE QQ-P ^- - - --- --- ---- - - - -- tbl_recirculate(6,10) : ingress
+AB C--B BBB B BBBCC BB-R S^ - - --- --- ---- - - - -- tbl_flep_encap533(6,11) : ingress
+#stage 7
+-H ---- H-- - ----- HH-- HG ^ - --- --- ---- - - - -- tbl_send(7,11) : ingress
+#stage 0
+-- ---- --- - ----- ---- -- - ^ --- --- ---- - - - -- is_verify_tbl_0(0,4) : egress
+#stage 1
+-- ---- --- - ----- ---- -- - P ^-- --- ---- - - - -- cond-34(1,5) : egress
+-- ---- --- - ----- ---- -- - T O^- --- ---- - - - -- insert_key_tbl_0(1,5) : egress
+-- ---- --- - ----- ---- -- - - -O^ --- ---- - - - -- key_match_tbl_0(1,6) : egress
+#stage 2
+-- ---- --- - ----- ---- -- - T -U- ^-- ---- - - - -- insert_past_key_tbl_0(2,6) : egress
+-- ---- --- - ----- ---- -- - B --B B^- ---- - - - -- cond-36(2,6) : egress
+-- ---- --- - ----- ---- -- - - --- -O^ ---- - - - -- insert_ipv4_label_0(2,6) : egress
+#stage 3
+-- ---- --- - ----- ---- -- - - --- -OQ ^--- - - - -- insert_ipv6_label_0(3,7) : egress
+-- ---- --- - ----- ---- -- - - --- -OB B^-- - - - -- tbl_flep_encap840(3,8) : egress
+-- ---- --- - ----- ---- -- - - -T- -T- -G^- - - - -- tbl_flep_encap833(3,11) : egress
+-- ---- --- - ----- ---- -- - - --- --T TV-^ - - - -- tbl_flep_encap830(3,11) : egress
+#stage 4
+-- ---- --- - ----- ---- -- - - --- --W WG-- ^ - - -- flep_processing_0(4,8) : egress
+#stage 5
+-- ---- --- - ----- ---- -- - - --- --C CI-- X ^ - -- tbl_flep_encap840_0(5,9) : egress
+#stage 6
+-- ---- --- - ----- ---- -- - T --- -TH HG-- - A ^ -- tbl_flep_decapsulation(6,10) : egress
+#stage 7
+-- ---- --- - ----- ---- -- - - --- --- ---- - H M ^- tbl_flep_encap850(7,11) : egress
+-- ---- --- - ----- ---- -- - - --- --- -G-- - - H S^ tbl_flep_encap852(7,11) : egress
+#dependencies
+A :  ACTION_READ OUTPUT ANTI_ACTION_READ ANTI_NEXT_TABLE_DATA
+B :  ANTI_NEXT_TABLE_DATA
+C :  ACTION_READ OUTPUT
+D :  CONTROL_COND_FALSE ANTI_ACTION_READ
+E :  ACTION_READ
+F :  CONTROL_COND_FALSE
+G :  CONTROL_DEFAULT_NEXT_TABLE
+H :  OUTPUT
+I :  CONTROL_DEFAULT_NEXT_TABLE OUTPUT
+J :  CONTROL_DEFAULT_NEXT_TABLE IXBAR_READ
+K :  IXBAR_READ ANTI_NEXT_TABLE_DATA
+L :  ACTION_READ OUTPUT ANTI_ACTION_READ
+M :  CONTROL_DEFAULT_NEXT_TABLE ACTION_READ
+N :  OUTPUT ANTI_ACTION_READ
+O :  CONTROL_COND_TRUE
+P :  ACTION_READ ANTI_NEXT_TABLE_DATA
+Q :  OUTPUT ANTI_NEXT_TABLE_DATA
+R :  ACTION_READ OUTPUT ANTI_NEXT_TABLE_DATA
+S :  ANTI_ACTION_READ ANTI_NEXT_TABLE_DATA
+T :  ANTI_ACTION_READ
+U :  CONTROL_TABLE_MISS OUTPUT
+V :  CONTROL_COND_TRUE ANTI_ACTION_READ
+W :  IXBAR_READ
+X :  ACTION_READ ANTI_ACTION_READ ANTI_NEXT_TABLE_DATA
+
+*** Table dependency chains (of minimum length 8) ***

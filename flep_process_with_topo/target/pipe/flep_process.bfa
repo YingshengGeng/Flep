@@ -1,0 +1,1245 @@
+version:
+  version: 1.0.1
+  run_id: "a3bd6f1aa3ef4038"
+  target: Tofino
+error_mode: propagate_and_disable
+phv ingress:
+  ig_intr_md_from_prsr.global_tstamp.0-15: {  stage 0..2: H2 } 
+  ig_intr_md_from_prsr.global_tstamp.16-47: {  stage 0..2: W0 } 
+  ig_intr_md.ingress_port: {  stage 0..2: W3(16..24) } 
+  hdr.ethernet.dstAddr.0-31: TW1
+  hdr.ethernet.dstAddr.32-47: TH2
+  hdr.ethernet.srcAddr.0-31: TW0
+  hdr.ethernet.srcAddr.32-47: TH1
+  hdr.ethernet.ethernetType: H5
+  hdr.flep.active_label: TH0
+  hdr.flep.key: W8
+  hdr.flep.key_index: B4
+  hdr.flep.routing_type: H4
+  hdr.flep.label_depth: B0
+  hdr.flep.flags: TB0
+  hdr.flabels.label: H6
+  hdr.fleptopo.messagetype: B3(4..7)
+  hdr.fleptopo.option: B3(0..3)
+  hdr.fleptopo.sourcelabel: W7(16..31)
+  hdr.fleptopo.sourceport: W7(0..15)
+  hdr.fleptopo.replylabel: W4(16..31)
+  hdr.fleptopo.replyport: W4(0..15)
+  hdr.fleptopo.sendtstamp.0-15: H3
+  hdr.fleptopo.sendtstamp.16-47: W1
+  ig_intr_md_for_tm.ucast_egress_port: {  stage 1..12: W6(0..8) } 
+  ig_intr_md_for_tm.mcast_grp_a: {  stage 3..12: H0 } 
+  hdr.topoinfo.label: {  stage 2..4: W3(0..15) } 
+  hdr.topoinfo.port: {  stage 2..4: W5(0..15) } 
+  hdr.topoinfo.latency: {  stage 3..4: W2 } 
+  meta.is_verify_start: {  stage 1..5: W5(16..23) } 
+  meta.portindex: {  stage 4: W5(24..31) } 
+  ig_intr_md_for_dprsr.drop_ctl: {  stage 2..12: B2(0..2) } 
+  ig_intr_md_for_dprsr.mirror_type: {  stage 12: B1(0..2) } 
+  $tmp2: {  stage 12: H1(0..9) } 
+  hdr.ethernet.$valid: B5(0)
+  hdr.flep.$valid: B5(1)
+  hdr.flabels.$valid: B5(2)
+  hdr.fleptopo.$valid: B5(3)
+  context_json:
+    B0:
+    - { name : hdr.flep.label_depth, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B1:
+    - { name : ig_intr_md_for_dprsr.mirror_type, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B2:
+    - { name : ig_intr_md_for_dprsr.drop_ctl, live_start : 2, live_end : deparser, mutually_exclusive_with: [  ] }
+    B3:
+    - { name : hdr.fleptopo.messagetype, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.fleptopo.option, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B4:
+    - { name : hdr.flep.key_index, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B5:
+    - { name : hdr.ethernet.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.flep.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.flabels.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.fleptopo.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H0:
+    - { name : ig_intr_md_for_tm.mcast_grp_a, live_start : 3, live_end : deparser, mutually_exclusive_with: [  ] }
+    H1:
+    - { name : $tmp2, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H2:
+    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
+    H3:
+    - { name : hdr.fleptopo.sendtstamp, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H4:
+    - { name : hdr.flep.routing_type, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H5:
+    - { name : hdr.ethernet.ethernetType, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H6:
+    - { name : hdr.flabels.label, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W0:
+    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
+    W1:
+    - { name : hdr.fleptopo.sendtstamp, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W2:
+    - { name : hdr.topoinfo.latency, live_start : 3, live_end : 4, mutually_exclusive_with: [  ] }
+    W3:
+    - { name : ig_intr_md.ingress_port, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
+    - { name : hdr.topoinfo.label, live_start : 2, live_end : 4, mutually_exclusive_with: [  ] }
+    W4:
+    - { name : hdr.fleptopo.replylabel, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.fleptopo.replyport, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W5:
+    - { name : hdr.topoinfo.port, live_start : 2, live_end : 4, mutually_exclusive_with: [  ] }
+    - { name : meta.is_verify_start, live_start : 1, live_end : 5, mutually_exclusive_with: [  ] }
+    - { name : meta.portindex, live_start : 4, live_end : 4, mutually_exclusive_with: [  ] }
+    W6:
+    - { name : ig_intr_md_for_tm.ucast_egress_port, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    W7:
+    - { name : hdr.fleptopo.sourcelabel, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.fleptopo.sourceport, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    W8:
+    - { name : hdr.flep.key, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+phv egress:
+  eg_intr_md.egress_port: H16(0..8)
+  hdr.min_parse_depth_padding_0$0.packet_payload.0-31: TW4
+  hdr.min_parse_depth_padding_0$0.packet_payload.32-63: TW5
+  hdr.min_parse_depth_padding_0$0.packet_payload.64-79: TH12
+  hdr.min_parse_depth_padding_0$0.packet_payload.80-87: TB4
+  hdr.min_parse_depth_padding_0$1.packet_payload.0-31: TW6
+  hdr.min_parse_depth_padding_0$1.packet_payload.32-63: TW7
+  hdr.min_parse_depth_padding_0$1.packet_payload.64-79: TH13
+  hdr.min_parse_depth_padding_0$1.packet_payload.80-87: TB5
+  hdr.min_parse_depth_padding_0$2.packet_payload.0-15: TH6
+  hdr.min_parse_depth_padding_0$2.packet_payload.16-31: TH7
+  hdr.min_parse_depth_padding_0$2.packet_payload.32-47: TH8
+  hdr.min_parse_depth_padding_0$2.packet_payload.48-63: TH9
+  hdr.min_parse_depth_padding_0$2.packet_payload.64-79: TH14
+  hdr.min_parse_depth_padding_0$2.packet_payload.80-87: TB6
+  hdr.min_parse_depth_padding_0$3.packet_payload.0-15: TH10
+  hdr.min_parse_depth_padding_0$3.packet_payload.16-31: TH11
+  hdr.min_parse_depth_padding_0$3.packet_payload.32-63: TW8
+  hdr.min_parse_depth_padding_0$3.packet_payload.64-79: TH15
+  hdr.min_parse_depth_padding_0$3.packet_payload.80-87: TB7
+  hdr.min_parse_depth_padding_0.$stkvalid: B16(0..3)
+  hdr.min_parse_depth_padding_0$0.$valid: {  stage 12: B16(3) } 
+  hdr.min_parse_depth_padding_0$1.$valid: {  stage 12: B16(2) } 
+  hdr.min_parse_depth_padding_0$2.$valid: {  stage 12: B16(1) } 
+  hdr.min_parse_depth_padding_0$3.$valid: B16(0)
+  context_json:
+    B16:
+    - { name : hdr.min_parse_depth_padding_0$3.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.min_parse_depth_padding_0.$stkvalid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.min_parse_depth_padding_0$0.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.min_parse_depth_padding_0$1.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.min_parse_depth_padding_0$2.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H16:
+    - { name : eg_intr_md.egress_port, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+parser ingress:
+  start: $init_match
+  init_zero: [ H2, W0, W5, B2, B1, H1, B5 ]
+  bitwise_or: [ B5 ]
+  hdr_len_adj: 16
+  states:
+    $init_match:
+      *:
+        0..3: W3  # bit[7..15] -> W3 bit[24..16]: ingress::ig_intr_md.ingress_port
+        16..17: TH2  # ingress::hdr.ethernet.dstAddr[47:32].32-47
+        18..21: TW1  # ingress::hdr.ethernet.dstAddr[31:0].0-31
+        22..23: TH1  # ingress::hdr.ethernet.srcAddr[47:32].32-47
+        24..27: TW0  # ingress::hdr.ethernet.srcAddr[31:0].0-31
+        28..29: H5  # ingress::hdr.ethernet.ethernetType
+        58..59: H2  # buffer mapped I/O: bit[464..479] -> H2 bit[15..0]: ingress::ig_intr_md_from_prsr.global_tstamp[15:0].0-15
+        54..57: W0  # buffer mapped I/O: bit[432..463] -> W0 bit[31..0]: ingress::ig_intr_md_from_prsr.global_tstamp[47:16].16-47
+        B5: 1  # value 1 -> B5 bit[0]: ingress::hdr.ethernet.$valid
+        load: { half : 28..29 }
+        shift: 30
+        buf_req: 30
+        next: $entry_point.start
+    $entry_point.start:
+      match: [ half ]
+      0x1212:
+        0..1: TH0  # ingress::hdr.flep.active_label
+        2..5: W8  # ingress::hdr.flep.key
+        6: B4  # ingress::hdr.flep.key_index
+        7..8: H4  # ingress::hdr.flep.routing_type
+        9: B0  # ingress::hdr.flep.label_depth
+        10: TB0  # ingress::hdr.flep.flags
+        B5: 2  # value 1 -> B5 bit[1]: ingress::hdr.flep.$valid
+        load: { byte1 : 10 }
+        shift: 11
+        buf_req: 11
+        next: parse_flep
+      0x1145:
+        0: B3
+            # - bit[0..3] -> B3 bit[7..4]: ingress::hdr.fleptopo.messagetype
+            # - bit[4..7] -> B3 bit[3..0]: ingress::hdr.fleptopo.option
+        1..4: W7
+            # - bit[8..23] -> W7 bit[31..16]: ingress::hdr.fleptopo.sourcelabel
+            # - bit[24..39] -> W7 bit[15..0]: ingress::hdr.fleptopo.sourceport
+        5..8: W4
+            # - bit[40..55] -> W4 bit[31..16]: ingress::hdr.fleptopo.replylabel
+            # - bit[56..71] -> W4 bit[15..0]: ingress::hdr.fleptopo.replyport
+        9..12: W1  # ingress::hdr.fleptopo.sendtstamp[47:16].16-47
+        13..14: H3  # ingress::hdr.fleptopo.sendtstamp[15:0].0-15
+        B5: 8  # value 1 -> B5 bit[3]: ingress::hdr.fleptopo.$valid
+        shift: 15
+        buf_req: 15
+        next: end
+      0x****:
+        buf_req: 0
+        next: end
+    parse_flep:
+      match: [ byte1 ]
+      0x00:
+        0..1: H6  # ingress::hdr.flabels.label
+        B5: 4  # value 1 -> B5 bit[2]: ingress::hdr.flabels.$valid
+        shift: 2
+        buf_req: 2
+        next: end
+      0x**:
+        buf_req: 0
+        next: end
+deparser ingress:
+  dictionary:
+    TH2: B5(0)  # ingress::hdr.ethernet.dstAddr.32-47 if ingress::hdr.ethernet.$valid
+    TW1: B5(0)  # ingress::hdr.ethernet.dstAddr.0-31 if ingress::hdr.ethernet.$valid
+    TH1: B5(0)  # ingress::hdr.ethernet.srcAddr.32-47 if ingress::hdr.ethernet.$valid
+    TW0: B5(0)  # ingress::hdr.ethernet.srcAddr.0-31 if ingress::hdr.ethernet.$valid
+    H5: B5(0)  # ingress::hdr.ethernet.ethernetType if ingress::hdr.ethernet.$valid
+    B3: B5(3)
+        # - bit[7..4]: ingress::hdr.fleptopo.messagetype if ingress::hdr.fleptopo.$valid
+        # - bit[3..0]: ingress::hdr.fleptopo.option if ingress::hdr.fleptopo.$valid
+    W7: B5(3)
+        # - bit[31..16]: ingress::hdr.fleptopo.sourcelabel if ingress::hdr.fleptopo.$valid
+        # - bit[15..0]: ingress::hdr.fleptopo.sourceport if ingress::hdr.fleptopo.$valid
+    W4: B5(3)
+        # - bit[31..16]: ingress::hdr.fleptopo.replylabel if ingress::hdr.fleptopo.$valid
+        # - bit[15..0]: ingress::hdr.fleptopo.replyport if ingress::hdr.fleptopo.$valid
+    W1: B5(3)  # ingress::hdr.fleptopo.sendtstamp.16-47 if ingress::hdr.fleptopo.$valid
+    H3: B5(3)  # ingress::hdr.fleptopo.sendtstamp.0-15 if ingress::hdr.fleptopo.$valid
+    TH0: B5(1)  # ingress::hdr.flep.active_label if ingress::hdr.flep.$valid
+    W8: B5(1)  # ingress::hdr.flep.key if ingress::hdr.flep.$valid
+    B4: B5(1)  # ingress::hdr.flep.key_index if ingress::hdr.flep.$valid
+    H4: B5(1)  # ingress::hdr.flep.routing_type if ingress::hdr.flep.$valid
+    B0: B5(1)  # ingress::hdr.flep.label_depth if ingress::hdr.flep.$valid
+    TB0: B5(1)  # ingress::hdr.flep.flags if ingress::hdr.flep.$valid
+    H6: B5(2)  # ingress::hdr.flabels.label if ingress::hdr.flabels.$valid
+  egress_unicast_port: W6(0..8)  # bit[8..0]: ingress::ig_intr_md_for_tm.ucast_egress_port
+  drop_ctl: B2(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.drop_ctl
+  egress_multicast_group_0:
+    - H0  # ingress::ig_intr_md_for_tm.mcast_grp_a
+  mirror:
+    select: B1(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.mirror_type
+    0:
+      - H1(0..9)  # bit[9..0]: ingress::$tmp2
+parser egress:
+  start: $entry_point.start.min_parse_depth_accept_initial
+  init_zero: [ B16 ]
+  bitwise_or: [ B16 ]
+  hdr_len_adj: 27
+  meta_opt: 8191
+  states:
+    $entry_point.start.min_parse_depth_accept_initial:
+      *:
+        counter:
+          imm: 38
+        0..1: H16  # bit[7..15] -> H16 bit[8..0]: egress::eg_intr_md.egress_port
+        intr_md: 9
+        shift: 27
+        buf_req: 27
+        next: $entry_point.start.min_parse_depth_accept_initial.$ctr_stall0
+    $entry_point.start.min_parse_depth_accept_initial.$ctr_stall0:
+      *:
+        buf_req: 0
+        next: $entry_point.start.min_parse_depth_accept_initial.$split_0
+    $entry_point.start.min_parse_depth_accept_initial.$split_0:
+      match: [ ctr_neg, ctr_zero ]
+      0x0:
+        counter: dec 11
+        0: TB4  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[87:80].80-87
+        1..2: TH12  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[79:64].64-79
+        3..6: TW5  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[63:32].32-63
+        7..10: TW4  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[31:0].0-31
+        B16: 8  # value 8 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        shift: 11
+        buf_req: 11
+        next: min_parse_depth_accept_loop.$split_0
+      0b**:
+        buf_req: 0
+        next: end
+    min_parse_depth_accept_loop.$split_0:
+      match: [ ctr_neg, ctr_zero ]
+      option: ignore_max_depth
+      0x0:
+        counter: dec 11
+        0: TB5  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[87:80].80-87
+        1..2: TH13  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[79:64].64-79
+        3..6: TW7  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[63:32].32-63
+        7..10: TW6  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[31:0].0-31
+        B16: 4  # value 4 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        shift: 11
+        buf_req: 11
+        next: min_parse_depth_accept_loop.$it1.$split_0
+      0b**:
+        buf_req: 0
+        next: end
+    min_parse_depth_accept_loop.$it1.$split_0:
+      match: [ ctr_neg, ctr_zero ]
+      option: ignore_max_depth
+      0x0:
+        counter: dec 11
+        0: TB6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[87:80].80-87
+        1..2: TH14  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[79:64].64-79
+        3..4: TH9  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[63:48].48-63
+        5..6: TH8  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[47:32].32-47
+        7..8: TH7  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[31:16].16-31
+        B16: 2  # value 2 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        shift: 9
+        buf_req: 9
+        next: min_parse_depth_accept_loop.$it2.$split_0
+      0b**:
+        buf_req: 0
+        next: end
+    min_parse_depth_accept_loop.$it2.$split_0:
+      match: [ ctr_neg, ctr_zero ]
+      option: ignore_max_depth
+      0x0:
+        counter: dec 11
+        0..1: TH6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
+        2: TB7  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[87:80].80-87
+        3..4: TH15  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[79:64].64-79
+        5..8: TW8  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[63:32].32-63
+        9..10: TH11  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[31:16].16-31
+        11..12: TH10  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[15:0].0-15
+        B16: 1  # value 1 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        shift: 13
+        buf_req: 13
+        next: end
+      0b**:
+        0..1: TH6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
+        shift: 2
+        buf_req: 2
+        next: end
+deparser egress:
+  dictionary:
+    TB4: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TH12: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TW5: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TW4: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TB5: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TH13: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TW7: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TW6: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TB6: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH14: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH9: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.48-63 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH8: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH7: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH6: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TB7: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[3].$valid
+    TH15: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[3].$valid
+    TW8: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[3].$valid
+    TH11: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[3].$valid
+    TH10: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[3].$valid
+  egress_unicast_port: H16(0..8)  # bit[8..0]: egress::eg_intr_md.egress_port
+stage 0 ingress:
+  phase0_match IngressParser.$PORT_METADATA:
+    p4:
+      name: IngressParser.$PORT_METADATA
+      size: 288
+      preferred_match_type: exact
+      match_type: exact
+    size: 288
+    p4_param_order:
+      ig_intr_md.ingress_port: { type: exact, size: 9 }
+    format: {ig_intr_md: 0..63}
+    constant_value: 0
+    actions:
+      set_port_metadata:
+      - handle: 0x20000000
+      - p4_param_order: { ig_intr_md: 64 } 
+  ternary_match tbl_flep_process377 0:
+    p4: { name: tbl_flep_process377, hidden: true }
+    gateway:
+      name: cond-9
+      input_xbar:
+        exact group 0: { 0: hdr.ethernet.ethernetType }
+      row: 7
+      bus: 0
+      unit: 0
+      match: { 0: hdr.ethernet.ethernetType(0..7), 8: hdr.ethernet.ethernetType(8..15) }
+      0x1919:
+        run_table: true
+      miss:
+        next:  fwd_port_0
+      condition: 
+        expression: "(hdr.ethernet.ethernetType == 6425)"
+        true:  tbl_flep_process377
+        false:  fwd_port_0
+    hit: [  fwd_port_0 ]
+    miss:  fwd_port_0
+    indirect: tbl_flep_process377$tind
+  ternary_indirect tbl_flep_process377$tind:
+    row: 0
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_flep_process377$tind(action, $DEFAULT)
+    actions:
+      flep_process377(1, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000003
+      - next_table: 0
+      - set hdr.fleptopo.$valid, 1
+      - set hdr.fleptopo.sendtstamp.0-15, 0
+      - set hdr.fleptopo.sendtstamp.16-47, 0
+      - set hdr.ethernet.ethernetType, 4421
+      - set B3(0..7), 8
+      - set W4(0..31), 0
+      - set W7(0..31), 0
+    default_action: flep_process377
+  exact_match fwd_port_0 1:
+    p4: { name: Ingress.fwd_port, size: 256 }
+    p4_param_order: 
+      ig_intr_md.ingress_port: { type: exact, size: 9, full_size: 9 }
+    row: 7
+    bus: 0
+    column: 2
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+    input_xbar:
+      exact group 0: { 16: ig_intr_md.ingress_port }
+      hash 0:
+        0..7: ig_intr_md.ingress_port(0..7)
+        8: ig_intr_md.ingress_port(8)
+      hash group 0:
+        table: [0]
+        seed: 0x0
+    format: { action(0): 0..0, immediate(0): 5..13, version(0): 112..115, action(1): 1..1, immediate(1): 14..22, version(1): 116..119, action(2): 2..2, immediate(2): 23..31, version(2): 120..123, action(3): 3..3, immediate(3): 32..40, version(3): 124..127, action(4): 4..4, immediate(4): 41..49, version(4): 56..59 }
+    match_group_map: [ [ 0, 1, 2, 3, 4 ] ]
+    hit: [  is_verify_tbl_0 ]
+    miss:  is_verify_tbl_0
+    action_bus: { 96..99 : immediate(0..8) }
+    instruction: fwd_port_0(action, $DEFAULT)
+    actions:
+      Ingress.send(0, 2):
+      - p4_param_order: { port: 9 }
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000001
+      - next_table: 0
+      - { port_2: immediate(0..8), port: port_2 }
+      - set ig_intr_md_for_tm.ucast_egress_port, port
+      NoAction(1, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000002
+      - next_table: 0
+      - {  }
+    default_action: NoAction
+  ternary_match is_verify_tbl_0 2:
+    p4: { name: Ingress.is_verify_tbl, size: 256 }
+    p4_param_order: 
+      hdr.flep.key: { type: ternary, size: 32, full_size: 32 }
+    row: 0
+    bus: 0
+    column: 0
+    input_xbar:
+      ternary group 0: { 0: hdr.flep.key }
+    match:
+    - { group: 0, byte_config: 3, dirtcam: 0x55 }
+    gateway:
+      name: cond-13
+      input_xbar:
+        exact group 0: { 33: hdr.flep.$valid }
+      row: 0
+      bus: 0
+      unit: 0
+      match: { 1: hdr.flep.$valid }
+      0x1:
+        run_table: true
+      miss:
+        next:  tbl_setfleptopo
+      condition: 
+        expression: "(hdr.flep.$valid == 1)"
+        true:  is_verify_tbl_0
+        false:  tbl_setfleptopo
+    hit: [  tbl_setfleptopo ]
+    miss:  tbl_setfleptopo
+    indirect: is_verify_tbl_0$tind
+  ternary_indirect is_verify_tbl_0$tind:
+    row: 0
+    bus: 0
+    column: 2
+    input_xbar:
+      ternary group 0: { 0: hdr.flep.key }
+    format: { action: 0..1 }
+    instruction: is_verify_tbl_0$tind(action, $DEFAULT)
+    actions:
+      Ingress.start_verify(1, 3):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000011
+      - next_table: 0
+      - set meta.is_verify_start, 1
+      NoAction(2, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000012
+      - next_table: 0
+    default_action: NoAction
+stage 1 ingress:
+  dependency: match
+  ternary_match tbl_setfleptopo 0:
+    p4: { name: tbl_setfleptopo, hidden: true }
+    gateway:
+      name: cond-10
+      input_xbar:
+        exact group 0: { 3: hdr.fleptopo.option(3), 4: hdr.fleptopo.messagetype, 11: hdr.fleptopo.$valid }
+      row: 1
+      bus: 0
+      unit: 0
+      match: { 11: hdr.fleptopo.$valid, 4: hdr.fleptopo.messagetype, 19: hdr.fleptopo.option(3) }
+      0b1*******1***0000:
+        run_table: true
+      miss:
+        next:  tbl_flep_process397
+      condition: 
+        expression: "(hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 1)"
+        true:  tbl_setfleptopo
+        false:  tbl_flep_process397
+    hit: [  multicast_send_fleptopo_0 ]
+    miss:  multicast_send_fleptopo_0
+    indirect: tbl_setfleptopo$tind
+  ternary_indirect tbl_setfleptopo$tind:
+    row: 1
+    bus: 0
+    format: { action: 0..0, immediate: 1..32 }
+    action_bus: { 96..99 : immediate(0..31) }
+    action: tbl_setfleptopo$action_data($DIRECT, $DEFAULT)
+    instruction: tbl_setfleptopo$tind(action, $DEFAULT)
+    actions:
+      Ingress.setfleptopo(1, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000004
+      - next_table: 0
+      - { $data1: $adf_f0(0..31), $constant3: $data1(0..15), $constant3: 65535, $constant2: $data1(16..31), $constant2: 9473, $data0: immediate(0..31), $constant1: $data0(0..15), $constant1: 65535, $constant0: $data0(16..31), $constant0: 65535 }
+      - set hdr.fleptopo.sendtstamp.0-15, ig_intr_md_from_prsr.global_tstamp.0-15
+      - set hdr.fleptopo.sendtstamp.16-47, ig_intr_md_from_prsr.global_tstamp.16-47
+      - set hdr.ethernet.ethernetType, 4421
+      - set B3(0..7), 0
+      - set W4(0..31), $data0
+      - set W7(0..31), $data1
+    default_action: Ingress.setfleptopo
+  action tbl_setfleptopo$action_data:
+    p4: { name: tbl_setfleptopo$action }
+    row: 15
+    logical_bus: A
+    column: 0
+    vpns: [ 0 ]
+    home_row:
+    - 15
+    format Ingress.setfleptopo: { $adf_f0: 0..31 }
+    action_bus: { 104..107 : $adf_f0 }
+  ternary_match tbl_flep_process397 1:
+    p4: { name: tbl_flep_process397, hidden: true }
+    gateway:
+      name: cond-11
+      input_xbar:
+        exact group 0: { 3: hdr.fleptopo.option(3), 4: hdr.fleptopo.messagetype, 11: hdr.fleptopo.$valid }
+      row: 0
+      bus: 1
+      unit: 1
+      match: { 11: hdr.fleptopo.$valid, 4: hdr.fleptopo.messagetype, 19: hdr.fleptopo.option(3) }
+      0b0*******1***0000:
+        run_table: true
+      miss:
+        next:  tbl_flep_process407
+      condition: 
+        expression: "(hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 0)"
+        true:  tbl_flep_process397
+        false:  tbl_flep_process407
+    hit: [  tbl_flep_process399 ]
+    miss:  tbl_flep_process399
+    indirect: tbl_flep_process397$tind
+  ternary_indirect tbl_flep_process397$tind:
+    row: 0
+    bus: 1
+    format: { action: 0..0, immediate: 1..23 }
+    action_bus: { 100..103 : immediate(0..22) }
+    instruction: tbl_flep_process397$tind(action, $DEFAULT)
+    actions:
+      flep_process397(1, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000007
+      - next_table: 0
+      - { $data0: immediate(0..22), $constant1: $data0(0..6), $constant1: 0, $constant0: $data0(7..22), $constant0: 9473 }
+      - set hdr.fleptopo.messagetype, 1
+      - set W4(9..31), $data0
+    default_action: flep_process397
+  ternary_match tbl_flep_process407 2:
+    p4: { name: tbl_flep_process407, hidden: true }
+    gateway:
+      name: cond-12
+      input_xbar:
+        exact group 0: { 3: hdr.fleptopo.option(3), 4: hdr.fleptopo.messagetype, 11: hdr.fleptopo.$valid, 16: hdr.fleptopo.sourcelabel }
+        hash 0:
+          40: hdr.fleptopo.option(3)
+        hash group 0:
+          table: [0]
+          seed: 0x0
+      row: 0
+      bus: 0
+      unit: 0
+      match: { 27: hdr.fleptopo.$valid, 20: hdr.fleptopo.messagetype, 32: hdr.fleptopo.option(3), 0: hdr.fleptopo.sourcelabel(0..7), 8: hdr.fleptopo.sourcelabel(8..15) }
+      0b0****1***0001****0010010100000001:
+        run_table: true
+      miss:
+        next:  tbl_flep_process442
+      condition: 
+        expression: "(hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 1 && hdr.fleptopo.option[3:3] == 0 && hdr.fleptopo.sourcelabel == 9473)"
+        true:  tbl_flep_process407
+        false:  tbl_flep_process442
+    hit: [  tbl_drop ]
+    miss:  tbl_drop
+    indirect: tbl_flep_process407$tind
+  ternary_indirect tbl_flep_process407$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_flep_process407$tind(action, $DEFAULT)
+    actions:
+      flep_process407(1, 3):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000009
+      - next_table: 0
+      - set hdr.topoinfo.label, hdr.fleptopo.replylabel
+      - set hdr.topoinfo.port(9..15), 0
+    default_action: flep_process407
+  ternary_match tbl_drop 3:
+    p4: { name: tbl_drop, hidden: true }
+    hit: [  tbl_flep_process410 ]
+    miss:  tbl_flep_process410
+    indirect: tbl_drop$tind
+  ternary_indirect tbl_drop$tind:
+    row: 1
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_drop$tind(action, $DEFAULT)
+    actions:
+      Ingress.drop(0, 4):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000010
+      - next_table: 0
+      - set ig_intr_md_for_dprsr.drop_ctl, 1
+    default_action: Ingress.drop
+stage 2 ingress:
+  dependency: match
+  ternary_match tbl_flep_process410 0:
+    p4: { name: tbl_flep_process410, hidden: true }
+    hit: [  get_port_index_0 ]
+    miss:  get_port_index_0
+    indirect: tbl_flep_process410$tind
+  ternary_indirect tbl_flep_process410$tind:
+    row: 0
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_flep_process410$tind(action, $DEFAULT)
+    actions:
+      flep_process410(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000000a
+      - next_table: 0
+      - set hdr.topoinfo.port(0..8), ig_intr_md.ingress_port
+      - sub W2, W0, W1
+    default_action: flep_process410
+  ternary_match tbl_flep_process399 1:
+    p4: { name: tbl_flep_process399, hidden: true }
+    hit: [  tbl_flep_process442 ]
+    miss:  tbl_flep_process442
+    indirect: tbl_flep_process399$tind
+  ternary_indirect tbl_flep_process399$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_flep_process399$tind(action, $DEFAULT)
+    actions:
+      flep_process399(0, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000008
+      - next_table: 0
+      - set hdr.fleptopo.replyport(0..8), ig_intr_md.ingress_port
+      - set ig_intr_md_for_tm.ucast_egress_port, ig_intr_md.ingress_port
+    default_action: flep_process399
+  exact_match multicast_send_fleptopo_0 2:
+    p4: { name: Ingress.multicast_send_fleptopo, size: 8 }
+    p4_param_order: 
+      hdr.fleptopo.messagetype: { type: exact, size: 4, full_size: 4 }
+    row: 7
+    bus: 0
+    column: 2
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+    input_xbar:
+      exact group 0: { 4: hdr.fleptopo.messagetype }
+      hash 0:
+        0..3: hdr.fleptopo.messagetype
+      hash group 0:
+        table: [0]
+        seed: 0x0
+    format: { action(0): 0..0, immediate(0): 3..18, version(0): 112..115, action(1): 1..1, immediate(1): 19..34, version(1): 116..119, action(2): 2..2, immediate(2): 35..50, version(2): 120..123 }
+    match_group_map: [ [ 0, 1, 2 ] ]
+    hit: [  tbl_flep_process442 ]
+    miss:  tbl_flep_process442
+    action_bus: { 32..33 : immediate(0..15) }
+    instruction: multicast_send_fleptopo_0(action, $DEFAULT)
+    actions:
+      Ingress.multiportsend(0, 3):
+      - p4_param_order: { groupid: 16 }
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000005
+      - next_table: 0
+      - { groupid: immediate(0..15) }
+      - set ig_intr_md_for_tm.mcast_grp_a, groupid
+      NoAction(1, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000006
+      - next_table: 0
+      - {  }
+    default_action: NoAction
+stage 3 ingress:
+  dependency: match
+  exact_match get_port_index_0 0:
+    p4: { name: Ingress.get_port_index, size: 256 }
+    p4_param_order: 
+      hdr.topoinfo.port: { type: exact, size: 16, full_size: 16 }
+    row: 7
+    bus: 0
+    column: [ 2, 3, 4, 5 ]
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+      - { group: 0, index: 10..19, select: 40..51 & 0x0, rams: [[7, 3]] }
+      - { group: 0, index: 20..29, select: 40..51 & 0x0, rams: [[7, 4]] }
+      - { group: 0, index: 30..39, select: 40..51 & 0x0, rams: [[7, 5]] }
+    input_xbar:
+      exact group 0: { 0: hdr.topoinfo.port }
+      hash 0:
+        0..7: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(0..7)
+        8..9: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(8..9)
+        11..18: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(0..7)
+        19: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(8)
+        10: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(9)
+        22..29: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(0..7)
+        20..21: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(8..9)
+        33..39: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(0..6)
+        30: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(7)
+        31..32: random(hdr.topoinfo.port(10..15)) ^ hdr.topoinfo.port(8..9)
+      hash group 0:
+        table: [0]
+        seed: 0x5425eee115
+    format: { immediate(0): 0..7, version(0): 112..115, match(0): 42..47, immediate(1): 8..15, version(1): 116..119, match(1): 50..55, immediate(2): 16..23, version(2): 120..123, match(2): 58..63, immediate(3): 24..31, version(3): 124..127, match(3): 66..71, immediate(4): 32..39, version(4): 80..83, match(4): 74..79 }
+    match: [ hdr.topoinfo.port(10..15) ]
+    match_group_map: [ [ 0, 1, 2, 3, 4 ] ]
+    hit: [  tbl_flep_process229 ]
+    miss:  tbl_flep_process229
+    action_bus: { 96..99 : immediate(0..7) }
+    instruction: get_port_index_0($DEFAULT, $DEFAULT)
+    actions:
+      Ingress.setportindex(0, 1):
+      - p4_param_order: { index: 8 }
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x2000000b
+      - next_table: 0
+      - { index_1: immediate(0..7), index: index_1 }
+      - set meta.portindex, index
+      NoAction(-1, 0):
+      - hit_allowed: { allowed: false, reason: user_indicated_default_only }
+      - default_only_action: { allowed: true }
+      - handle: 0x2000000c
+      - next_table: 0
+      - {  }
+    default_only_action: NoAction
+stage 4 ingress:
+  dependency: match
+  hash_action tbl_flep_process229 0:
+    p4: { name: tbl_flep_process229, hidden: true }
+    row: 1
+    result_bus: 0
+    hash_dist:
+      0: { hash: 0, mask: 0xff, shift: 5 }
+    input_xbar:
+      exact group 0: { 24: meta.portindex }
+      hash 0:
+        0..7: meta.portindex
+      hash group 0:
+        table: [0]
+        seed: 0x0
+    gateway:
+      name: tbl_flep_process229-gateway
+      row: 1
+      bus: 0
+      unit: 0
+      0x0:  tbl_flep_process214
+      miss:  tbl_flep_process214
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_flep_process214
+        false:  tbl_flep_process214
+    next: []
+    stateful: tbl_flep_process229$salu.Ingress.latencydatacache.bw_register(hash_dist 0, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process229($DEFAULT, $DEFAULT)
+    actions:
+      flep_process229(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000000f
+      - next_table: 0
+      - tbl_flep_process229$salu.Ingress.latencydatacache.bw_register(latencydatacache_data_save, $hash_dist)
+    default_action: flep_process229
+  stateful tbl_flep_process229$salu.Ingress.latencydatacache.bw_register:
+    p4: { name: Ingress.latencydatacache.bw_register, size: 128 }
+    row: 7
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 7
+    input_xbar:
+      exact group 0: { 64: hdr.topoinfo.latency }
+    data_bytemask: 15
+    format: { lo: 32 }
+    actions:
+      latencydatacache_data_save:
+      - alu_a lo, phv_lo
+  hash_action tbl_flep_process214 1:
+    p4: { name: tbl_flep_process214, hidden: true }
+    row: 0
+    result_bus: 1
+    hash_dist:
+      1: { hash: 0, mask: 0xff, shift: 4 }
+    input_xbar:
+      exact group 0: { 24: meta.portindex }
+      hash 0:
+        16..23: meta.portindex
+      hash group 0:
+        table: [0]
+        seed: 0x0
+    gateway:
+      name: tbl_flep_process214-gateway
+      row: 0
+      bus: 0
+      unit: 1
+      0x0:  tbl_flep_process199
+      miss:  tbl_flep_process199
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_flep_process199
+        false:  tbl_flep_process199
+    next: []
+    stateful: tbl_flep_process214$salu.Ingress.portdatacache.bw_register(hash_dist 1, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process214($DEFAULT, $DEFAULT)
+    actions:
+      flep_process214(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000000e
+      - next_table: 0
+      - tbl_flep_process214$salu.Ingress.portdatacache.bw_register(portdatacache_data_save, $hash_dist)
+    default_action: flep_process214
+  stateful tbl_flep_process214$salu.Ingress.portdatacache.bw_register:
+    p4: { name: Ingress.portdatacache.bw_register, size: 128 }
+    row: 11
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 11
+    input_xbar:
+      exact group 1: { 64: hdr.topoinfo.port }
+    data_bytemask: 3
+    format: { lo: 16 }
+    actions:
+      portdatacache_data_save:
+      - alu_a lo, phv_lo
+  hash_action tbl_flep_process199 2:
+    p4: { name: tbl_flep_process199, hidden: true }
+    row: 0
+    result_bus: 0
+    hash_dist:
+      1: { hash: 0, mask: 0xff, shift: 4 }
+    input_xbar:
+      exact group 0: { 24: meta.portindex }
+      hash 0:
+        16..23: meta.portindex
+      hash group 0:
+        table: [0]
+        seed: 0x0
+    gateway:
+      name: tbl_flep_process199-gateway
+      row: 0
+      bus: 0
+      unit: 0
+      0x0:  tbl_flep_process442
+      miss:  tbl_flep_process442
+      condition: 
+        expression: "true(always hit)"
+        true:  tbl_flep_process442
+        false:  tbl_flep_process442
+    next: []
+    stateful: tbl_flep_process199$salu.Ingress.labeldatacache.bw_register(hash_dist 1, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process199($DEFAULT, $DEFAULT)
+    actions:
+      flep_process199(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000000d
+      - next_table: 0
+      - tbl_flep_process199$salu.Ingress.labeldatacache.bw_register(labeldatacache_data_save, $hash_dist)
+    default_action: flep_process199
+  stateful tbl_flep_process199$salu.Ingress.labeldatacache.bw_register:
+    p4: { name: Ingress.labeldatacache.bw_register, size: 128 }
+    row: 15
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 15
+    input_xbar:
+      exact group 2: { 64: hdr.topoinfo.label }
+    data_bytemask: 3
+    format: { lo: 16 }
+    actions:
+      labeldatacache_data_save:
+      - alu_a lo, phv_lo
+  ternary_match tbl_flep_process442 3:
+    p4: { name: tbl_flep_process442, hidden: true }
+    gateway:
+      name: cond-15
+      input_xbar:
+        exact group 0: { 98: hdr.flabels.$valid }
+      row: 7
+      bus: 0
+      unit: 0
+      match: { 2: hdr.flabels.$valid }
+      0x1:
+        run_table: true
+      miss:
+        next:  key_match_tbl_0
+      condition: 
+        expression: "(hdr.flabels.$valid == 1)"
+        true:  tbl_flep_process442
+        false:  key_match_tbl_0
+    hit: [  flep_processing_0 ]
+    miss:  flep_processing_0
+    indirect: tbl_flep_process442$tind
+  ternary_indirect tbl_flep_process442$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_flep_process442$tind(action, $DEFAULT)
+    actions:
+      flep_process442(1, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000001b
+      - next_table: 0
+      - set hdr.flabels.$valid, 0
+      - add B0, 255, B0
+    default_action: flep_process442
+  exact_match flep_processing_0 4:
+    p4: { name: Ingress.flep_processing, size: 256 }
+    p4_param_order: 
+      hdr.flabels.label: { type: exact, size: 16, full_size: 16 }
+    row: 7
+    bus: 0
+    column: [ 2, 3, 4, 5 ]
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 1, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+      - { group: 1, index: 10..19, select: 40..51 & 0x0, rams: [[7, 3]] }
+      - { group: 1, index: 20..29, select: 40..51 & 0x0, rams: [[7, 4]] }
+      - { group: 1, index: 30..39, select: 40..51 & 0x0, rams: [[7, 5]] }
+    input_xbar:
+      exact group 0: { 104: hdr.flabels.label(8..15), 112: hdr.flabels.label(0..7) }
+      hash 1:
+        0..1: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(8..9)
+        2..9: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(0..7)
+        11..12: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(8..9)
+        13..19: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(0..6)
+        10: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(7)
+        22..23: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(8..9)
+        24..29: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(0..5)
+        20..21: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(6..7)
+        33..34: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(8..9)
+        35..39: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(0..4)
+        30..32: random(hdr.flabels.label(10..15)) ^ hdr.flabels.label(5..7)
+      hash group 1:
+        table: [1]
+        seed: 0x9a9c47831a
+    format: { action(0): 0..0, immediate(0): 5..13, version(0): 112..115, match(0): 50..55, action(1): 1..1, immediate(1): 14..22, version(1): 116..119, match(1): 58..63, action(2): 2..2, immediate(2): 23..31, version(2): 120..123, match(2): 66..71, action(3): 3..3, immediate(3): 32..40, version(3): 124..127, match(3): 74..79, action(4): 4..4, immediate(4): 41..49, version(4): 88..91, match(4): 82..87 }
+    match: [ hdr.flabels.label(10..15) ]
+    match_group_map: [ [ 0, 1, 2, 3, 4 ] ]
+    hit: [  tbl_flep_decapsulation ]
+    miss:  tbl_flep_decapsulation
+    action_bus: { 96..99 : immediate(0..8) }
+    instruction: flep_processing_0(action, $DEFAULT)
+    actions:
+      Ingress.flep_send(0, 2):
+      - p4_param_order: { port: 9 }
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000019
+      - next_table: 0
+      - { port_3: immediate(0..8), port: port_3 }
+      - set ig_intr_md_for_tm.ucast_egress_port, port
+      NoAction(1, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x2000001a
+      - next_table: 0
+      - {  }
+    default_action: NoAction
+stage 5 ingress:
+  dependency: match
+  ternary_match tbl_flep_decapsulation 0:
+    p4: { name: tbl_flep_decapsulation, hidden: true }
+    gateway:
+      name: cond-16
+      input_xbar:
+        exact group 0: { 0: hdr.flep.label_depth }
+      row: 0
+      bus: 0
+      unit: 0
+      match: { 0: hdr.flep.label_depth }
+      0x00:
+        run_table: true
+      miss:
+        next:  key_match_tbl_0
+      condition: 
+        expression: "(hdr.flep.label_depth == 0)"
+        true:  tbl_flep_decapsulation
+        false:  key_match_tbl_0
+    hit: [  key_match_tbl_0 ]
+    miss:  key_match_tbl_0
+    indirect: tbl_flep_decapsulation$tind
+  ternary_indirect tbl_flep_decapsulation$tind:
+    row: 1
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_flep_decapsulation$tind(action, $DEFAULT)
+    actions:
+      Ingress.flep_decapsulation(1, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000001c
+      - next_table: 0
+      - set hdr.ethernet.ethernetType, hdr.flep.routing_type
+      - set B5(1..2), 0
+    default_action: Ingress.flep_decapsulation
+  exact_match key_match_tbl_0 1:
+    p4: { name: Ingress.key_match_tbl, size: 256 }
+    p4_param_order: 
+      hdr.flep.key: { type: exact, size: 32, full_size: 32 }
+      hdr.flep.key_index: { type: exact, size: 8, full_size: 8 }
+    row: 7
+    bus: 0
+    column: [ 2, 3, 4, 5 ]
+    stash: 
+      row: [ 7 ]
+      col: [ 2 ]
+      unit: [ 0 ]
+    ways:
+      - { group: 0, index: 0..9, select: 40..51 & 0x0, rams: [[7, 2]] }
+      - { group: 0, index: 10..19, select: 40..51 & 0x0, rams: [[7, 3]] }
+      - { group: 0, index: 20..29, select: 40..51 & 0x0, rams: [[7, 4]] }
+      - { group: 0, index: 30..39, select: 40..51 & 0x0, rams: [[7, 5]] }
+    input_xbar:
+      exact group 0: { 8: hdr.flep.key(8..31), 32: hdr.flep.key(0..7), 40: hdr.flep.key_index }
+      hash 0:
+        0..1: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key(0..1)
+        2..9: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index
+        11..12: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key(0..1)
+        13..19: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(0..6)
+        10: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(7)
+        22..23: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key(0..1)
+        24..29: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(0..5)
+        20..21: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(6..7)
+        33..34: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key(0..1)
+        35..39: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(0..4)
+        30..32: random(hdr.flep.key(8..31), hdr.flep.key(2..7)) ^ hdr.flep.key_index(5..7)
+      hash group 0:
+        table: [0]
+        seed: 0xb845629261
+    format: { action(0): 0..1, version(0): 112..115, match(0): [ 58..63, 32..55 ], action(1): 2..3, version(1): 116..119, match(1): [ 90..95, 64..87 ], action(2): 4..5, version(2): 120..123, match(2): [ 18..23, 96..111, 8..15 ] }
+    match: [ hdr.flep.key(2..7), hdr.flep.key(8..15), hdr.flep.key(16..23), hdr.flep.key(24..31) ]
+    match_group_map: [ [ 0, 1, 2 ] ]
+    gateway:
+      name: cond-14
+      input_xbar:
+        exact group 0: { 48: meta.is_verify_start }
+      row: 7
+      bus: 0
+      unit: 0
+      match: { 0: meta.is_verify_start }
+      0x01:
+        run_table: true
+      miss:
+        next:  END
+      condition: 
+        expression: "(meta.is_verify_start == 1)"
+        true:  key_match_tbl_0
+        false:  END
+    hit: [  tbl_flep_process154 ]
+    miss:  tbl_flep_process184
+    instruction: key_match_tbl_0(action, $DEFAULT)
+    actions:
+      NoAction(1, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000013
+      - next_table_miss:  tbl_flep_process184
+      - next_table: 0
+      Ingress.drop(2, 2):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true }
+      - handle: 0x20000014
+      - next_table_miss:  tbl_flep_process184
+      - next_table: 0
+      - set ig_intr_md_for_dprsr.drop_ctl, 1
+    default_action: Ingress.drop
+  ternary_match tbl_flep_process154 5:
+    p4: { name: tbl_flep_process154, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_flep_process154$tind
+  ternary_indirect tbl_flep_process154$tind:
+    row: 2
+    bus: 0
+    format: { action: 0..0, meter_addr: 1..10 }
+    stateful: tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process154$tind(action, $DEFAULT)
+    actions:
+      flep_process154(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000015
+      - next_table: 0
+      - tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 0)
+    default_action: flep_process154
+  ternary_match tbl_flep_process184 2:
+    p4: { name: tbl_flep_process184, hidden: true }
+    hit: [  tbl_flep_process169 ]
+    miss:  tbl_flep_process169
+    indirect: tbl_flep_process184$tind
+  stateful tbl_flep_process184$salu.Ingress.keyindexdatacache.bw_register:
+    p4: { name: Ingress.keyindexdatacache.bw_register, size: 10 }
+    row: 7
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 7
+    input_xbar:
+      exact group 0: { 64: hdr.flep.key_index }
+    data_bytemask: 1
+    format: { lo: 32 }
+    actions:
+      keyindexdatacache_data_save:
+      - alu_a lo, phv_lo(0..7)
+  ternary_indirect tbl_flep_process184$tind:
+    row: 1
+    bus: 0
+    format: { action: 0..0, meter_addr: 1..10 }
+    stateful: tbl_flep_process184$salu.Ingress.keyindexdatacache.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process184$tind(action, $DEFAULT)
+    actions:
+      flep_process184(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000018
+      - next_table: 0
+      - tbl_flep_process184$salu.Ingress.keyindexdatacache.bw_register(keyindexdatacache_data_save, 1)
+    default_action: flep_process184
+  ternary_match tbl_flep_process169 3:
+    p4: { name: tbl_flep_process169, hidden: true }
+    hit: [  tbl_flep_process154_0 ]
+    miss:  tbl_flep_process154_0
+    indirect: tbl_flep_process169$tind
+  stateful tbl_flep_process169$salu.Ingress.keydatacache.bw_register:
+    p4: { name: Ingress.keydatacache.bw_register, size: 10 }
+    row: 11
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 11
+    input_xbar:
+      exact group 1: { 64: hdr.flep.key }
+    data_bytemask: 15
+    format: { lo: 32 }
+    actions:
+      keydatacache_data_save:
+      - alu_a lo, phv_lo
+  ternary_indirect tbl_flep_process169$tind:
+    row: 0
+    bus: 1
+    format: { action: 0..0, meter_addr: 1..10 }
+    stateful: tbl_flep_process169$salu.Ingress.keydatacache.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process169$tind(action, $DEFAULT)
+    actions:
+      flep_process169(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000017
+      - next_table: 0
+      - tbl_flep_process169$salu.Ingress.keydatacache.bw_register(keydatacache_data_save, 1)
+    default_action: flep_process169
+  ternary_match tbl_flep_process154_0 4:
+    p4: { name: tbl_flep_process154_0, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_flep_process154_0$tind
+  stateful tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register:
+    p4: { name: Ingress.pkt_counter.bw_register, size: 10 }
+    row: 15
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 15
+    format: { lo: 32 }
+    actions:
+      pkt_counter_pkt_count:
+      - add lo, lo, 1
+  ternary_indirect tbl_flep_process154_0$tind:
+    row: 0
+    bus: 0
+    format: { action: 0..0, meter_addr: 1..10 }
+    stateful: tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    instruction: tbl_flep_process154_0$tind(action, $DEFAULT)
+    actions:
+      flep_process154_0(0, 0):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x20000016
+      - next_table: 0
+      - tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 1)
+    default_action: flep_process154_0
+
+
+primitives: "flep_process.prim.json"
+dynhash: "flep_process.dynhash.json"

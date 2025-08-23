@@ -1,0 +1,2385 @@
+{
+  "tables" : [
+    {
+      "name" : "Ingress.fwd_port",
+      "actions" : [
+        {
+          "name" : "Ingress.send",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap459",
+      "actions" : [
+        {
+          "name" : "flep_encap459",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.fleptopo.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.messagetype"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "15"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "4w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.option"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "15"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "4w0b1000"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sourcelabel"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sourceport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replylabel"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replyport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sendtstamp"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "281474976710655"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "48w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1145"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_setfleptopo",
+      "actions" : [
+        {
+          "name" : "Ingress.setfleptopo",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.messagetype"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "15"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "4w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.option"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "15"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "4w0"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sourcelabel"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x2501"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sourceport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0xffff"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replylabel"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0xffff"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replyport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0xffff"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sendtstamp"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "281474976710655"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_from_prsr.global_tstamp"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1145"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.multicast_send_fleptopo",
+      "actions" : [
+        {
+          "name" : "Ingress.multiportsend",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.mcast_grp_a"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "groupid"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap479",
+      "actions" : [
+        {
+          "name" : "flep_encap479",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.messagetype"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "15"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "4w1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replylabel"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x2501"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replyport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap481",
+      "actions" : [
+        {
+          "name" : "flep_encap481",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replyport"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md.ingress_port"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md.ingress_port"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap489",
+      "actions" : [
+        {
+          "name" : "flep_encap489",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.topoinfo.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.replylabel"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.topoinfo.port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap492",
+      "actions" : [
+        {
+          "name" : "flep_encap492",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.topoinfo.port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md.ingress_port"
+              }
+            },
+            {
+              "name" : "DirectAluPrimitive",
+              "operation" : "sub",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.topoinfo.latency"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "4294967295"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_from_prsr.global_tstamp"
+              },
+              "src2" : {
+                "type" : "phv",
+                "name" : "hdr.fleptopo.sendtstamp"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.get_port_index",
+      "actions" : [
+        {
+          "name" : "Ingress.setportindex",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.portindex"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "index"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap256",
+      "actions" : [
+        {
+          "name" : "flep_encap256",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.labeldatacache.bw_register"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.labeldatacache.bw_register",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["meta.portindex"],
+              "stateful_alu_details" : {
+                "name" : "labeldatacache_data_save",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::hdr.topoinfo.label"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap271",
+      "actions" : [
+        {
+          "name" : "flep_encap271",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.portdatacache.bw_register"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.portdatacache.bw_register",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["meta.portindex"],
+              "stateful_alu_details" : {
+                "name" : "portdatacache_data_save",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::hdr.topoinfo.port"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap286",
+      "actions" : [
+        {
+          "name" : "flep_encap286",
+          "primitives" : [
+            {
+              "name" : "ExecuteStatefulAluFromHashPrimitive",
+              "dst" : {
+                "type" : "stateful",
+                "name" : "Ingress.latencydatacache.bw_register"
+              },
+              "idx" : {
+                "type" : "hash",
+                "name" : "hash_Ingress.latencydatacache.bw_register",
+                "algorithm" : "identity"
+              },
+              "hash_inputs" : ["meta.portindex"],
+              "stateful_alu_details" : {
+                "name" : "latencydatacache_data_save",
+                "single_bit_mode" : false,
+                "update_lo_1_value" : {
+                  "operand_1_type" : "phv",
+                  "operand_1_value" : "ingress::hdr.topoinfo.latency"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_drop",
+      "actions" : [
+        {
+          "name" : "Ingress.drop",
+          "primitives" : [
+            {
+              "name" : "DropPrimitive",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.drop_ctl"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.flep_ipv4_classifier",
+      "actions" : [
+        {
+          "name" : "Ingress.create_flep",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flep.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "4294967295"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0xffffffff"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.routing_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.label_depth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label_depth"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.flags"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "8w1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.identify_index"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "identify_index"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1212"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.ipv4_lpm",
+      "actions" : [
+        {
+          "name" : "Ingress.send",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.flep_ipv6_classifier",
+      "actions" : [
+        {
+          "name" : "Ingress.create_flep",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flep.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "4294967295"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "32w0xffffffff"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.routing_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.label_depth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label_depth"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.flags"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "8w1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.identify_index"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "identify_index"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1212"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Ingress.ipv6_lpm",
+      "actions" : [
+        {
+          "name" : "Ingress.send",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap519",
+      "actions" : [
+        {
+          "name" : "flep_encap519",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.insert.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.insert.remain_labels_count"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flep.label_depth"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x2424"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_recirculate",
+      "actions" : [
+        {
+          "name" : "Ingress.recirculate",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w68"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_send",
+      "actions" : [
+        {
+          "name" : "Ingress.send",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_tm.ucast_egress_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_port"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap533",
+      "actions" : [
+        {
+          "name" : "flep_encap533",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_routing_type"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.is_verify_tbl",
+      "actions" : [
+        {
+          "name" : "Egress.start_verify",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.is_verify_start"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "8w1"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Egress.key_match_tbl",
+      "actions" : [
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        },
+        {
+          "name" : "Egress.drop",
+          "primitives" : [
+            {
+              "name" : "DropPrimitive",
+              "dst" : {
+                "type" : "phv",
+                "name" : "eg_intr_md_for_dprsr.drop_ctl"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.insert_key_tbl",
+      "actions" : [
+        {
+          "name" : "Egress.insert_key",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "4294967295"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "key"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key_index"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "key_index"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Egress.insert_past_key_tbl",
+      "actions" : [
+        {
+          "name" : "Egress.insert_key",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "4294967295"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "key"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.key_index"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "key_index"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Egress.insert_ipv4_label",
+      "actions" : [
+        {
+          "name" : "Egress.flep_encap_1_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_2_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_3_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_4_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$3.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label4"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_5_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$3.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$4.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label4"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$4.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label5"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "Egress.insert_ipv6_label",
+      "actions" : [
+        {
+          "name" : "Egress.flep_encap_1_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_2_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_3_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_4_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$3.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label4"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "Egress.flep_encap_5_label",
+          "primitives" : [
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$1.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$2.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$3.$valid"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$4.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label1"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label2"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label3"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label4"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$4.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "label5"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap830",
+      "actions" : [
+        {
+          "name" : "flep_encap830",
+          "primitives" : [
+            {
+              "name" : "DirectAluPrimitive",
+              "operation" : "add",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.insert.remain_labels_count"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.insert.remain_labels_count"
+              },
+              "src2" : {
+                "type" : "immediate",
+                "name" : "8w251"
+              }
+            },
+            {
+              "name" : "DirectAluPrimitive",
+              "operation" : "add",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.insert.recir_count"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.insert.recir_count"
+              },
+              "src2" : {
+                "type" : "immediate",
+                "name" : "8w1"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap833",
+      "actions" : [
+        {
+          "name" : "flep_encap833",
+          "primitives" : [
+            {
+              "name" : "RemoveHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.insert.$valid"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.flags"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "8w0"
+              }
+            },
+            {
+              "name" : "AddHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.tempforward.$valid"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "Egress.flep_processing",
+      "actions" : [
+        {
+          "name" : "Egress.flep_send",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "meta.forward_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "action_param",
+                "name" : "port"
+              }
+            }
+          ]
+        },
+        {
+          "name" : "NoAction",
+          "primitives" : []
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap840",
+      "actions" : [
+        {
+          "name" : "flep_encap840",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "127"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "7w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap840_0",
+      "actions" : [
+        {
+          "name" : "flep_encap840_0",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_port"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "511"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "meta.forward_port"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_routing_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1212"
+              }
+            },
+            {
+              "name" : "DirectAluPrimitive",
+              "operation" : "add",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flep.label_depth"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "255"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flep.label_depth"
+              },
+              "src2" : {
+                "type" : "immediate",
+                "name" : "8w255"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$0.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$1.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$2.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$3.label"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flabels$4.label"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.flabels.$stkvalid"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "31"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flabels.$stkvalid"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_decapsulation",
+      "actions" : [
+        {
+          "name" : "Egress.flep_decapsulation",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.flep.routing_type"
+              }
+            },
+            {
+              "name" : "RemoveHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flep.$valid"
+              }
+            },
+            {
+              "name" : "RemoveHeaderPrimitive",
+              "dst" : {
+                "type" : "header",
+                "name" : "hdr.flabels$0.$valid"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap850",
+      "actions" : [
+        {
+          "name" : "flep_encap850",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.tempforward.temp_routing_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_encap852",
+      "actions" : [
+        {
+          "name" : "flep_encap852",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.ethernetType"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "65535"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "16w0x1234"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

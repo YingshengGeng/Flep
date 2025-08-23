@@ -1,0 +1,21 @@
+digraph IngressParser {
+subgraph clusterIngressParser {
+graph [
+fontsize="22pt", label=IngressParser, style=bold];
+0[label="start
+(hdr.ethernet.ethernetType)", margin="", shape=rectangle, style=solid];
+1[label=parse_fleptopo, margin="", shape=rectangle, style=solid];
+2[label="parse_flep
+(hdr.flep.flags)", margin="", shape=rectangle, style=solid];
+3[label=parse_flabels, margin="", shape=rectangle, style=solid];
+4[label=accept, margin="", shape=rectangle, style=solid];
+5[label=reject, margin="", shape=rectangle, style=solid];
+0 -> 2[label="16w0x1212"];
+0 -> 1[label="16w0x1145"];
+0 -> 4[label=default];
+1 -> 4[label=always];
+2 -> 3[label="8w0"];
+2 -> 4[label=default];
+3 -> 4[label=always];
+}
+}

@@ -1,0 +1,28 @@
+ingress::parse_ipv6 is split into 3 states:
+  ingress::parse_ipv6
+  ingress::parse_ipv6.$split_0
+  ingress::parse_ipv6.$split_1
+$entry_point.start is split into 2 states:
+  $entry_point.start
+  $entry_point.start.$split_0
+egress::min_parse_depth_accept_loop.$it2 is split into 2 states:
+  egress::min_parse_depth_accept_loop.$it2
+  egress::min_parse_depth_accept_loop.$it2.$split_0
+egress::min_parse_depth_accept_loop.$it1 is split into 2 states:
+  egress::min_parse_depth_accept_loop.$it1
+  egress::min_parse_depth_accept_loop.$it1.$split_0
+egress::min_parse_depth_accept_loop is split into 2 states:
+  egress::min_parse_depth_accept_loop
+  egress::min_parse_depth_accept_loop.$split_0
+egress::parse_insert is split into 3 states:
+  egress::parse_insert
+  egress::parse_insert.$split_0
+  egress::parse_insert.$split_1
+$entry_point.start is split into 2 states:
+  $entry_point.start
+  $entry_point.start.$split_0
+allocated { $half } to {  [ $entry_point.start.$split_0 : inbuf bit[80..95] hdr.ethernet/ethernet.ethernetType; ] }
+allocated { $byte1 } to {  [ egress::parse_insert.$split_1 : inbuf bit[-8..-1] hdr.flep/flep.flags; ] }
+allocated { $half } to {  [ $entry_point.start.$split_0 : inbuf bit[32..47] hdr.ethernet/ethernet.ethernetType; ] }
+allocated { $byte1 } to {  [ ingress::parse_ipv4 : inbuf bit[72..79] hdr.ipv4/ipv4.protocol; ] }
+allocated { $byte1 } to {  [ ingress::parse_ipv6.$split_1 : inbuf bit[-240..-233] hdr.ipv6/ipv6.nextheader; ] }

@@ -1,0 +1,83 @@
+Parser Characterization Report:
+Number of states on ingress: 10
+
+Number of matches on ingress: 18
+
+Longest path (6 states) on ingress:
+    $entry_point.start
+    $entry_point.start.$split_0
+    parse_ipv6
+    parse_ipv6.$split_0
+    parse_ipv6.$split_1
+    parse_udp
+
+Shortest path (2 states) on ingress:
+    $entry_point.start
+    $entry_point.start.$split_0
+
+Timing is met for min-sized packet (73 B) running at 100 Gbps
+
+Extractor usage:
++-----------------------------+--------+-------+--------+--------+------------------+-------+
+|State                        |Match   |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
++-----------------------------+--------+-------+--------+--------+------------------+-------+
+|$entry_point.start           |*       |1      |4       |2       |7                 |       |
+|$entry_point.start.$split_0  |0x0800  |0      |4       |0       |4                 |       |
+|-                            |0x86dd  |0      |4       |0       |4                 |       |
+|-                            |0x1234  |0      |4       |0       |4                 |       |
+|-                            |0x1145  |0      |4       |0       |4                 |       |
+|-                            |0x****  |0      |4       |0       |4                 |       |
+|parse_fleptopo               |*       |2      |1       |3       |6                 |       |
+|parse_tempforward            |*       |0      |1       |1       |2                 |       |
+|parse_ipv6                   |*       |3      |1       |4       |8                 |       |
+|parse_ipv6.$split_0          |*       |0      |0       |4       |4                 |       |
+|parse_ipv6.$split_1          |0x11    |0      |0       |1       |1                 |       |
+|-                            |0x06    |0      |0       |1       |1                 |       |
+|-                            |0x**    |0      |0       |1       |1                 |       |
+|parse_ipv4                   |0x11    |3      |1       |4       |8                 |       |
+|-                            |0x06    |3      |1       |4       |8                 |       |
+|-                            |0x**    |3      |1       |4       |8                 |       |
+|parse_tcp                    |*       |3      |1       |4       |8                 |       |
+|parse_udp                    |*       |1      |0       |2       |3                 |       |
++-----------------------------+--------+-------+--------+--------+------------------+-------+
+Number of states on egress: 8
+
+Number of matches on egress: 12
+
+Longest path (8 states) on egress:
+    $entry_point.start
+    $entry_point.start.$oob_stall_0
+    $entry_point.start.$split_0
+    parse_insert.$split_0
+    parse_insert.$split_1
+    min_parse_depth_accept_initial
+    min_parse_depth_accept_loop.$split_0
+    min_parse_depth_accept_loop.$it1.$split_0
+
+Shortest path (4 states) on egress:
+    $entry_point.start
+    $entry_point.start.$oob_stall_0
+    $entry_point.start.$split_0
+    min_parse_depth_accept_initial
+
+Average rate: 9.125 Bps
+Min packet size at 100 Gbps: 82 B (9 B payload)
+Max data rate for min-sized packets: 89.06 Gbps / 152.5 MPps
+
+Extractor usage:
++-------------------------------------------+--------+-------+--------+--------+------------------+-------+
+|State                                      |Match   |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
++-------------------------------------------+--------+-------+--------+--------+------------------+-------+
+|$entry_point.start                         |*       |1      |2       |0       |3                 |       |
+|$entry_point.start.$oob_stall_0            |*       |0      |2       |2       |4                 |       |
+|$entry_point.start.$split_0                |0x2424  |4      |3       |0       |7                 |       |
+|-                                          |0x****  |0      |0       |0       |0                 |       |
+|parse_insert.$split_0                      |*       |4      |0       |0       |4                 |       |
+|parse_insert.$split_1                      |0x**    |1      |0       |0       |1                 |       |
+|min_parse_depth_accept_initial             |0x0     |2      |1       |2       |5                 |       |
+|-                                          |0b**    |0      |0       |0       |0                 |       |
+|min_parse_depth_accept_loop.$split_0       |0x0     |2      |1       |2       |5                 |       |
+|-                                          |0b**    |0      |0       |0       |0                 |       |
+|min_parse_depth_accept_loop.$it1.$split_0  |0x0     |2      |1       |2       |5                 |       |
+|-                                          |0b**    |0      |0       |0       |0                 |       |
++-------------------------------------------+--------+-------+--------+--------+------------------+-------+

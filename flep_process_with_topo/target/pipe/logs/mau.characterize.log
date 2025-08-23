@@ -1,0 +1,657 @@
++---------------------------------------------------------------------+
+|  Log file: mau.characterize.log                                     |
+|  Compiler version: 9.13.2 (1baf055)                                 |
+|  Created on: Wed Oct 23 15:06:53 2024                               |
+|  Run ID: a3bd6f1aa3ef4038                                           |
++---------------------------------------------------------------------+
+
+Match+Action Resource Usage
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                1                |    2    |   3    |    4    |  5   |        6         |   7   |          8          |      9       |    10   |   11  |          12         |      13      |      14     |       15      |   16   |      17     |       18      |      19      |       20      |       21       |      22     |
+|              Table              |   Dir   | Stage  |    P4   | Mem  |      Total       | Total |        Table        |    Match     |   TCAM  |  SRAM |        Match        |     Imm.     |     TCAM    |      SRAM     |   P4   |    Action   |     Ideal     |    Actual    |      TCAM     |      SRAM      |     SRAM    |
+|               Name              |         |        |  Lookup | Type |      SRAMs       | TCAMs |       Entries       |     Bits     |  Over-  | Over- |       Overhead      |    Action    |     Bits    |      Bits     | Action |     Bits    |     Match     |    Match     |     Match     |     Match      |    Action   |
+|                                 |         |        | Type(s) |      | TOT(M/A/S/MT/I)  |       |      Requested      |     Per      |   head  |  head |      Structure      |     Data     |     Per     |      Per      |  Bits  |     Per     |    Entries-   |   Entries-   |    Packing    |    Packing     |   Packing   |
+|                                 |         |        |         |      |     (legend      |       |          /          |    Entry     |   Bits  |  Bits | NT/AI/AD/M/S/SL/V/I |      in      |    Entry    |     Entry     |        |    Entry    |     Number    |    Number    |      Eff.     |      Eff.      |     Eff.    |
+|                                 |         |        |         |      |      below)      |       |      Allocated      |  R/A(diff)   |   Per   |  Per  |       (legend       |   Overhead   |  R/A(diff)  |   R/A(diff)   |        |  R/A(diff)  |      Per      |     Per      |     Ideal/    |     Ideal/     |    Ideal/   |
+|                                 |         |        |         |      |                  |       |        (diff)       |              |  Entry  | Entry |        below)       |  R/A(diff)   |             |               |        |             |     Memory    |    Memory    |     Actual    |     Actual     |    Actual   |
+|                                 |         |        |         |      |                  |       |                     |              | ver/vld |       |                     |              |             |               |        |             |     Units     |    Units     |               |                |             |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |     (bits)    |    (bits)    |               |                |             |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+|   IngressParser.$PORT_METADATA  | ingress | parser |  exact  | buf  |  0 (0/0/0/0/0)   |   0   |    288 / 288 (0)    |  9 / 0 (-9)  |    0    |   0   |   0/0/0/0/0/0/0/0   | 64 / 0 (-64) |  0 / 0 (0)  |   0 / 0 (0)   |   64   |  0 / 0 (0)  |  1 in 2 (128) | 1 in 1 (64)  |     - / -     |     - / -      |    - / -    |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|         Ingress.fwd_port        | ingress |   0    |  exact  | sram |  1 (1/0/0/0/0)   |   0   |  256 / 5120 (4864)  |  9 / 1 (-8)  |    0    |   13  |   0/0/0/0/0/0/4/9   |  9 / 9 (0)   |  0 / 0 (0)  |  22 / 14 (-8) |   9    |  0 / 0 (0)  |  5 in 1 (128) | 5 in 1 (128) |     - / -     | 70.3% / 35.2%  |    - / -    |
+|      Ingress.is_verify_tbl      | ingress |   0    | ternary | tcam |  1 (0/0/0/0/1)   |   1   |   256 / 512 (256)   | 32 / 32 (0)  |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   | 36 / 44 (8) |   0 / 4 (4)   |   0    |  0 / 0 (0)  |  1 in 1 (44)  | 1 in 1 (44)  | 72.7% / 72.7% |     - / -      |    - / -    |
+|       tbl_flep_process377       | ingress |   0    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|          stage 0 totals         |    -    |   -    |    -    |  -   |  2 (1/0/0/0/1)   |   1   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|             tbl_drop            | ingress |   1    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process397       | ingress |   1    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   23  |   0/0/0/0/0/0/0/23  | 23 / 23 (0)  |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process407       | ingress |   1    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|         tbl_setfleptopo         | ingress |   1    |    -    | sram |  1 (0/1/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   32  |   0/0/0/0/0/0/0/32  | 32 / 32 (0)  |  0 / 0 (0)  |   0 / 0 (0)   |   0    | 0 / 32 (32) |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      | 0.0% / 0.0% |
+|          stage 1 totals         |    -    |   -    |    -    |  -   |  1 (0/1/0/0/0)   |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+| Ingress.multicast_send_fleptopo | ingress |   2    |  exact  | sram |  1 (1/0/0/0/0)   |   0   |   8 / 3072 (3064)   |  4 / 1 (-3)  |    0    |   20  |   0/0/0/0/0/0/4/16  | 16 / 16 (0)  |  0 / 0 (0)  |  24 / 21 (-3) |   16   |  0 / 0 (0)  |  5 in 1 (128) | 3 in 1 (128) |     - / -     | 78.1% / 37.5%  |    - / -    |
+|       tbl_flep_process399       | ingress |   2    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process410       | ingress |   2    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|          stage 2 totals         |    -    |   -    |    -    |  -   |  1 (1/0/0/0/0)   |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|      Ingress.get_port_index     | ingress |   3    |  exact  | sram |  4 (4/0/0/0/0)   |   0   | 256 / 20480 (20224) | 16 / 6 (-10) |    0    |   12  |   0/0/0/0/0/0/4/8   |  8 / 8 (0)   |  0 / 0 (0)  | 28 / 18 (-10) |   8    |  0 / 0 (0)  |  5 in 1 (128) | 5 in 1 (128) |     - / -     | 93.8% / 54.7%  |    - / -    |
+|          stage 3 totals         |    -    |   -    |    -    |  -   |  4 (4/0/0/0/0)   |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|     Ingress.flep_processing     | ingress |   4    |  exact  | sram |  4 (4/0/0/0/0)   |   0   | 256 / 20480 (20224) | 16 / 7 (-9)  |    0    |   13  |   0/0/0/0/0/0/4/9   |  9 / 9 (0)   |  0 / 0 (0)  |  29 / 20 (-9) |   9    |  0 / 0 (0)  |  5 in 1 (128) | 5 in 1 (128) |     - / -     | 97.7% / 58.6%  |    - / -    |
+|       tbl_flep_process199       | ingress |   4    |    -    |  -   |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process214       | ingress |   4    |    -    |  -   |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process229       | ingress |   4    |    -    |  -   |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  0 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process442       | ingress |   4    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|          stage 4 totals         |    -    |   -    |    -    |  -   |  10 (4/0/0/6/0)  |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|      Ingress.key_match_tbl      | ingress |   5    |  exact  | sram |  4 (4/0/0/0/0)   |   0   | 256 / 12288 (12032) | 40 / 32 (-8) |    0    |   4   |   0/0/0/0/0/0/4/0   |  0 / 0 (0)   |  0 / 0 (0)  |  44 / 36 (-8) |   0    |  0 / 0 (0)  | 16 in 5 (640) | 3 in 1 (128) |     - / -     | 100.0% / 70.3% |    - / -    |
+|      tbl_flep_decapsulation     | ingress |   5    |    -    | sram |  0 (0/0/0/0/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process154       | ingress |   5    |    -    | sram |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|      tbl_flep_process154_0      | ingress |   5    |    -    | sram |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process169       | ingress |   5    |    -    | sram |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|       tbl_flep_process184       | ingress |   5    |    -    | sram |  2 (0/0/0/2/0)   |   0   |      0 / 0 (0)      |  0 / 0 (0)   |    0    |   0   |   0/0/0/0/0/0/0/0   |  0 / 0 (0)   |  0 / 0 (0)  |   0 / 0 (0)   |   0    |  0 / 0 (0)  |   0 in 0 (0)  |  1 in 0 (0)  |     - / -     |     - / -      |    - / -    |
+|          stage 5 totals         |    -    |   -    |    -    |  -   |  12 (4/0/0/8/0)  |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|     overall totals (ingress)    |    -    |   -    |    -    |  -   | 30 (14/1/0/14/1) |   1   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|     overall totals (egress)     |    -    |   -    |    -    |  -   |  0 (0/0/0/0/0)   |   0   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+|                                 |         |        |         |      |                  |       |                     |              |         |       |                     |              |             |               |        |             |               |              |               |                |             |
+|          overall totals         |    -    |   -    |    -    |  -   | 30 (14/1/0/14/1) |   1   |          -          |      -       |    -    |   -   |          -          |      -       |      -      |       -       |   -    |      -      |       -       |      -       |       -       |       -        |      -      |
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Total SRAMs Legend:
+TOT (M/A/S/MT/I)
+TOT = Total
+M = Match
+A = Action
+S = Statistics
+MT = Meter / Stateful / Selection
+I = Ternary Indirection
+
+Match Overhead Structure Legend:
+NT/AI/AD/M/S/SL/V/I
+NT = Next Table Pointer
+AI = Action Instruction Pointer
+AD = Action Data Pointer
+M = Meter/Selection/Stateful Pointer
+S = Statistics Pointer
+SL = Selection Length
+V = Entry Version
+I = Immediate Action Data
+
+
+
+
+
++----------------------------------------------------------------+
+    OVERHEAD STRUCTURES
++----------------------------------------------------------------+
+
++----------------------------------------------------------------+
+   Ingress.flep_processing
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+  Field --immediate-- [8:0] (9 bits)
+
+  Total bits: 13
++----------------------------------------------------------------+
+   Ingress.fwd_port
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+  Field --immediate-- [8:0] (9 bits)
+
+  Total bits: 13
++----------------------------------------------------------------+
+   Ingress.get_port_index
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+  Field --immediate-- [7:0] (8 bits)
+
+  Total bits: 12
++----------------------------------------------------------------+
+   Ingress.is_verify_tbl
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   Ingress.key_match_tbl
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+
+  Total bits: 4
++----------------------------------------------------------------+
+   Ingress.multicast_send_fleptopo
++----------------------------------------------------------------+
+Match Overhead:
+  Field --version_valid-- [3:0] (4 bits)
+  Field --immediate-- [15:0] (16 bits)
+
+  Total bits: 20
++----------------------------------------------------------------+
+   IngressParser.$PORT_METADATA
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_drop
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_decapsulation
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process154
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process154_0
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process169
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process184
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process199
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process214
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process229
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process377
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process397
++----------------------------------------------------------------+
+Match Overhead:
+  Field --immediate-- [22:0] (23 bits)
+
+  Total bits: 23
++----------------------------------------------------------------+
+   tbl_flep_process399
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process407
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process410
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_flep_process442
++----------------------------------------------------------------+
+Match Overhead:
+
+  Total bits: 0
++----------------------------------------------------------------+
+   tbl_setfleptopo
++----------------------------------------------------------------+
+Match Overhead:
+  Field --immediate-- [31:0] (32 bits)
+
+  Total bits: 32
+
+
+
+
+
++----------------------------------------------------------------+
+    MATCH AND ACTION FORMATS
++----------------------------------------------------------------+
+
++----------------------------------------------------------------+
+  Ingress.flep_processing
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.flep_processing
++------------------------------------------------+
+Stage 4:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 5
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 4
+    field_list : [
+       Field action [0:0]                : in bits [4:4]
+       Field immediate [8:0]             : in bits [49:41]
+       Field version [3:0]               : in bits [91:88]
+       Field hdr.flabels.label [15:10]   : in bits [87:82]
+    ]
+    entry_number : 3
+    field_list : [
+       Field action [0:0]                : in bits [3:3]
+       Field immediate [8:0]             : in bits [40:32]
+       Field version [3:0]               : in bits [127:124]
+       Field hdr.flabels.label [15:10]   : in bits [79:74]
+    ]
+    entry_number : 2
+    field_list : [
+       Field action [0:0]                : in bits [2:2]
+       Field immediate [8:0]             : in bits [31:23]
+       Field version [3:0]               : in bits [123:120]
+       Field hdr.flabels.label [15:10]   : in bits [71:66]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [0:0]                : in bits [1:1]
+       Field immediate [8:0]             : in bits [22:14]
+       Field version [3:0]               : in bits [119:116]
+       Field hdr.flabels.label [15:10]   : in bits [63:58]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [0:0]                : in bits [0:0]
+       Field immediate [8:0]             : in bits [13:5]
+       Field version [3:0]               : in bits [115:112]
+       Field hdr.flabels.label [15:10]   : in bits [55:50]
+    ]
+  ]
++----------------------------------------------------------------+
+  Ingress.fwd_port
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.fwd_port
++------------------------------------------------+
+Stage 0:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 5
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 4
+    field_list : [
+       Field action [0:0]      : in bits [4:4]
+       Field immediate [8:0]   : in bits [49:41]
+       Field version [3:0]     : in bits [59:56]
+    ]
+    entry_number : 3
+    field_list : [
+       Field action [0:0]      : in bits [3:3]
+       Field immediate [8:0]   : in bits [40:32]
+       Field version [3:0]     : in bits [127:124]
+    ]
+    entry_number : 2
+    field_list : [
+       Field action [0:0]      : in bits [2:2]
+       Field immediate [8:0]   : in bits [31:23]
+       Field version [3:0]     : in bits [123:120]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [0:0]      : in bits [1:1]
+       Field immediate [8:0]   : in bits [22:14]
+       Field version [3:0]     : in bits [119:116]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [0:0]      : in bits [0:0]
+       Field immediate [8:0]   : in bits [13:5]
+       Field version [3:0]     : in bits [115:112]
+    ]
+  ]
++----------------------------------------------------------------+
+  Ingress.get_port_index
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.get_port_index
++------------------------------------------------+
+Stage 3:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 5
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 4
+    field_list : [
+       Field immediate [7:0]             : in bits [39:32]
+       Field version [3:0]               : in bits [83:80]
+       Field hdr.topoinfo.port [15:10]   : in bits [79:74]
+    ]
+    entry_number : 3
+    field_list : [
+       Field immediate [7:0]             : in bits [31:24]
+       Field version [3:0]               : in bits [127:124]
+       Field hdr.topoinfo.port [15:10]   : in bits [71:66]
+    ]
+    entry_number : 2
+    field_list : [
+       Field immediate [7:0]             : in bits [23:16]
+       Field version [3:0]               : in bits [123:120]
+       Field hdr.topoinfo.port [15:10]   : in bits [63:58]
+    ]
+    entry_number : 1
+    field_list : [
+       Field immediate [7:0]             : in bits [15:8]
+       Field version [3:0]               : in bits [119:116]
+       Field hdr.topoinfo.port [15:10]   : in bits [55:50]
+    ]
+    entry_number : 0
+    field_list : [
+       Field immediate [7:0]             : in bits [7:0]
+       Field version [3:0]               : in bits [115:112]
+       Field hdr.topoinfo.port [15:10]   : in bits [47:42]
+    ]
+  ]
++----------------------------------------------------------------+
+  Ingress.is_verify_tbl
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.is_verify_tbl
++------------------------------------------------+
+Stage 0:
+Pack Format:
+  table_word_width: 44
+  memory_word_width: 44
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field --version-- [1:0]     : in bits [43:42]
+       Field hdr.flep.key [31:0]   : in bits [31:0]
+    ]
+  ]
++----------------------------------------------------------------+
+  Ingress.key_match_tbl
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.key_match_tbl
++------------------------------------------------+
+Stage 5:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 3
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 2
+    field_list : [
+       Field action [1:0]           : in bits [5:4]
+       Field version [3:0]          : in bits [123:120]
+       Field hdr.flep.key [7:2]     : in bits [23:18]
+       Field hdr.flep.key [15:8]    : in bits [103:96]
+       Field hdr.flep.key [23:16]   : in bits [111:104]
+       Field hdr.flep.key [31:24]   : in bits [15:8]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [1:0]           : in bits [3:2]
+       Field version [3:0]          : in bits [119:116]
+       Field hdr.flep.key [7:2]     : in bits [95:90]
+       Field hdr.flep.key [15:8]    : in bits [71:64]
+       Field hdr.flep.key [23:16]   : in bits [79:72]
+       Field hdr.flep.key [31:24]   : in bits [87:80]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [1:0]           : in bits [1:0]
+       Field version [3:0]          : in bits [115:112]
+       Field hdr.flep.key [7:2]     : in bits [63:58]
+       Field hdr.flep.key [15:8]    : in bits [39:32]
+       Field hdr.flep.key [23:16]   : in bits [47:40]
+       Field hdr.flep.key [31:24]   : in bits [55:48]
+    ]
+  ]
++----------------------------------------------------------------+
+  Ingress.multicast_send_fleptopo
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for Ingress.multicast_send_fleptopo
++------------------------------------------------+
+Stage 2:
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 3
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 2
+    field_list : [
+       Field action [0:0]       : in bits [2:2]
+       Field immediate [15:0]   : in bits [50:35]
+       Field version [3:0]      : in bits [123:120]
+    ]
+    entry_number : 1
+    field_list : [
+       Field action [0:0]       : in bits [1:1]
+       Field immediate [15:0]   : in bits [34:19]
+       Field version [3:0]      : in bits [119:116]
+    ]
+    entry_number : 0
+    field_list : [
+       Field action [0:0]       : in bits [0:0]
+       Field immediate [15:0]   : in bits [18:3]
+       Field version [3:0]      : in bits [115:112]
+    ]
+  ]
++----------------------------------------------------------------+
+  IngressParser.$PORT_METADATA
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for IngressParser.$PORT_METADATA
++------------------------------------------------+
+Stage -1:
+Pack Format:
+  table_word_width: 64
+  memory_word_width: 64
+  entries_per_table_word: 1
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 0
+    field_list : [
+       Field ig_intr_md [63:0]   : in bits [63:0]
+    ]
+  ]
++----------------------------------------------------------------+
+  tbl_drop
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_drop
++------------------------------------------------+
+Stage 1:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_decapsulation
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_decapsulation
++------------------------------------------------+
+Stage 5:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process154
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process154
++------------------------------------------------+
+Stage 5:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process154_0
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process154_0
++------------------------------------------------+
+Stage 5:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process169
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process169
++------------------------------------------------+
+Stage 5:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process184
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process184
++------------------------------------------------+
+Stage 5:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process199
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process199
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process214
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process214
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process229
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process229
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process377
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process377
++------------------------------------------------+
+Stage 0:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process397
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process397
++------------------------------------------------+
+Stage 1:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process399
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process399
++------------------------------------------------+
+Stage 2:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process407
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process407
++------------------------------------------------+
+Stage 1:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process410
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process410
++------------------------------------------------+
+Stage 2:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_flep_process442
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_flep_process442
++------------------------------------------------+
+Stage 4:
+No match entries required.
++----------------------------------------------------------------+
+  tbl_setfleptopo
++----------------------------------------------------------------+
++------------------------------------------------+
+   Match format for tbl_setfleptopo
++------------------------------------------------+
+Stage 1:
+No match entries required.
+
+Action Ingress.setfleptopo
+---------------------------
+Pack Format:
+  table_word_width: 128
+  memory_word_width: 128
+  entries_per_table_word: 4
+  number_memory_units_per_table_word: 1
+  entry_list: [
+    entry_number : 3
+    field_list : [
+       Field $constant2 [15:0]   : in bits [127:112]
+       Field $constant3 [15:0]   : in bits [111:96]
+    ]
+    entry_number : 2
+    field_list : [
+       Field $constant2 [15:0]   : in bits [95:80]
+       Field $constant3 [15:0]   : in bits [79:64]
+    ]
+    entry_number : 1
+    field_list : [
+       Field $constant2 [15:0]   : in bits [63:48]
+       Field $constant3 [15:0]   : in bits [47:32]
+    ]
+    entry_number : 0
+    field_list : [
+       Field $constant2 [15:0]   : in bits [31:16]
+       Field $constant3 [15:0]   : in bits [15:0]
+    ]
+  ]
+
+Action data bus usage:
+Stage: 1
+No action parameter mapping provided.  Action data bus usage will not be displayed.

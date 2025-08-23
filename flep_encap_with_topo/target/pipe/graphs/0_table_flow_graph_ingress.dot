@@ -1,0 +1,241 @@
+digraph ingress {
+fwd_port_0 [ shape=record, style="filled", fillcolor=cornsilk, label="fwd_port_0\l\l
+M:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+cond_21 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ethernet.ethernetType == 6425\l\l
+ "];
+tbl_flep_encap459 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap459\l\l
+W:\l
+ hdr.fleptopo.$valid\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.option\l
+ hdr.fleptopo.sourcelabel\l
+ hdr.fleptopo.sourceport\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ hdr.fleptopo.sendtstamp\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_22 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 1\l\l
+ "];
+tbl_setfleptopo [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_setfleptopo\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+\lW:\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.option\l
+ hdr.fleptopo.sourcelabel\l
+ hdr.fleptopo.sourceport\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ hdr.fleptopo.sendtstamp\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_23 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 0\l\l
+ "];
+multicast_send_fleptopo_0 [ shape=record, style="filled", fillcolor=cornsilk, label="multicast_send_fleptopo_0\l\l
+M:\l
+ hdr.fleptopo.messagetype\l
+\lW:\l
+ ig_intr_md_for_tm.mcast_grp_a\l
+ "];
+cond_25 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ipv4.$valid == 1\l\l
+ "];
+tbl_flep_encap479 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap479\l\l
+W:\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ "];
+cond_24 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 1 && hdr.fleptopo.option[3:3] == 0 && hdr.fleptopo.sourcelabel == 9473\l\l
+ "];
+tbl_flep_encap481 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap481\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ hdr.fleptopo.replyport\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_flep_encap489 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap489\l\l
+R:\l
+ hdr.fleptopo.replylabel\l
+\lW:\l
+ hdr.topoinfo.label\l
+ hdr.topoinfo.port\l
+ "];
+tbl_flep_encap492 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap492\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+ ig_intr_md_from_prsr.global_tstamp\l
+ hdr.fleptopo.sendtstamp\l
+\lW:\l
+ hdr.topoinfo.port\l
+ hdr.topoinfo.latency\l
+ "];
+get_port_index_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_port_index_0\l\l
+M:\l
+ hdr.topoinfo.port\l
+\lW:\l
+ meta.portindex\l
+ "];
+tbl_flep_encap256 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap256\l\l
+R:\l
+ hdr.topoinfo.label\l
+\l "];
+tbl_flep_encap271 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap271\l\l
+R:\l
+ hdr.topoinfo.port\l
+\l "];
+tbl_flep_encap286 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap286\l\l
+R:\l
+ hdr.topoinfo.latency\l
+\l "];
+tbl_drop [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_drop\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+flep_ipv4_classifier_0 [ shape=record, style="filled", fillcolor=cornsilk, label="flep_ipv4_classifier_0\l\l
+M:\l
+ hdr.ipv4.dstAddr\l
+ hdr.ipv4.srcAddr\l
+ hdr.ipv4.protocol\l
+ hdr.udp.srcPort\l
+ hdr.udp.dstPort\l
+ hdr.tcp.srcPort\l
+ hdr.tcp.dstPort\l
+\lR:\l
+ hdr.ethernet.ethernetType\l
+\lW:\l
+ hdr.flep.$valid\l
+ hdr.flep.active_label\l
+ hdr.flep.key\l
+ hdr.flep.key_index\l
+ hdr.flep.routing_type\l
+ hdr.flep.label_depth\l
+ hdr.flep.flags\l
+ hdr.insert.identify_index\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_27 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ipv6.$valid == 1\l\l
+ "];
+cond_26 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flep.$valid == 1\l\l
+ "];
+ipv4_lpm_0 [ shape=record, style="filled", fillcolor=cornsilk, label="ipv4_lpm_0\l\l
+M:\l
+ hdr.ipv4.dstAddr\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+cond_29 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flep.$valid == 1 && hdr.flep.flags != 0\l\l
+ "];
+flep_ipv6_classifier_0 [ shape=record, style="filled", fillcolor=cornsilk, label="flep_ipv6_classifier_0\l\l
+M:\l
+ hdr.ipv6.dstAddr\l
+ hdr.ipv6.srcAddr\l
+ hdr.ipv6.nextheader\l
+ hdr.udp.srcPort\l
+ hdr.udp.dstPort\l
+ hdr.tcp.srcPort\l
+ hdr.tcp.dstPort\l
+\lR:\l
+ hdr.ethernet.ethernetType\l
+\lW:\l
+ hdr.flep.$valid\l
+ hdr.flep.active_label\l
+ hdr.flep.key\l
+ hdr.flep.key_index\l
+ hdr.flep.routing_type\l
+ hdr.flep.label_depth\l
+ hdr.flep.flags\l
+ hdr.insert.identify_index\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_28 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flep.$valid == 1\l\l
+ "];
+ipv6_lpm_0 [ shape=record, style="filled", fillcolor=cornsilk, label="ipv6_lpm_0\l\l
+M:\l
+ hdr.ipv6.dstAddr\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+cond_30 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.insert.$valid == 1\l\l
+ "];
+cond_31 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ethernet.ethernetType == 9252\l\l
+ "];
+tbl_flep_encap519 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap519\l\l
+R:\l
+ hdr.flep.label_depth\l
+\lW:\l
+ hdr.insert.$valid\l
+ hdr.insert.remain_labels_count\l
+ hdr.insert.recir_count\l
+ hdr.ethernet.ethernetType\l
+ "];
+tbl_recirculate [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_recirculate\l\l
+W:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+cond_32 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ethernet.ethernetType == 4660\l\l
+ "];
+tbl_send [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_send\l\l
+R:\l
+ hdr.tempforward.temp_port\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_flep_encap533 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap533\l\l
+R:\l
+ hdr.tempforward.temp_routing_type\l
+\lW:\l
+ hdr.ethernet.ethernetType\l
+ "];
+    PARSER -> fwd_port_0
+    fwd_port_0 -> cond_21
+    cond_21 -> tbl_flep_encap459
+    cond_21 -> cond_22
+    tbl_flep_encap459 -> cond_22
+    cond_22 -> tbl_setfleptopo
+    cond_22 -> cond_23
+    tbl_setfleptopo -> multicast_send_fleptopo_0
+    multicast_send_fleptopo_0 -> cond_25
+    cond_23 -> tbl_flep_encap479
+    cond_23 -> cond_24
+    tbl_flep_encap479 -> tbl_flep_encap481
+    tbl_flep_encap481 -> cond_25
+    cond_24 -> tbl_flep_encap489
+    cond_24 -> cond_25
+    tbl_flep_encap489 -> tbl_flep_encap492
+    tbl_flep_encap492 -> get_port_index_0
+    get_port_index_0 -> tbl_flep_encap256
+    tbl_flep_encap256 -> tbl_flep_encap271
+    tbl_flep_encap271 -> tbl_flep_encap286
+    tbl_flep_encap286 -> tbl_drop
+    tbl_drop -> cond_25
+    cond_25 -> flep_ipv4_classifier_0
+    cond_25 -> cond_27
+    flep_ipv4_classifier_0 -> cond_26
+    cond_26 -> ipv4_lpm_0
+    cond_26 -> cond_29
+    ipv4_lpm_0 -> cond_29
+    cond_27 -> flep_ipv6_classifier_0
+    cond_27 -> cond_29
+    flep_ipv6_classifier_0 -> cond_28
+    cond_28 -> ipv6_lpm_0
+    cond_28 -> cond_29
+    ipv6_lpm_0 -> cond_29
+    cond_29 -> cond_30
+    cond_29 -> cond_31
+    cond_30 -> tbl_flep_encap519
+    cond_30 -> cond_31
+    tbl_flep_encap519 -> cond_31
+    cond_31 -> tbl_recirculate
+    cond_31 -> cond_32
+    tbl_recirculate -> cond_32
+    cond_32 -> tbl_send
+    cond_32 -> DEPARSER
+    tbl_send -> tbl_flep_encap533
+    tbl_flep_encap533 -> DEPARSER
+}

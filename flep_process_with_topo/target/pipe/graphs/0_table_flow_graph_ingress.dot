@@ -1,0 +1,192 @@
+digraph ingress {
+fwd_port_0 [ shape=record, style="filled", fillcolor=cornsilk, label="fwd_port_0\l\l
+M:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+cond_9 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ethernet.ethernetType == 6425\l\l
+ "];
+tbl_flep_process377 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process377\l\l
+W:\l
+ hdr.fleptopo.$valid\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.option\l
+ hdr.fleptopo.sourcelabel\l
+ hdr.fleptopo.sourceport\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ hdr.fleptopo.sendtstamp\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_10 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 1\l\l
+ "];
+tbl_setfleptopo [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_setfleptopo\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+\lW:\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.option\l
+ hdr.fleptopo.sourcelabel\l
+ hdr.fleptopo.sourceport\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ hdr.fleptopo.sendtstamp\l
+ hdr.ethernet.ethernetType\l
+ "];
+cond_11 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 0 && hdr.fleptopo.option[3:3] == 0\l\l
+ "];
+multicast_send_fleptopo_0 [ shape=record, style="filled", fillcolor=cornsilk, label="multicast_send_fleptopo_0\l\l
+M:\l
+ hdr.fleptopo.messagetype\l
+\lW:\l
+ ig_intr_md_for_tm.mcast_grp_a\l
+ "];
+cond_13 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flep.$valid == 1\l\l
+ "];
+tbl_flep_process397 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process397\l\l
+W:\l
+ hdr.fleptopo.messagetype\l
+ hdr.fleptopo.replylabel\l
+ hdr.fleptopo.replyport\l
+ "];
+cond_12 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.fleptopo.$valid == 1 && hdr.fleptopo.messagetype == 1 && hdr.fleptopo.option[3:3] == 0 && hdr.fleptopo.sourcelabel == 9473\l\l
+ "];
+tbl_flep_process399 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process399\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+\lW:\l
+ hdr.fleptopo.replyport\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_flep_process407 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process407\l\l
+R:\l
+ hdr.fleptopo.replylabel\l
+\lW:\l
+ hdr.topoinfo.label\l
+ hdr.topoinfo.port\l
+ "];
+tbl_flep_process410 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process410\l\l
+R:\l
+ ig_intr_md.ingress_port\l
+ ig_intr_md_from_prsr.global_tstamp\l
+ hdr.fleptopo.sendtstamp\l
+\lW:\l
+ hdr.topoinfo.port\l
+ hdr.topoinfo.latency\l
+ "];
+get_port_index_0 [ shape=record, style="filled", fillcolor=cornsilk, label="get_port_index_0\l\l
+M:\l
+ hdr.topoinfo.port\l
+\lW:\l
+ meta.portindex\l
+ "];
+tbl_flep_process199 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process199\l\l
+R:\l
+ hdr.topoinfo.label\l
+\l "];
+tbl_flep_process214 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process214\l\l
+R:\l
+ hdr.topoinfo.port\l
+\l "];
+tbl_flep_process229 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process229\l\l
+R:\l
+ hdr.topoinfo.latency\l
+\l "];
+tbl_drop [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_drop\l\l
+W:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+is_verify_tbl_0 [ shape=record, style="filled", fillcolor=cornsilk, label="is_verify_tbl_0\l\l
+M:\l
+ hdr.flep.key\l
+\lW:\l
+ meta.is_verify_start\l
+ "];
+cond_14 [ shape=record, style="filled", fillcolor=cornsilk, label="meta.is_verify_start == 1\l\l
+ "];
+key_match_tbl_0 [ shape=record, style="filled", fillcolor=cornsilk, label="key_match_tbl_0\l\l
+M:\l
+ hdr.flep.key\l
+ hdr.flep.key_index\l
+\lW:\l
+ ig_intr_md_for_dprsr.drop_ctl\l
+ "];
+cond_15 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flabels.$valid == 1\l\l
+ "];
+tbl_flep_process154 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process154\l\l
+ "];
+tbl_flep_process154_0 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process154_0\l\l
+ "];
+tbl_flep_process169 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process169\l\l
+R:\l
+ hdr.flep.key\l
+\l "];
+tbl_flep_process184 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process184\l\l
+R:\l
+ hdr.flep.key_index\l
+\l "];
+flep_processing_0 [ shape=record, style="filled", fillcolor=cornsilk, label="flep_processing_0\l\l
+M:\l
+ hdr.flabels.label\l
+\lW:\l
+ ig_intr_md_for_tm.ucast_egress_port\l
+ "];
+tbl_flep_process442 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process442\l\l
+R:\l
+ hdr.flep.label_depth\l
+\lW:\l
+ hdr.flep.label_depth\l
+ hdr.flabels.$valid\l
+ "];
+cond_16 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.flep.label_depth == 0\l\l
+ "];
+tbl_flep_decapsulation [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_decapsulation\l\l
+R:\l
+ hdr.flep.routing_type\l
+\lW:\l
+ hdr.ethernet.ethernetType\l
+ hdr.flep.$valid\l
+ hdr.flabels.$valid\l
+ "];
+    PARSER -> fwd_port_0
+    fwd_port_0 -> cond_9
+    cond_9 -> tbl_flep_process377
+    cond_9 -> cond_10
+    tbl_flep_process377 -> cond_10
+    cond_10 -> tbl_setfleptopo
+    cond_10 -> cond_11
+    tbl_setfleptopo -> multicast_send_fleptopo_0
+    multicast_send_fleptopo_0 -> cond_13
+    cond_11 -> tbl_flep_process397
+    cond_11 -> cond_12
+    tbl_flep_process397 -> tbl_flep_process399
+    tbl_flep_process399 -> cond_13
+    cond_12 -> tbl_flep_process407
+    cond_12 -> cond_13
+    tbl_flep_process407 -> tbl_flep_process410
+    tbl_flep_process410 -> get_port_index_0
+    get_port_index_0 -> tbl_flep_process199
+    tbl_flep_process199 -> tbl_flep_process214
+    tbl_flep_process214 -> tbl_flep_process229
+    tbl_flep_process229 -> tbl_drop
+    tbl_drop -> cond_13
+    cond_13 -> is_verify_tbl_0
+    cond_13 -> cond_14
+    is_verify_tbl_0 -> cond_14
+    cond_14 -> key_match_tbl_0
+    cond_14 -> cond_15
+    key_match_tbl_0 -> tbl_flep_process154
+    key_match_tbl_0 -> tbl_flep_process154_0
+    tbl_flep_process154 -> cond_15
+    tbl_flep_process154_0 -> tbl_flep_process169
+    tbl_flep_process169 -> tbl_flep_process184
+    tbl_flep_process184 -> cond_15
+    cond_15 -> flep_processing_0
+    cond_15 -> DEPARSER
+    flep_processing_0 -> tbl_flep_process442
+    tbl_flep_process442 -> cond_16
+    cond_16 -> tbl_flep_decapsulation
+    cond_16 -> DEPARSER
+    tbl_flep_decapsulation -> DEPARSER
+}
