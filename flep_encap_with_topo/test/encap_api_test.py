@@ -109,7 +109,25 @@ print(response.text)
 # print("Test:  end verification")
 # response = requests.post("{}/verification/end".format(BASE_URL),json={})
 # print(response.text)
+print("Test: modify labels")
+default_data = {"label": 10, "port": 10}
+response = requests.post("{}/label/modify".format(BASE_URL), json=default_data)
+response = requests.post("{}/label/inquire".format(BASE_URL),json={})
+print(response.text)
 
+
+print("Test: modify ipv4 label stack")
+default_data = {
+  "ipv4_src": "10.1.1.2/16",
+  "ipv4_dst": "10.2.2.2/16",
+  "tp": "tcp",
+  "tp_src": "1145",
+  "tp_dst": "2002",
+  "label_list": "2839,28931,29301,20102"
+}
+response = requests.post("{}/forward/ipv4/modify".format(BASE_URL), json=default_data)
+response = requests.post("{}/forward/inquire".format(BASE_URL), json={})
+print(response.text)
 
 
 print("Test: delete ipv4 label stack")

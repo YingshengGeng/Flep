@@ -234,6 +234,26 @@ def handle_forward_rule(protocol, operation):
             db.clear(table_name)
         return _response(ret)
 
+    def delete_forward_table_item(res):
+        # 构建匹配项部分，传入的是查询到的参数
+        manager.convert_match_part_from_data(
+            protocol, res, para_flep, para_labels_list
+        )
+        try:
+            para_flep.pop("action")
+            para_flep.pop("identify_index")
+        except:
+            pass
+        table.table_delete(**para_flep)
+        for para_label in para_labels_list:
+            try:
+                para_flep.pop("action")
+            except:
+                pass
+            table.table_delete(**para_label)
+        ret = table.execute()
+        return ret
+    
     label_depth = 0
     para_flep = {}
     para_labels_list = []
@@ -253,27 +273,57 @@ def handle_forward_rule(protocol, operation):
         # 如果是detele需要从数据库中读取信息， 然后删除所有相关项
         results = db.query(table_name, data)
         for res in results:
-            label_list = res["label_list"].split(",")
-            # 构建匹配项部分，传入的是查询到的参数
-            manager.convert_match_part_from_data(
-                protocol, res, para_flep, para_labels_list
-            )
-            try:
-                para_flep.pop("action")
-                para_flep.pop("identify_index")
-            except:
-                pass
-            table.table_delete(**para_flep)
-            for para_label in para_labels_list:
-                try:
-                    para_flep.pop("action")
-                except:
-                    pass
-                table.table_delete(**para_label)
-            ret = table.execute()
+            ret = delete_forward_table_item(res)
             if ret:
-                # 注意只用一个table存储
+                # 注意只用一个table存储, use data can do range delete
                 db.delete(table_name, data)
+    elif operation == "modify":
+        temp_label_list = None
+        if "label_list" in data.keys():
+            temp_label_list = data["label_list"]
+        try:
+            data.pop("label_list")
+        except:
+            pass
+        # 1. check if the rule exists from db
+        results = db.query(table_name, data)
+        if len(results) == 0:
+            # 1.1. if not exists, return 404
+            response = make_response("Do not exists this item", 404)
+        elif len(results) > 1:
+            # 1.2. if more than one, return 409
+            response = make_response("More than one item", 409)
+        else:
+            # 2. if exists, delete the rule
+            previous_data = results[0]
+            ret = delete_forward_table_item(previous_data)
+            if ret:
+                # use res to do exact delete
+                db.delete(table_name, previous_data)
+            else:
+                # if delete failed, return 400
+                return make_response("Failed to delete item", 400)
+            # 4. modify the corresponding data,
+            if temp_label_list is not None:
+                # if label_list exists, reconstruct it
+                data["label_list"] = temp_label_list.rstrip(",")
+            for key in data.keys():
+                if key in previous_data.keys():
+                    if key == "label_list":
+                        # MARK original
+                        previous_data["label_list"] = data["label_list"].rstrip(",")
+                        label_list = data["label_list"].split(",")
+                        # 计算有多少个这样的表项
+                        label_depth = len(label_list)
+                    else:
+                        previous_data[key] = data[key]
+            # 5. add the new rule
+            if label_depth == 0:
+                return _response(False)
+            ret = manager.insert_forward_flep(protocol, data)
+            response = _response(ret)
+        response.headers["Content-Type"] = "application/json"
+        return response
     else:
         del table
         response = make_response("Failed", 404)
@@ -386,6 +436,59 @@ def handle_label_rule(operation):
         ret = table.execute()
         if ret:
             db.clear(table_name)
+    elif operation == "modify":
+        temp_port = None
+        if "port" in data.keys():
+            temp_port = data["port"]
+        try:
+            data.pop("port")
+        except:
+            pass
+        # pop in other place
+        # 1. check if the rule exists from db
+        results = db.query(table_name, data)
+        # 1.1 if not exists, return 404
+        if len(results) == 0:
+            response = make_response("Do not exists this item", 404)
+        # 1.2 if more than one, return 409
+        # MARK: here will never happen, because the label is unique
+        elif len(results) > 1:
+            response = make_response("More than one item", 409)
+        else:  
+            # 2. if exists, delete the rule
+            previous_data = results[0]
+            try:
+                para.pop("action")
+                para.pop("port")
+            except:
+                pass
+            table.table_delete(**para)
+            ret = table.execute()
+            if ret:
+                db.delete(table_name, data)
+            else:
+                # if delete failed, return 400
+                return make_response("Failed to delete item", 400)
+
+            # 4. modify the corresponding data
+            # 4.1 if port exists, reconstruct it
+            if temp_port is not None:
+                data["port"] = temp_port
+            for key in data.keys():
+                if key in previous_data.keys():
+                    previous_data[key] = data[key]
+            
+            # 5. add the new rule
+            para["action"] = "flep_send"
+            para["label"] = str(previous_data["label"])
+            para["port"] = str(previous_data["port"])
+            table.table_add(**para)
+            ret = table.execute()
+            if ret:
+                db.add(table_name, data)
+            response = _response(ret)
+        response.headers["Content-Type"] = "application/json"
+        return response
     else:
         del table
         response = make_response("Failed", 404)

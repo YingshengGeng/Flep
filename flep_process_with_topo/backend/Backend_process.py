@@ -146,7 +146,43 @@ def handle_label_rule(operation):
         ret = table.execute()
         if ret:
             db.delete(table_name, data)
-
+    elif operation == "modify":
+        # 1. check if the rule exists from db
+        results = db.query(table_name, data)
+        # 1.1 if not exists, return 404
+        if len(results) == 0:
+            response = make_response("Do not exists this item", 404)
+        # 1.2 if more than one, return 409
+        # MARK: here will never happen, because the label is unique
+        elif len(results) > 1:
+            response = make_response("More than one item", 409)
+        else:  
+            # 2. if exists, delete the rule
+            try:
+                para.pop("action")
+                para.pop("port")
+            except:
+                pass
+            table.table_delete(**para)
+            ret = table.execute()
+            if ret:
+                db.delete(table_name, data)
+            else:
+                # if delete failed, return 400
+                return make_response("Failed to delete item", 400)
+            # MARK: 4. modify the corresponding data, but due to all data will given
+            # so don't need to modify data here
+            # 5. add the new rule
+            para["action"] = "flep_send"
+            para["label"] = str(data["label"])
+            para["port"] = str(data["port"])
+            table.table_add(**para)
+            ret = table.execute()
+            if ret:
+                db.add(table_name, data)
+            response = _response(ret)
+        response.headers["Content-Type"] = "application/json"
+        return response
     elif operation == "clear":
         temp = {"table_name": table_name, "block_name": "Ingress"}
         table.table_clear(**temp)
