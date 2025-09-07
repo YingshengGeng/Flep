@@ -1,0 +1,10 @@
+digraph egress {
+tbl_flep_process522 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process522\l\l
+R:\l
+ eg_intr_md_from_prsr.global_tstamp\l
+\lW:\l
+ hdr.ethernet.dstAddr\l
+ "];
+    PARSER -> tbl_flep_process522
+    tbl_flep_process522 -> DEPARSER
+}

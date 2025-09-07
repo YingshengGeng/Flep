@@ -3,7 +3,7 @@ Number of stages in table allocation: 8
   Number of stages for ingress table allocation: 8
   Number of stages for egress table allocation: 8
 Critical path length through the table dependency graph: 8
-Number of tables allocated: 38
+Number of tables allocated: 39
 +-------+-----------------+---------------------------------+
 | Stage | Min / Max Stage |           Table Name            |
 +-------+-----------------+---------------------------------+
@@ -18,33 +18,34 @@ Number of tables allocated: 38
 |   1   |    [ -, - ]     |        tbl_flep_encap489        |
 |   1   |    [ 1, 8 ]     |            tbl_drop             |
 |   2   |    [ 2, 6 ]     |   Egress.insert_past_key_tbl    |
-|   2   |    [ -, - ]     |             cond-36             |
+|   2   |    [ -, - ]     |        tbl_flep_encap855        |
 |   2   |    [ 2, 6 ]     |    Egress.insert_ipv4_label     |
 |   2   |    [ 2, 8 ]     |        tbl_flep_encap481        |
 |   2   |    [ 2, 6 ]     |        tbl_flep_encap492        |
 |   2   |    [ 2, 8 ]     | Ingress.multicast_send_fleptopo |
 |   3   |    [ 3, 7 ]     |    Egress.insert_ipv6_label     |
 |   3   |    [ 3, 7 ]     |     Ingress.get_port_index      |
-|   3   |    [ -, - ]     |        tbl_flep_encap840        |
-|   3   |   [ 3, 11 ]     |        tbl_flep_encap833        |
-|   3   |   [ 3, 11 ]     |        tbl_flep_encap830        |
+|   3   |    [ -, - ]     |        tbl_flep_encap841        |
+|   3   |   [ 3, 11 ]     |        tbl_flep_encap834        |
+|   3   |   [ 3, 11 ]     |        tbl_flep_encap831        |
 |   4   |    [ 4, 8 ]     |     Egress.flep_processing      |
 |   4   |    [ 4, 8 ]     |        tbl_flep_encap286        |
 |   4   |    [ 4, 8 ]     |        tbl_flep_encap271        |
 |   4   |    [ 4, 8 ]     |        tbl_flep_encap256        |
 |   4   |    [ 4, 8 ]     |  Ingress.flep_ipv4_classifier   |
 |   4   |    [ 4, 8 ]     |  Ingress.flep_ipv6_classifier   |
-|   5   |    [ 5, 9 ]     |       tbl_flep_encap840_0       |
+|   5   |    [ 5, 9 ]     |       tbl_flep_encap841_0       |
 |   5   |    [ 5, 9 ]     |        Ingress.ipv6_lpm         |
 |   5   |    [ 5, 9 ]     |        Ingress.ipv4_lpm         |
 |   5   |    [ 5, 9 ]     |             cond-29             |
 |   5   |    [ 5, 9 ]     |        tbl_flep_encap519        |
 |   6   |   [ 6, 10 ]     |         tbl_recirculate         |
 |   6   |   [ 6, 10 ]     |     tbl_flep_decapsulation      |
-|   6   |   [ 6, 11 ]     |        tbl_flep_encap533        |
+|   6   |   [ 6, 11 ]     |        tbl_flep_encap529        |
+|   6   |   [ 6, 11 ]     |        tbl_flep_encap534        |
 |   7   |   [ 7, 11 ]     |            tbl_send             |
-|   7   |   [ 7, 11 ]     |        tbl_flep_encap850        |
-|   7   |   [ 7, 11 ]     |        tbl_flep_encap852        |
+|   7   |   [ 7, 11 ]     |        tbl_flep_encap851        |
+|   7   |   [ 7, 11 ]     |        tbl_flep_encap853        |
 +-------+-----------------+---------------------------------+
 
 NOTES:  - A '*' next to the min / max stage column indicates the table is placed outside its allowed scope

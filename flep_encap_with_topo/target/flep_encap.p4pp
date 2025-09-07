@@ -1,7 +1,7 @@
-# 0 "./sw1/flep_encap_with_topo/flep_encap.p4"
+# 0 "/home/gys/code_latency/flep_encap_with_topo/flep_encap.p4"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "./sw1/flep_encap_with_topo/flep_encap.p4"
+# 1 "/home/gys/code_latency/flep_encap_with_topo/flep_encap.p4"
 /* -*- P4_16 -*- */
 
 # 1 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/core.p4" 1
@@ -98,7 +98,7 @@ extern bool static_assert(bool check, string message);
 
 /// Like the above but using a default message.
 extern bool static_assert(bool check);
-# 4 "./sw1/flep_encap_with_topo/flep_encap.p4" 2
+# 4 "/home/gys/code_latency/flep_encap_with_topo/flep_encap.p4" 2
 # 1 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/tna.p4" 1
 /**
  * Copyright 2013-2024 Intel Corporation.
@@ -1207,7 +1207,7 @@ package MultiParserSwitch<IH0, IM0, EH0, EM0, IH1, IM1, EH1, EM1,
     @optional MultiParserPipeline<IH2, IM2, EH2, EM2> pipe2,
     @optional MultiParserPipeline<IH3, IM3, EH3, EM3> pipe3);
 # 25 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/tna.p4" 2
-# 5 "./sw1/flep_encap_with_topo/flep_encap.p4" 2
+# 5 "/home/gys/code_latency/flep_encap_with_topo/flep_encap.p4" 2
 
 /*************************************************************************
  ************* C O N S T A N T S  A N D   T Y P E S  *******************
@@ -1732,6 +1732,7 @@ control Ingress(
 
     if (hdr.ethernet.ethernetType == ETHERTYPE_INSERT) {
       recirculate();
+      hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
     }
 
     if (hdr.ethernet.ethernetType == ETHERTYPE_INVALID) {
@@ -2057,6 +2058,7 @@ control Egress(
         }
         hdr.ethernet.ethernetType = ETHERTYPE_INVALID;
       }
+      hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
     }
   }
 }

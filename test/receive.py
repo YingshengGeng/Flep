@@ -42,21 +42,13 @@ class HexPacketTool:
         ether_type = packet[Ether].type
         src_mac = packet[Ether].src
         dst_mac = packet[Ether].dst
-        tcp_sport = packet[TCP].sport
-        tcp_dport = packet[TCP].dport
         
         print(f"\n[{time.strftime('%H:%M:%S')}] 收到特定以太网类型数据包 (0x{ether_type:04x}):")
         print(f"MAC地址: {src_mac} -> {dst_mac}")
-        print(f"TCP端口: {tcp_sport} -> {tcp_dport}")
         print(f"16进制原始数据 (以太网类型 0x{ether_type:04x}):")
         
         # 打印16进制格式（带偏移量和ASCII转换）
         hexdump(packet)
-        
-        # 额外提取以太网头部的16进制信息
-        ether_hex = bytes(packet[Ether]).hex()
-        print(f"\n以太网头部16进制: {ether_hex}")
-        print(f"以太网类型字段16进制: {ether_type:04x}")
 
     def handle_ipv4_packet(self, packet):
         """处理IPv4数据包"""
@@ -74,37 +66,33 @@ class HexPacketTool:
         print(f"协议: {protocol}, 端口: {src_port} -> {dst_port}")
 
     def packet_handler(self, packet):
-        """主数据包处理函数，区分不同类型的数据包"""
+        """主数据包处理函数，手动过滤并区分不同类型的数据包"""
+        # 只处理包含以太网层的数据包
         if Ether not in packet:
             return
             
         ether_type = packet[Ether].type
         
-        # 处理特定以太网类型的TCP数据包（打印16进制）
-        if ether_type in self.target_ether_types and TCP in packet:
+        # 过滤条件1：特定以太网类型
+        if ether_type in self.target_ether_types:
             self.handle_special_ether_packet(packet)
         
-        # 处理IPv4数据包（以太网类型0x0800）
+        # 过滤条件2：IPv4类型且包含IP层
         elif ether_type == self.IPV4_ETHER_TYPE and IP in packet:
             self.handle_ipv4_packet(packet)
 
     def start_listening(self):
-        """开始监听数据包"""
-        # 构建BPF过滤规则
-        ether_type_filter = " or ".join([f"ether type 0x{et:04x}" for et in self.target_ether_types])
-        bpf_filter = f"(({ether_type_filter}) and tcp) or (ether type 0x0800)"
-        
-        print(f"开始监听 - 过滤规则: {bpf_filter}")
+        """开始监听数据包（不使用BPF过滤，完全在代码中过滤）"""
+        print(f"开始监听 - 不使用BPF过滤，在代码中手动过滤")
         print(f"目标以太网类型（会显示16进制信息）: {[f'0x{et:04x}' for et in self.target_ether_types]}")
         print("按Ctrl+C停止监听")
         
         try:
+            # 不设置filter参数，捕获所有数据包
             sniff(
                 iface=self.iface,
-                filter=bpf_filter,
-                prn=self.packet_handler,
+                prn=self.packet_handler,  # 在handler中手动过滤
                 store=0,
-                l2socket=1
             )
         except KeyboardInterrupt:
             print("\n监听已停止")
@@ -112,12 +100,12 @@ class HexPacketTool:
             print(f"发生错误: {str(e)}")
 
 if __name__ == "__main__":
-    # 初始化工具，可指定网卡（如"eth0"）
-    tool = HexPacketTool(iface=None)
+    # 初始化工具，指定网卡（请根据实际情况修改）
+    tool = HexPacketTool(iface="veth5")  # 替换为你的实际网卡名称
     
     # 示例：发送测试包（取消注释即可使用）
-    # tool.send_test_packet(ether_type=0x1145)  # 会触发16进制打印
-    # tool.send_test_packet(ether_type=0x1212)  # 会触发16进制打印
+    # tool.send_test_packet(ether_type=0x1145)
+    # tool.send_test_packet(ether_type=0x1212)
     # tool.send_test_packet(ether_type=0x0800, ip_src="10.1.1.2", ip_dst="10.2.2.2")
     
     # 开始监听

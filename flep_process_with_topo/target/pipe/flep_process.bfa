@@ -1,19 +1,19 @@
 version:
   version: 1.0.1
-  run_id: "a3bd6f1aa3ef4038"
+  run_id: "1ff310e029a548ee"
   target: Tofino
 error_mode: propagate_and_disable
 phv ingress:
-  ig_intr_md_from_prsr.global_tstamp.0-15: {  stage 0..2: H2 } 
-  ig_intr_md_from_prsr.global_tstamp.16-47: {  stage 0..2: W0 } 
-  ig_intr_md.ingress_port: {  stage 0..2: W3(16..24) } 
-  hdr.ethernet.dstAddr.0-31: TW1
-  hdr.ethernet.dstAddr.32-47: TH2
-  hdr.ethernet.srcAddr.0-31: TW0
-  hdr.ethernet.srcAddr.32-47: TH1
+  ig_intr_md_from_prsr.global_tstamp.0-15: {  stage 0..5: H1 } 
+  ig_intr_md_from_prsr.global_tstamp.16-47: {  stage 0..5: W0 } 
+  ig_intr_md.ingress_port: {  stage 0..2: W4(16..24) } 
+  hdr.ethernet.dstAddr.0-31: TW0
+  hdr.ethernet.dstAddr.32-47: TH1
+  hdr.ethernet.srcAddr.0-15: {  stage 6..12: H2 } 
+  hdr.ethernet.srcAddr.16-47: {  stage 6..12: W1 } 
   hdr.ethernet.ethernetType: H5
   hdr.flep.active_label: TH0
-  hdr.flep.key: W8
+  hdr.flep.key: W9
   hdr.flep.key_index: B4
   hdr.flep.routing_type: H4
   hdr.flep.label_depth: B0
@@ -21,21 +21,21 @@ phv ingress:
   hdr.flabels.label: H6
   hdr.fleptopo.messagetype: B3(4..7)
   hdr.fleptopo.option: B3(0..3)
-  hdr.fleptopo.sourcelabel: W7(16..31)
-  hdr.fleptopo.sourceport: W7(0..15)
-  hdr.fleptopo.replylabel: W4(16..31)
-  hdr.fleptopo.replyport: W4(0..15)
+  hdr.fleptopo.sourcelabel: W8(16..31)
+  hdr.fleptopo.sourceport: W8(0..15)
+  hdr.fleptopo.replylabel: W5(16..31)
+  hdr.fleptopo.replyport: W5(0..15)
   hdr.fleptopo.sendtstamp.0-15: H3
-  hdr.fleptopo.sendtstamp.16-47: W1
-  ig_intr_md_for_tm.ucast_egress_port: {  stage 1..12: W6(0..8) } 
+  hdr.fleptopo.sendtstamp.16-47: W2
+  ig_intr_md_for_tm.ucast_egress_port: {  stage 1..12: W7(0..8) } 
   ig_intr_md_for_tm.mcast_grp_a: {  stage 3..12: H0 } 
-  hdr.topoinfo.label: {  stage 2..4: W3(0..15) } 
-  hdr.topoinfo.port: {  stage 2..4: W5(0..15) } 
-  hdr.topoinfo.latency: {  stage 3..4: W2 } 
-  meta.is_verify_start: {  stage 1..5: W5(16..23) } 
-  meta.portindex: {  stage 4: W5(24..31) } 
+  hdr.topoinfo.label: {  stage 2..4: W4(0..15) } 
+  hdr.topoinfo.port: {  stage 2..4: W6(0..15) } 
+  hdr.topoinfo.latency: {  stage 3..4: W3 } 
+  meta.is_verify_start: {  stage 1..5: B1 } 
+  meta.portindex: {  stage 4: W6(16..23) } 
   ig_intr_md_for_dprsr.drop_ctl: {  stage 2..12: B2(0..2) } 
-  ig_intr_md_for_dprsr.mirror_type: {  stage 12: B1(0..2) } 
+  ig_intr_md_for_dprsr.mirror_type: {  stage 6..12: B1(0..2) } 
   $tmp2: {  stage 12: H1(0..9) } 
   hdr.ethernet.$valid: B5(0)
   hdr.flep.$valid: B5(1)
@@ -45,7 +45,8 @@ phv ingress:
     B0:
     - { name : hdr.flep.label_depth, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     B1:
-    - { name : ig_intr_md_for_dprsr.mirror_type, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : meta.is_verify_start, live_start : 1, live_end : 5, mutually_exclusive_with: [  ] }
+    - { name : ig_intr_md_for_dprsr.mirror_type, live_start : 6, live_end : deparser, mutually_exclusive_with: [  ] }
     B2:
     - { name : ig_intr_md_for_dprsr.drop_ctl, live_start : 2, live_end : deparser, mutually_exclusive_with: [  ] }
     B3:
@@ -61,9 +62,10 @@ phv ingress:
     H0:
     - { name : ig_intr_md_for_tm.mcast_grp_a, live_start : 3, live_end : deparser, mutually_exclusive_with: [  ] }
     H1:
+    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 5, mutually_exclusive_with: [  ] }
     - { name : $tmp2, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
     H2:
-    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
+    - { name : hdr.ethernet.srcAddr, live_start : 6, live_end : deparser, mutually_exclusive_with: [  ] }
     H3:
     - { name : hdr.fleptopo.sendtstamp, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     H4:
@@ -73,78 +75,89 @@ phv ingress:
     H6:
     - { name : hdr.flabels.label, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     W0:
-    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
+    - { name : ig_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 5, mutually_exclusive_with: [  ] }
     W1:
-    - { name : hdr.fleptopo.sendtstamp, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.ethernet.srcAddr, live_start : 6, live_end : deparser, mutually_exclusive_with: [  ] }
     W2:
-    - { name : hdr.topoinfo.latency, live_start : 3, live_end : 4, mutually_exclusive_with: [  ] }
+    - { name : hdr.fleptopo.sendtstamp, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     W3:
+    - { name : hdr.topoinfo.latency, live_start : 3, live_end : 4, mutually_exclusive_with: [  ] }
+    W4:
     - { name : ig_intr_md.ingress_port, live_start : parser, live_end : 2, mutually_exclusive_with: [  ] }
     - { name : hdr.topoinfo.label, live_start : 2, live_end : 4, mutually_exclusive_with: [  ] }
-    W4:
+    W5:
     - { name : hdr.fleptopo.replylabel, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.fleptopo.replyport, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W5:
-    - { name : hdr.topoinfo.port, live_start : 2, live_end : 4, mutually_exclusive_with: [  ] }
-    - { name : meta.is_verify_start, live_start : 1, live_end : 5, mutually_exclusive_with: [  ] }
-    - { name : meta.portindex, live_start : 4, live_end : 4, mutually_exclusive_with: [  ] }
     W6:
-    - { name : ig_intr_md_for_tm.ucast_egress_port, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.topoinfo.port, live_start : 2, live_end : 4, mutually_exclusive_with: [  ] }
+    - { name : meta.portindex, live_start : 4, live_end : 4, mutually_exclusive_with: [  ] }
     W7:
+    - { name : ig_intr_md_for_tm.ucast_egress_port, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    W8:
     - { name : hdr.fleptopo.sourcelabel, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.fleptopo.sourceport, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
-    W8:
+    W9:
     - { name : hdr.flep.key, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
 phv egress:
+  eg_intr_md_from_prsr.global_tstamp.0-31: {  stage 0: W16 } 
+  eg_intr_md_from_prsr.global_tstamp.32-47: {  stage 0: H17 } 
   eg_intr_md.egress_port: H16(0..8)
-  hdr.min_parse_depth_padding_0$0.packet_payload.0-31: TW4
-  hdr.min_parse_depth_padding_0$0.packet_payload.32-63: TW5
-  hdr.min_parse_depth_padding_0$0.packet_payload.64-79: TH12
+  hdr.ethernet.dstAddr.0-31: {  stage 1..12: W17 } 
+  hdr.ethernet.dstAddr.32-47: {  stage 1..12: H18 } 
+  hdr.ethernet.srcAddr.0-31: TW4
+  hdr.ethernet.srcAddr.32-47: TH13
+  hdr.ethernet.ethernetType: TH12
+  hdr.min_parse_depth_padding_0$0.packet_payload.0-31: TW5
+  hdr.min_parse_depth_padding_0$0.packet_payload.32-63: TW6
+  hdr.min_parse_depth_padding_0$0.packet_payload.64-79: TH14
   hdr.min_parse_depth_padding_0$0.packet_payload.80-87: TB4
-  hdr.min_parse_depth_padding_0$1.packet_payload.0-31: TW6
-  hdr.min_parse_depth_padding_0$1.packet_payload.32-63: TW7
-  hdr.min_parse_depth_padding_0$1.packet_payload.64-79: TH13
+  hdr.min_parse_depth_padding_0$1.packet_payload.0-31: TW7
+  hdr.min_parse_depth_padding_0$1.packet_payload.32-47: TH6
+  hdr.min_parse_depth_padding_0$1.packet_payload.48-63: TH7
+  hdr.min_parse_depth_padding_0$1.packet_payload.64-79: TH15
   hdr.min_parse_depth_padding_0$1.packet_payload.80-87: TB5
-  hdr.min_parse_depth_padding_0$2.packet_payload.0-15: TH6
-  hdr.min_parse_depth_padding_0$2.packet_payload.16-31: TH7
-  hdr.min_parse_depth_padding_0$2.packet_payload.32-47: TH8
-  hdr.min_parse_depth_padding_0$2.packet_payload.48-63: TH9
-  hdr.min_parse_depth_padding_0$2.packet_payload.64-79: TH14
+  hdr.min_parse_depth_padding_0$2.packet_payload.0-15: TH8
+  hdr.min_parse_depth_padding_0$2.packet_payload.16-31: TH9
+  hdr.min_parse_depth_padding_0$2.packet_payload.32-47: TH10
+  hdr.min_parse_depth_padding_0$2.packet_payload.48-63: TH11
+  hdr.min_parse_depth_padding_0$2.packet_payload.64-79: TH16
   hdr.min_parse_depth_padding_0$2.packet_payload.80-87: TB6
-  hdr.min_parse_depth_padding_0$3.packet_payload.0-15: TH10
-  hdr.min_parse_depth_padding_0$3.packet_payload.16-31: TH11
-  hdr.min_parse_depth_padding_0$3.packet_payload.32-63: TW8
-  hdr.min_parse_depth_padding_0$3.packet_payload.64-79: TH15
-  hdr.min_parse_depth_padding_0$3.packet_payload.80-87: TB7
-  hdr.min_parse_depth_padding_0.$stkvalid: B16(0..3)
-  hdr.min_parse_depth_padding_0$0.$valid: {  stage 12: B16(3) } 
-  hdr.min_parse_depth_padding_0$1.$valid: {  stage 12: B16(2) } 
-  hdr.min_parse_depth_padding_0$2.$valid: {  stage 12: B16(1) } 
-  hdr.min_parse_depth_padding_0$3.$valid: B16(0)
+  hdr.ethernet.$valid: B17(0)
+  hdr.min_parse_depth_padding_0.$stkvalid: B16(0..2)
+  hdr.min_parse_depth_padding_0$0.$valid: {  stage 12: B16(2) } 
+  hdr.min_parse_depth_padding_0$1.$valid: {  stage 12: B16(1) } 
+  hdr.min_parse_depth_padding_0$2.$valid: B16(0)
   context_json:
     B16:
-    - { name : hdr.min_parse_depth_padding_0$3.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    - { name : hdr.min_parse_depth_padding_0$2.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.min_parse_depth_padding_0.$stkvalid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.min_parse_depth_padding_0$0.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
     - { name : hdr.min_parse_depth_padding_0$1.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
-    - { name : hdr.min_parse_depth_padding_0$2.$valid, live_start : deparser, live_end : deparser, mutually_exclusive_with: [  ] }
+    B17:
+    - { name : hdr.ethernet.$valid, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
     H16:
     - { name : eg_intr_md.egress_port, live_start : parser, live_end : deparser, mutually_exclusive_with: [  ] }
+    H17:
+    - { name : eg_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 0, mutually_exclusive_with: [  ] }
+    H18:
+    - { name : hdr.ethernet.dstAddr, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
+    W16:
+    - { name : eg_intr_md_from_prsr.global_tstamp, live_start : parser, live_end : 0, mutually_exclusive_with: [  ] }
+    W17:
+    - { name : hdr.ethernet.dstAddr, live_start : 1, live_end : deparser, mutually_exclusive_with: [  ] }
 parser ingress:
   start: $init_match
-  init_zero: [ H2, W0, W5, B2, B1, H1, B5 ]
+  init_zero: [ H1, W0, B1, W6, B2, B5 ]
   bitwise_or: [ B5 ]
   hdr_len_adj: 16
   states:
     $init_match:
       *:
-        0..3: W3  # bit[7..15] -> W3 bit[24..16]: ingress::ig_intr_md.ingress_port
-        16..17: TH2  # ingress::hdr.ethernet.dstAddr[47:32].32-47
-        18..21: TW1  # ingress::hdr.ethernet.dstAddr[31:0].0-31
-        22..23: TH1  # ingress::hdr.ethernet.srcAddr[47:32].32-47
-        24..27: TW0  # ingress::hdr.ethernet.srcAddr[31:0].0-31
+        0..3: W4  # bit[7..15] -> W4 bit[24..16]: ingress::ig_intr_md.ingress_port
+        16..17: TH1  # ingress::hdr.ethernet.dstAddr[47:32].32-47
+        18..21: TW0  # ingress::hdr.ethernet.dstAddr[31:0].0-31
         28..29: H5  # ingress::hdr.ethernet.ethernetType
-        58..59: H2  # buffer mapped I/O: bit[464..479] -> H2 bit[15..0]: ingress::ig_intr_md_from_prsr.global_tstamp[15:0].0-15
+        58..59: H1  # buffer mapped I/O: bit[464..479] -> H1 bit[15..0]: ingress::ig_intr_md_from_prsr.global_tstamp[15:0].0-15
         54..57: W0  # buffer mapped I/O: bit[432..463] -> W0 bit[31..0]: ingress::ig_intr_md_from_prsr.global_tstamp[47:16].16-47
         B5: 1  # value 1 -> B5 bit[0]: ingress::hdr.ethernet.$valid
         load: { half : 28..29 }
@@ -155,7 +168,7 @@ parser ingress:
       match: [ half ]
       0x1212:
         0..1: TH0  # ingress::hdr.flep.active_label
-        2..5: W8  # ingress::hdr.flep.key
+        2..5: W9  # ingress::hdr.flep.key
         6: B4  # ingress::hdr.flep.key_index
         7..8: H4  # ingress::hdr.flep.routing_type
         9: B0  # ingress::hdr.flep.label_depth
@@ -169,13 +182,13 @@ parser ingress:
         0: B3
             # - bit[0..3] -> B3 bit[7..4]: ingress::hdr.fleptopo.messagetype
             # - bit[4..7] -> B3 bit[3..0]: ingress::hdr.fleptopo.option
-        1..4: W7
-            # - bit[8..23] -> W7 bit[31..16]: ingress::hdr.fleptopo.sourcelabel
-            # - bit[24..39] -> W7 bit[15..0]: ingress::hdr.fleptopo.sourceport
-        5..8: W4
-            # - bit[40..55] -> W4 bit[31..16]: ingress::hdr.fleptopo.replylabel
-            # - bit[56..71] -> W4 bit[15..0]: ingress::hdr.fleptopo.replyport
-        9..12: W1  # ingress::hdr.fleptopo.sendtstamp[47:16].16-47
+        1..4: W8
+            # - bit[8..23] -> W8 bit[31..16]: ingress::hdr.fleptopo.sourcelabel
+            # - bit[24..39] -> W8 bit[15..0]: ingress::hdr.fleptopo.sourceport
+        5..8: W5
+            # - bit[40..55] -> W5 bit[31..16]: ingress::hdr.fleptopo.replylabel
+            # - bit[56..71] -> W5 bit[15..0]: ingress::hdr.fleptopo.replyport
+        9..12: W2  # ingress::hdr.fleptopo.sendtstamp[47:16].16-47
         13..14: H3  # ingress::hdr.fleptopo.sendtstamp[15:0].0-15
         B5: 8  # value 1 -> B5 bit[3]: ingress::hdr.fleptopo.$valid
         shift: 15
@@ -197,30 +210,30 @@ parser ingress:
         next: end
 deparser ingress:
   dictionary:
-    TH2: B5(0)  # ingress::hdr.ethernet.dstAddr.32-47 if ingress::hdr.ethernet.$valid
-    TW1: B5(0)  # ingress::hdr.ethernet.dstAddr.0-31 if ingress::hdr.ethernet.$valid
-    TH1: B5(0)  # ingress::hdr.ethernet.srcAddr.32-47 if ingress::hdr.ethernet.$valid
-    TW0: B5(0)  # ingress::hdr.ethernet.srcAddr.0-31 if ingress::hdr.ethernet.$valid
+    TH1: B5(0)  # ingress::hdr.ethernet.dstAddr.32-47 if ingress::hdr.ethernet.$valid
+    TW0: B5(0)  # ingress::hdr.ethernet.dstAddr.0-31 if ingress::hdr.ethernet.$valid
+    W1: B5(0)  # ingress::hdr.ethernet.srcAddr.16-47 if ingress::hdr.ethernet.$valid
+    H2: B5(0)  # ingress::hdr.ethernet.srcAddr.0-15 if ingress::hdr.ethernet.$valid
     H5: B5(0)  # ingress::hdr.ethernet.ethernetType if ingress::hdr.ethernet.$valid
     B3: B5(3)
         # - bit[7..4]: ingress::hdr.fleptopo.messagetype if ingress::hdr.fleptopo.$valid
         # - bit[3..0]: ingress::hdr.fleptopo.option if ingress::hdr.fleptopo.$valid
-    W7: B5(3)
+    W8: B5(3)
         # - bit[31..16]: ingress::hdr.fleptopo.sourcelabel if ingress::hdr.fleptopo.$valid
         # - bit[15..0]: ingress::hdr.fleptopo.sourceport if ingress::hdr.fleptopo.$valid
-    W4: B5(3)
+    W5: B5(3)
         # - bit[31..16]: ingress::hdr.fleptopo.replylabel if ingress::hdr.fleptopo.$valid
         # - bit[15..0]: ingress::hdr.fleptopo.replyport if ingress::hdr.fleptopo.$valid
-    W1: B5(3)  # ingress::hdr.fleptopo.sendtstamp.16-47 if ingress::hdr.fleptopo.$valid
+    W2: B5(3)  # ingress::hdr.fleptopo.sendtstamp.16-47 if ingress::hdr.fleptopo.$valid
     H3: B5(3)  # ingress::hdr.fleptopo.sendtstamp.0-15 if ingress::hdr.fleptopo.$valid
     TH0: B5(1)  # ingress::hdr.flep.active_label if ingress::hdr.flep.$valid
-    W8: B5(1)  # ingress::hdr.flep.key if ingress::hdr.flep.$valid
+    W9: B5(1)  # ingress::hdr.flep.key if ingress::hdr.flep.$valid
     B4: B5(1)  # ingress::hdr.flep.key_index if ingress::hdr.flep.$valid
     H4: B5(1)  # ingress::hdr.flep.routing_type if ingress::hdr.flep.$valid
     B0: B5(1)  # ingress::hdr.flep.label_depth if ingress::hdr.flep.$valid
     TB0: B5(1)  # ingress::hdr.flep.flags if ingress::hdr.flep.$valid
     H6: B5(2)  # ingress::hdr.flabels.label if ingress::hdr.flabels.$valid
-  egress_unicast_port: W6(0..8)  # bit[8..0]: ingress::ig_intr_md_for_tm.ucast_egress_port
+  egress_unicast_port: W7(0..8)  # bit[8..0]: ingress::ig_intr_md_for_tm.ucast_egress_port
   drop_ctl: B2(0..2)  # bit[2..0]: ingress::ig_intr_md_for_dprsr.drop_ctl
   egress_multicast_group_0:
     - H0  # ingress::ig_intr_md_for_tm.mcast_grp_a
@@ -230,7 +243,7 @@ deparser ingress:
       - H1(0..9)  # bit[9..0]: ingress::$tmp2
 parser egress:
   start: $entry_point.start.min_parse_depth_accept_initial
-  init_zero: [ B16 ]
+  init_zero: [ W16, H17, B17, B16 ]
   bitwise_or: [ B16 ]
   hdr_len_adj: 27
   meta_opt: 8191
@@ -238,11 +251,14 @@ parser egress:
     $entry_point.start.min_parse_depth_accept_initial:
       *:
         counter:
-          imm: 38
+          imm: 24
         0..1: H16  # bit[7..15] -> H16 bit[8..0]: egress::eg_intr_md.egress_port
-        intr_md: 9
-        shift: 27
-        buf_req: 27
+        54..55: H17  # buffer mapped I/O: bit[432..447] -> H17 bit[15..0]: egress::eg_intr_md_from_prsr.global_tstamp[47:32].32-47
+        56..59: W16  # buffer mapped I/O: bit[448..479] -> W16 bit[31..0]: egress::eg_intr_md_from_prsr.global_tstamp[31:0].0-31
+        B17: 1  # value 1 -> B17 bit[0]: egress::hdr.ethernet.$valid
+        intr_md: 57
+        shift: 32
+        buf_req: 32
         next: $entry_point.start.min_parse_depth_accept_initial.$ctr_stall0
     $entry_point.start.min_parse_depth_accept_initial.$ctr_stall0:
       *:
@@ -252,16 +268,23 @@ parser egress:
       match: [ ctr_neg, ctr_zero ]
       0x0:
         counter: dec 11
-        0: TB4  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[87:80].80-87
-        1..2: TH12  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[79:64].64-79
-        3..6: TW5  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[63:32].32-63
-        7..10: TW4  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[31:0].0-31
-        B16: 8  # value 8 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
-        shift: 11
-        buf_req: 11
+        1..2: TH13  # egress::hdr.ethernet.srcAddr[47:32].32-47
+        3..6: TW4  # egress::hdr.ethernet.srcAddr[31:0].0-31
+        7..8: TH12  # egress::hdr.ethernet.ethernetType
+        9: TB4  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[87:80].80-87
+        10..11: TH14  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[79:64].64-79
+        12..15: TW6  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[63:32].32-63
+        16..19: TW5  # egress::hdr.min_parse_depth_padding_0[0].packet_payload[31:0].0-31
+        B16: 4  # value 4 -> B16 bit[2..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        shift: 20
+        buf_req: 20
         next: min_parse_depth_accept_loop.$split_0
       0b**:
-        buf_req: 0
+        1..2: TH13  # egress::hdr.ethernet.srcAddr[47:32].32-47
+        3..6: TW4  # egress::hdr.ethernet.srcAddr[31:0].0-31
+        7..8: TH12  # egress::hdr.ethernet.ethernetType
+        shift: 9
+        buf_req: 9
         next: end
     min_parse_depth_accept_loop.$split_0:
       match: [ ctr_neg, ctr_zero ]
@@ -269,10 +292,11 @@ parser egress:
       0x0:
         counter: dec 11
         0: TB5  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[87:80].80-87
-        1..2: TH13  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[79:64].64-79
-        3..6: TW7  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[63:32].32-63
-        7..10: TW6  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[31:0].0-31
-        B16: 4  # value 4 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        1..2: TH15  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[79:64].64-79
+        3..4: TH7  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[63:48].48-63
+        5..6: TH6  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[47:32].32-47
+        7..10: TW7  # egress::hdr.min_parse_depth_padding_0[1].packet_payload[31:0].0-31
+        B16: 2  # value 2 -> B16 bit[2..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
         shift: 11
         buf_req: 11
         next: min_parse_depth_accept_loop.$it1.$split_0
@@ -285,11 +309,11 @@ parser egress:
       0x0:
         counter: dec 11
         0: TB6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[87:80].80-87
-        1..2: TH14  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[79:64].64-79
-        3..4: TH9  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[63:48].48-63
-        5..6: TH8  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[47:32].32-47
-        7..8: TH7  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[31:16].16-31
-        B16: 2  # value 2 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
+        1..2: TH16  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[79:64].64-79
+        3..4: TH11  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[63:48].48-63
+        5..6: TH10  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[47:32].32-47
+        7..8: TH9  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[31:16].16-31
+        B16: 1  # value 1 -> B16 bit[2..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
         shift: 9
         buf_req: 9
         next: min_parse_depth_accept_loop.$it2.$split_0
@@ -300,43 +324,37 @@ parser egress:
       match: [ ctr_neg, ctr_zero ]
       option: ignore_max_depth
       0x0:
-        counter: dec 11
-        0..1: TH6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
-        2: TB7  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[87:80].80-87
-        3..4: TH15  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[79:64].64-79
-        5..8: TW8  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[63:32].32-63
-        9..10: TH11  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[31:16].16-31
-        11..12: TH10  # egress::hdr.min_parse_depth_padding_0[3].packet_payload[15:0].0-15
-        B16: 1  # value 1 -> B16 bit[3..0]: egress::hdr.min_parse_depth_padding_0.$stkvalid
-        shift: 13
-        buf_req: 13
+        0..1: TH8  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
+        shift: 2
+        buf_req: 2
         next: end
       0b**:
-        0..1: TH6  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
+        0..1: TH8  # egress::hdr.min_parse_depth_padding_0[2].packet_payload[15:0].0-15
         shift: 2
         buf_req: 2
         next: end
 deparser egress:
   dictionary:
-    TB4: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[0].$valid
-    TH12: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[0].$valid
-    TW5: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[0].$valid
-    TW4: B16(3)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[0].$valid
-    TB5: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[1].$valid
-    TH13: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[1].$valid
-    TW7: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[1].$valid
-    TW6: B16(2)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[1].$valid
-    TB6: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH14: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH9: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.48-63 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH8: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH7: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TH6: B16(1)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[2].$valid
-    TB7: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[3].$valid
-    TH15: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[3].$valid
-    TW8: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[3].$valid
-    TH11: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[3].$valid
-    TH10: B16(0)  # egress::hdr.min_parse_depth_padding_0[3].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[3].$valid
+    H18: B17(0)  # egress::hdr.ethernet.dstAddr.32-47 if egress::hdr.ethernet.$valid
+    W17: B17(0)  # egress::hdr.ethernet.dstAddr.0-31 if egress::hdr.ethernet.$valid
+    TH13: B17(0)  # egress::hdr.ethernet.srcAddr.32-47 if egress::hdr.ethernet.$valid
+    TW4: B17(0)  # egress::hdr.ethernet.srcAddr.0-31 if egress::hdr.ethernet.$valid
+    TH12: B17(0)  # egress::hdr.ethernet.ethernetType if egress::hdr.ethernet.$valid
+    TB4: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TH14: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TW6: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.32-63 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TW5: B16(2)  # egress::hdr.min_parse_depth_padding_0[0].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[0].$valid
+    TB5: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TH15: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TH7: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.48-63 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TH6: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TW7: B16(1)  # egress::hdr.min_parse_depth_padding_0[1].packet_payload.0-31 if egress::hdr.min_parse_depth_padding_0[1].$valid
+    TB6: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.80-87 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH16: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.64-79 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH11: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.48-63 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH10: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.32-47 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH9: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.16-31 if egress::hdr.min_parse_depth_padding_0[2].$valid
+    TH8: B16(0)  # egress::hdr.min_parse_depth_padding_0[2].packet_payload.0-15 if egress::hdr.min_parse_depth_padding_0[2].$valid
   egress_unicast_port: H16(0..8)  # bit[8..0]: egress::eg_intr_md.egress_port
 stage 0 ingress:
   phase0_match IngressParser.$PORT_METADATA:
@@ -360,7 +378,7 @@ stage 0 ingress:
       name: cond-9
       input_xbar:
         exact group 0: { 0: hdr.ethernet.ethernetType }
-      row: 7
+      row: 0
       bus: 0
       unit: 0
       match: { 0: hdr.ethernet.ethernetType(0..7), 8: hdr.ethernet.ethernetType(8..15) }
@@ -391,8 +409,8 @@ stage 0 ingress:
       - set hdr.fleptopo.sendtstamp.16-47, 0
       - set hdr.ethernet.ethernetType, 4421
       - set B3(0..7), 8
-      - set W4(0..31), 0
-      - set W7(0..31), 0
+      - set W5(0..31), 0
+      - set W8(0..31), 0
     default_action: flep_process377
   exact_match fwd_port_0 1:
     p4: { name: Ingress.fwd_port, size: 256 }
@@ -452,7 +470,7 @@ stage 0 ingress:
       name: cond-13
       input_xbar:
         exact group 0: { 33: hdr.flep.$valid }
-      row: 0
+      row: 7
       bus: 0
       unit: 0
       match: { 1: hdr.flep.$valid }
@@ -529,8 +547,8 @@ stage 1 ingress:
       - set hdr.fleptopo.sendtstamp.16-47, ig_intr_md_from_prsr.global_tstamp.16-47
       - set hdr.ethernet.ethernetType, 4421
       - set B3(0..7), 0
-      - set W4(0..31), $data0
-      - set W7(0..31), $data1
+      - set W5(0..31), $data0
+      - set W8(0..31), $data1
     default_action: Ingress.setfleptopo
   action tbl_setfleptopo$action_data:
     p4: { name: tbl_setfleptopo$action }
@@ -577,7 +595,7 @@ stage 1 ingress:
       - next_table: 0
       - { $data0: immediate(0..22), $constant1: $data0(0..6), $constant1: 0, $constant0: $data0(7..22), $constant0: 9473 }
       - set hdr.fleptopo.messagetype, 1
-      - set W4(9..31), $data0
+      - set W5(9..31), $data0
     default_action: flep_process397
   ternary_match tbl_flep_process407 2:
     p4: { name: tbl_flep_process407, hidden: true }
@@ -656,7 +674,7 @@ stage 2 ingress:
       - handle: 0x2000000a
       - next_table: 0
       - set hdr.topoinfo.port(0..8), ig_intr_md.ingress_port
-      - sub W2, W0, W1
+      - sub W3, W0, W2
     default_action: flep_process410
   ternary_match tbl_flep_process399 1:
     p4: { name: tbl_flep_process399, hidden: true }
@@ -785,7 +803,7 @@ stage 4 ingress:
     hash_dist:
       0: { hash: 0, mask: 0xff, shift: 5 }
     input_xbar:
-      exact group 0: { 24: meta.portindex }
+      exact group 0: { 16: meta.portindex }
       hash 0:
         0..7: meta.portindex
       hash group 0:
@@ -834,7 +852,7 @@ stage 4 ingress:
     hash_dist:
       1: { hash: 0, mask: 0xff, shift: 4 }
     input_xbar:
-      exact group 0: { 24: meta.portindex }
+      exact group 0: { 16: meta.portindex }
       hash 0:
         16..23: meta.portindex
       hash group 0:
@@ -883,7 +901,7 @@ stage 4 ingress:
     hash_dist:
       1: { hash: 0, mask: 0xff, shift: 4 }
     input_xbar:
-      exact group 0: { 24: meta.portindex }
+      exact group 0: { 16: meta.portindex }
       hash 0:
         16..23: meta.portindex
       hash group 0:
@@ -1040,8 +1058,8 @@ stage 5 ingress:
     miss:  key_match_tbl_0
     indirect: tbl_flep_decapsulation$tind
   ternary_indirect tbl_flep_decapsulation$tind:
-    row: 1
-    bus: 1
+    row: 2
+    bus: 0
     format: { action: 0..0 }
     instruction: tbl_flep_decapsulation$tind(action, $DEFAULT)
     actions:
@@ -1101,11 +1119,11 @@ stage 5 ingress:
       0x01:
         run_table: true
       miss:
-        next:  END
+        next:  tbl_flep_process449
       condition: 
         expression: "(meta.is_verify_start == 1)"
         true:  key_match_tbl_0
-        false:  END
+        false:  tbl_flep_process449
     hit: [  tbl_flep_process154 ]
     miss:  tbl_flep_process184
     instruction: key_match_tbl_0(action, $DEFAULT)
@@ -1126,14 +1144,25 @@ stage 5 ingress:
     default_action: Ingress.drop
   ternary_match tbl_flep_process154 5:
     p4: { name: tbl_flep_process154, hidden: true }
-    hit: [  END ]
-    miss:  END
+    hit: [  tbl_flep_process449 ]
+    miss:  tbl_flep_process449
     indirect: tbl_flep_process154$tind
+  stateful tbl_flep_process154$salu.Ingress.pkt_counter.bw_register:
+    p4: { name: Ingress.pkt_counter.bw_register, size: 10 }
+    row: 15
+    logical_bus: S
+    column: [ 0, 1 ]
+    maprams: [ 0, 1 ]
+    home_row: 15
+    format: { lo: 32 }
+    actions:
+      pkt_counter_pkt_count:
+      - add lo, lo, 1
   ternary_indirect tbl_flep_process154$tind:
-    row: 2
+    row: 0
     bus: 0
     format: { action: 0..0, meter_addr: 1..10 }
-    stateful: tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    stateful: tbl_flep_process154$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
     instruction: tbl_flep_process154$tind(action, $DEFAULT)
     actions:
       flep_process154(0, 0):
@@ -1141,7 +1170,7 @@ stage 5 ingress:
       - default_action: { allowed: true, is_constant: true }
       - handle: 0x20000015
       - next_table: 0
-      - tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 0)
+      - tbl_flep_process154$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 0)
     default_action: flep_process154
   ternary_match tbl_flep_process184 2:
     p4: { name: tbl_flep_process184, hidden: true }
@@ -1164,7 +1193,7 @@ stage 5 ingress:
       - alu_a lo, phv_lo(0..7)
   ternary_indirect tbl_flep_process184$tind:
     row: 1
-    bus: 0
+    bus: 1
     format: { action: 0..0, meter_addr: 1..10 }
     stateful: tbl_flep_process184$salu.Ingress.keyindexdatacache.bw_register(meter_addr, $DEFAULT, $DEFAULT)
     instruction: tbl_flep_process184$tind(action, $DEFAULT)
@@ -1196,8 +1225,8 @@ stage 5 ingress:
       keydatacache_data_save:
       - alu_a lo, phv_lo
   ternary_indirect tbl_flep_process169$tind:
-    row: 0
-    bus: 1
+    row: 1
+    bus: 0
     format: { action: 0..0, meter_addr: 1..10 }
     stateful: tbl_flep_process169$salu.Ingress.keydatacache.bw_register(meter_addr, $DEFAULT, $DEFAULT)
     instruction: tbl_flep_process169$tind(action, $DEFAULT)
@@ -1211,25 +1240,14 @@ stage 5 ingress:
     default_action: flep_process169
   ternary_match tbl_flep_process154_0 4:
     p4: { name: tbl_flep_process154_0, hidden: true }
-    hit: [  END ]
-    miss:  END
+    hit: [  tbl_flep_process449 ]
+    miss:  tbl_flep_process449
     indirect: tbl_flep_process154_0$tind
-  stateful tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register:
-    p4: { name: Ingress.pkt_counter.bw_register, size: 10 }
-    row: 15
-    logical_bus: S
-    column: [ 0, 1 ]
-    maprams: [ 0, 1 ]
-    home_row: 15
-    format: { lo: 32 }
-    actions:
-      pkt_counter_pkt_count:
-      - add lo, lo, 1
   ternary_indirect tbl_flep_process154_0$tind:
     row: 0
-    bus: 0
+    bus: 1
     format: { action: 0..0, meter_addr: 1..10 }
-    stateful: tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
+    stateful: tbl_flep_process154$salu.Ingress.pkt_counter.bw_register(meter_addr, $DEFAULT, $DEFAULT)
     instruction: tbl_flep_process154_0$tind(action, $DEFAULT)
     actions:
       flep_process154_0(0, 0):
@@ -1237,8 +1255,48 @@ stage 5 ingress:
       - default_action: { allowed: true, is_constant: true }
       - handle: 0x20000016
       - next_table: 0
-      - tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 1)
+      - tbl_flep_process154$salu.Ingress.pkt_counter.bw_register(pkt_counter_pkt_count, 1)
     default_action: flep_process154_0
+  ternary_match tbl_flep_process449 6:
+    p4: { name: tbl_flep_process449, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_flep_process449$tind
+  ternary_indirect tbl_flep_process449$tind:
+    row: 2
+    bus: 1
+    format: { action: 0..0 }
+    instruction: tbl_flep_process449$tind(action, $DEFAULT)
+    actions:
+      flep_process449(0, 3):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000001d
+      - next_table: 0
+      - set hdr.ethernet.srcAddr.0-15, ig_intr_md_from_prsr.global_tstamp.0-15
+      - set hdr.ethernet.srcAddr.16-47, ig_intr_md_from_prsr.global_tstamp.16-47
+      - set ig_intr_md_for_dprsr.mirror_type, 0
+    default_action: flep_process449
+stage 0 egress:
+  ternary_match tbl_flep_process522 3:
+    p4: { name: tbl_flep_process522, hidden: true }
+    hit: [  END ]
+    miss:  END
+    indirect: tbl_flep_process522$tind
+  ternary_indirect tbl_flep_process522$tind:
+    row: 1
+    bus: 0
+    format: { action: 0..0 }
+    instruction: tbl_flep_process522$tind(action, $DEFAULT)
+    actions:
+      flep_process522(0, 1):
+      - hit_allowed: { allowed: true }
+      - default_action: { allowed: true, is_constant: true }
+      - handle: 0x2000001e
+      - next_table: 0
+      - set hdr.ethernet.dstAddr.0-31, eg_intr_md_from_prsr.global_tstamp.0-31
+      - set hdr.ethernet.dstAddr.32-47, eg_intr_md_from_prsr.global_tstamp.32-47
+    default_action: flep_process522
 
 
 primitives: "flep_process.prim.json"

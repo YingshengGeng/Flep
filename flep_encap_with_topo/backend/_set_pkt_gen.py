@@ -50,7 +50,7 @@ def simple_eth_payload_packet(
     返回:
         构建好的Scapy以太网数据包
     """
-    print("here1")
+    # print("here1")
     # 创建以太网层
     eth = Ether(dst=eth_dst, src=eth_src, type=eth_type)
     
@@ -68,12 +68,12 @@ def simple_eth_payload_packet(
         truncated_payload = payload[:pktlen - len(eth)]
         pkt = eth / Raw(load=truncated_payload)
     
-    return pkt, payload
+    return pkt
 
 # Establish a connection to the BFRuntime server
 try:
     grpc_addr = "0.0.0.0:50052"
-    client_id = 1 # diff from others
+    client_id = 10 # diff from others
     device_id = 0
     pipe_id = 0xFFFF  # Pipe ID; FFFF indicates all pipes
     client = gc.ClientInterface(grpc_addr, client_id, device_id)
@@ -94,8 +94,7 @@ try:
       print("Enabling packet generation on port.")
       src_port = 68  # Source port for packet generation, for tofino limit to 68-71
       hex_payload = b"\x01\x00\x00\x03\x00\x01\x00\x06\x07\x08\x09\x0a\x11\x45\x00\x25" \
-              b"\x01\xff\xff\xff\xff\xff\xff\x05\x97\xd7\xcd\x33\x30\x74\x68\x69" \
-              b"\x73\x20\x69\x73\x20\x61\x20\x63\x75\x73\x74\x6f\x6d"
+              b"\x01\xff\xff\xff\xff\xff\xff\x05\x97\xd7\xcd\x33\x30\x74\x68\x69"
       p = simple_eth_payload_packet(pktlen=100, eth_type=0x1919, payload=hex_payload)
       pktgen_port_cfg_table.entry_mod(
           target,

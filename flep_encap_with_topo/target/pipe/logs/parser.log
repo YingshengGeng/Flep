@@ -23,6 +23,6 @@ $entry_point.start is split into 2 states:
   $entry_point.start.$split_0
 allocated { $half } to {  [ $entry_point.start.$split_0 : inbuf bit[80..95] hdr.ethernet/ethernet.ethernetType; ] }
 allocated { $byte1 } to {  [ egress::parse_insert.$split_1 : inbuf bit[-8..-1] hdr.flep/flep.flags; ] }
-allocated { $half } to {  [ $entry_point.start.$split_0 : inbuf bit[32..47] hdr.ethernet/ethernet.ethernetType; ] }
+allocated { $half } to {  [ $entry_point.start.$split_0 : inbuf bit[0..15] hdr.ethernet/ethernet.ethernetType; ] }
 allocated { $byte1 } to {  [ ingress::parse_ipv4 : inbuf bit[72..79] hdr.ipv4/ipv4.protocol; ] }
 allocated { $byte1 } to {  [ ingress::parse_ipv6.$split_1 : inbuf bit[-240..-233] hdr.ipv6/ipv6.nextheader; ] }

@@ -11,8 +11,8 @@ Stage 0
   ................................
      A B5 (is_verify_tbl_0$gw)
      B H5 (tbl_flep_process377$gw)
-     C W3 (fwd_port_0)
-     D W8 (is_verify_tbl_0)
+     C W4 (fwd_port_0)
+     D W9 (is_verify_tbl_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   A... ............  A0001  ... ................................................
   .... ............  .0000  ... ................................................
@@ -33,14 +33,14 @@ Stage 0
      A fwd_port_0
   
   tc  sb  rb  tib ab  st  srams       mapram  ov  gw pay 2p
-  B.  C.  ..  DF  ..  ..  D.........  ......  ..  C.  ..  .
+  B.  E.  ..  DF  ..  ..  D.........  ......  ..  E.  ..  .
+  ..  ..  ..  G.  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
-  ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
-  ..  E.  A.  ..  ..  ..  A.........  ......  ..  E.  ..  .
+  ..  A.  A.  ..  ..  ..  A.........  ......  ..  C.  ..  .
   ..                                                      
   ..                                                      
   ..                                                      
@@ -51,6 +51,7 @@ Stage 0
      D is_verify_tbl_0$tind
      E tbl_flep_process377$gw
      F tbl_flep_process377$tind
+     G tbl_flep_process522$tind
   
 can't place tbl_setfleptopo in stage 0 : dependency on table tbl_flep_process377
 Stage 1
@@ -65,7 +66,7 @@ Stage 1
   ................................
      A B3 (tbl_flep_process397$gw, tbl_flep_process407$gw, tbl_setfleptopo$gw)
      B B5 (tbl_flep_process397$gw, tbl_flep_process407$gw, tbl_setfleptopo$gw)
-     C W7 (tbl_flep_process407$gw)
+     C W8 (tbl_flep_process407$gw)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   .... A...........  A0001  ... ................................................
   .... ............  .0000  ... ................................................
@@ -168,7 +169,7 @@ Stage 3
   ................................  .......... .. ..........
   ................................
   ................................
-     A W5 (get_port_index_0)
+     A W6 (get_port_index_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   AAAA ............  A0001  ... ................................................
   .... ............  .0000  ... ................................................
@@ -208,7 +209,7 @@ can't place tbl_flep_process214 in stage 3 : dependency on table get_port_index_
 can't place tbl_flep_process229 in stage 3 : dependency on table get_port_index_0
 Stage 4
   exact ixbar groups                  ternary ixbar groups
-  ......E3........C0C1C2C3A0B1B0..  .......... .. ..........
+  ....E2..........C0C1C2C3A0B1B0..  .......... .. ..........
   ................E0E1............  .......... .. ..........
   ................D0D1............  .......... .. ..........
   ................................  .......... .. ..........
@@ -218,9 +219,9 @@ Stage 4
   ................................
      A B5 (tbl_flep_process442$gw)
      B H6 (flep_processing_0)
-     C W2 (tbl_flep_process229$salu)
-     D W3 (tbl_flep_process199$salu)
-     E W5 (tbl_flep_process199$hash_dist0, tbl_flep_process214$hash_dist0, tbl_flep_process214$salu, tbl_flep_process229$hash_dist0)
+     C W3 (tbl_flep_process229$salu)
+     D W4 (tbl_flep_process199$salu)
+     E W6 (tbl_flep_process199$hash_dist0, tbl_flep_process214$hash_dist0, tbl_flep_process214$salu, tbl_flep_process229$hash_dist0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: 0 -1)
   .... ............  C0001  ... CCCCCCCC........BBBBBBBB........................
   AAAA ............  A0002  ... ................................................
@@ -271,7 +272,7 @@ Stage 4
 can't place tbl_flep_decapsulation in stage 4 : dependency on table tbl_flep_process442
 Stage 5
   exact ixbar groups                  ternary ixbar groups
-  A0D1D2D3D0B0C2..B0..............  .......... .. ..........
+  A0D1D2D3D0C0B0..C0..............  .......... .. ..........
   ................D0D1D2D3........  .......... .. ..........
   ................................  .......... .. ..........
   ................................  .......... .. ..........
@@ -280,9 +281,9 @@ Stage 5
   ................................
   ................................
      A B0 (tbl_flep_decapsulation$gw)
-     B B4 (key_match_tbl_0, tbl_flep_process184$salu)
-     C W5 (key_match_tbl_0$gw)
-     D W8 (key_match_tbl_0, tbl_flep_process169$salu)
+     B B1 (key_match_tbl_0$gw)
+     C B4 (key_match_tbl_0, tbl_flep_process184$salu)
+     D W9 (key_match_tbl_0, tbl_flep_process169$salu)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   AAAA ............  A0001  ... ................................................
   .... ............  .0000  ... ................................................
@@ -303,14 +304,14 @@ Stage 5
      A key_match_tbl_0
   
   tc  sb  rb  tib ab  st  srams       mapram  ov  gw pay 2p
-  ..  C.  ..  GI  ..  ..  ..........  ......  ..  C.  ..  .
-  ..  ..  ..  KD  ..  ..  ..........  ......  ..  ..  ..  .
-  ..  ..  ..  E.  ..  ..  ..........  ......  ..  ..  ..  .
+  ..  C.  ..  FG  ..  ..  ..........  ......  ..  C.  ..  .
+  ..  ..  ..  IK  ..  ..  ..........  ......  ..  ..  ..  .
+  ..  ..  ..  DL  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ....JJ....  JJ....  ..  ..  ..  J
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ....HH....  HH....  ..  ..  ..  H
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
-  ..  B.  A.  ..  ..  ..  AAAAFF....  FF....  ..  B.  ..  F
+  ..  B.  A.  ..  ..  ..  AAAAEE....  EE....  ..  B.  ..  E
   ..                                                      
   ..                                                      
   ..                                                      
@@ -319,11 +320,12 @@ Stage 5
      B key_match_tbl_0$gw
      C tbl_flep_decapsulation$gw
      D tbl_flep_decapsulation$tind
-     E tbl_flep_process154$tind
-     F tbl_flep_process154_0$salu.Ingress.pkt_counter.bw_register
+     E tbl_flep_process154$salu.Ingress.pkt_counter.bw_register
+     F tbl_flep_process154$tind
      G tbl_flep_process154_0$tind
      H tbl_flep_process169$salu.Ingress.keydatacache.bw_register
      I tbl_flep_process169$tind
      J tbl_flep_process184$salu.Ingress.keyindexdatacache.bw_register
      K tbl_flep_process184$tind
+     L tbl_flep_process449$tind
   

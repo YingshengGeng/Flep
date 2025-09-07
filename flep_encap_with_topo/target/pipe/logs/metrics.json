@@ -1,11 +1,11 @@
 {
     "program_name": "flep_encap.p4", 
-    "build_date": "Wed Oct 23 15:06:43 2024", 
-    "run_id": "ecebbea5b3f94ca9", 
+    "build_date": "Sun Sep  7 21:52:06 2025", 
+    "run_id": "175ba4a4b5f943bf", 
     "compiler_version": "9.13.2", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "13.526905298233032", 
+    "compilation_time": "8.263042211532593", 
     "phv": {
         "normal": [
             {
@@ -16,14 +16,14 @@
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 19, 
-                "bits_occupied": 284, 
+                "containers_occupied": 22, 
+                "bits_occupied": 332, 
                 "bits_overlaid": 16
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 18, 
-                "bits_occupied": 538, 
+                "containers_occupied": 21, 
+                "bits_occupied": 634, 
                 "bits_overlaid": 112
             }
         ], 
@@ -36,21 +36,21 @@
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 13, 
-                "bits_occupied": 208, 
+                "containers_occupied": 11, 
+                "bits_occupied": 176, 
                 "bits_overlaid": 16
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 13, 
-                "bits_occupied": 416, 
+                "containers_occupied": 11, 
+                "bits_occupied": 352, 
                 "bits_overlaid": 64
             }
         ]
     }, 
     "parser": {
         "ingress": {
-            "tcam_rows": 18
+            "tcam_rows": 13
         }, 
         "egress": {
             "tcam_rows": 12
@@ -60,7 +60,7 @@
         "srams": 44, 
         "tcams": 19, 
         "map_rams": 6, 
-        "logical_tables": 38, 
+        "logical_tables": 39, 
         "action_bus_bytes": 80, 
         "exact_crossbar_bytes": 48, 
         "ternary_crossbar_bytes": 73, 
@@ -77,11 +77,11 @@
         "power": [
             {
                 "gress": "ingress", 
-                "estimate": "4.42886755255"
+                "estimate": "4.52519869471"
             }, 
             {
                 "gress": "egress", 
-                "estimate": "2.70436112016"
+                "estimate": "2.80069226232"
             }
         ]
     }, 

@@ -1,6 +1,3 @@
-egress::min_parse_depth_accept_loop.$it3 is split into 2 states:
-  egress::min_parse_depth_accept_loop.$it3
-  egress::min_parse_depth_accept_loop.$it3.$split_0
 egress::min_parse_depth_accept_loop.$it2 is split into 2 states:
   egress::min_parse_depth_accept_loop.$it2
   egress::min_parse_depth_accept_loop.$it2.$split_0

@@ -4,6 +4,12 @@ graph [
 fontsize="22pt", label=Egress, style=bold];
 0[label=__START__, margin="", shape=rectangle, style=solid];
 1[label=__EXIT__, margin="", shape=rectangle, style=solid];
-0 -> 1[label=""];
+2[label=tbl_flep_process522, margin="", shape=ellipse, style=solid];
+3[label=flep_process522, margin="", shape=ellipse, style=solid];
+4[label="hdr.ethernet.dstAddr = eg...", margin="", shape=rectangle, style=solid];
+0 -> 2[label=""];
+2 -> 3[label=""];
+3 -> 4[label=""];
+4 -> 1[label=""];
 }
 }

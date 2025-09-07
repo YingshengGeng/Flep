@@ -1,8 +1,8 @@
 {
-    "build_date": "Wed Oct 23 15:06:53 2024",
+    "build_date": "Sun Sep  7 21:52:13 2025",
     "compiler_version": "9.13.2",
     "program_name": "flep_process.p4",
-    "run_id": "a3bd6f1aa3ef4038",
+    "run_id": "1ff310e029a548ee",
     "schema_version": "1.0.1",
     "stage_characteristics": [
         {
@@ -306,8 +306,8 @@
             "stage_number": 11
         },
         {
-            "clock_cycles": 20,
-            "cycles_contribute_to_latency": 20,
+            "clock_cycles": 22,
+            "cycles_contribute_to_latency": 22,
             "dependency_to_previous": "match",
             "features": {
                 "exact": false,
@@ -315,7 +315,7 @@
                 "selectors": false,
                 "stateful": false,
                 "statistics": false,
-                "ternary": false,
+                "ternary": true,
                 "max_selector_words": 0
             },
             "features_to_balance_latency": {
@@ -327,7 +327,7 @@
                 "ternary": false
             },
             "gress": "egress",
-            "predication_cycle": 11,
+            "predication_cycle": 13,
             "stage_number": 0
         },
         {
@@ -774,25 +774,6 @@
                         {
                             "access_type": "read",
                             "memory_type": "sram",
-                            "num_memories": 1
-                        }
-                    ],
-                    "on_critical_path": true,
-                    "stage_number": 5,
-                    "weight": 6.3269754768392369
-                }
-            ]
-        },
-        {
-            "gress": "ingress",
-            "name": "tbl_flep_process154_0",
-            "stages": [
-                {
-                    "always_runs": false,
-                    "memories": [
-                        {
-                            "access_type": "read",
-                            "memory_type": "sram",
                             "num_memories": 2
                         },
                         {
@@ -814,6 +795,25 @@
                     "on_critical_path": false,
                     "stage_number": 5,
                     "weight": 28.31008174386921
+                }
+            ]
+        },
+        {
+            "gress": "ingress",
+            "name": "tbl_flep_process154_0",
+            "stages": [
+                {
+                    "always_runs": false,
+                    "memories": [
+                        {
+                            "access_type": "read",
+                            "memory_type": "sram",
+                            "num_memories": 1
+                        }
+                    ],
+                    "on_critical_path": true,
+                    "stage_number": 5,
+                    "weight": 6.3269754768392369
                 }
             ]
         },
@@ -845,7 +845,7 @@
                             "num_memories": 1
                         }
                     ],
-                    "on_critical_path": false,
+                    "on_critical_path": true,
                     "stage_number": 5,
                     "weight": 28.31008174386921
                 }
@@ -879,7 +879,7 @@
                             "num_memories": 1
                         }
                     ],
-                    "on_critical_path": false,
+                    "on_critical_path": true,
                     "stage_number": 5,
                     "weight": 28.31008174386921
                 }
@@ -1103,6 +1103,44 @@
         },
         {
             "gress": "ingress",
+            "name": "tbl_flep_process449",
+            "stages": [
+                {
+                    "always_runs": false,
+                    "memories": [
+                        {
+                            "access_type": "read",
+                            "memory_type": "sram",
+                            "num_memories": 1
+                        }
+                    ],
+                    "on_critical_path": true,
+                    "stage_number": 5,
+                    "weight": 6.3269754768392369
+                }
+            ]
+        },
+        {
+            "gress": "egress",
+            "name": "tbl_flep_process522",
+            "stages": [
+                {
+                    "always_runs": false,
+                    "memories": [
+                        {
+                            "access_type": "read",
+                            "memory_type": "sram",
+                            "num_memories": 1
+                        }
+                    ],
+                    "on_critical_path": true,
+                    "stage_number": 0,
+                    "weight": 6.3269754768392369
+                }
+            ]
+        },
+        {
+            "gress": "ingress",
             "name": "tbl_setfleptopo",
             "stages": [
                 {
@@ -1129,7 +1167,7 @@
         },
         {
             "gress": "egress",
-            "latency": 168,
+            "latency": 170,
             "pipe_number": 0
         }
     ],
@@ -1137,7 +1175,7 @@
         {
             "gress": "ingress",
             "pipe_number": 0,
-            "power": 3.319601011032
+            "power": 4.27800045708
         },
         {
             "gress": "egress",

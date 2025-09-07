@@ -7,6 +7,7 @@ ingress: [15]
     000+--cond-13
     1111+--cond-14
     11110+--cond-15
+    000000+--tbl_flep_process449
   fwd_port_0{ E -1+1, 4 0K }
   cond-9(ingress::hdr.ethernet.ethernetType == 6425; => $true, 1 => $false)
     $true: [16]
@@ -63,9 +64,11 @@ ingress: [15]
       cond-16(ingress::hdr.flep.label_depth == 0; => $true, 1 => $false)
         $true: [27]
           tbl_flep_decapsulation
+  tbl_flep_process449
 egress: [28]
+  tbl_flep_process522
 
-stage 0, work: [ 2996366 ], partly placed 0, placed 0
+stage 0, work: [ 3030120, 3037755 ], partly placed 0, placed 0
     { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
 fwd_port_0 is not a gateway! Aborting search for merge choices
 try_place_table(fwd_port_0, stage=0)
@@ -121,17 +124,36 @@ try_place_table(cond-13, stage=0)
     - removing flep_processing_0 from merge list because it depends on cond-9
     - removing tbl_flep_process442 from merge list because it depends on cond-9
     - skipping gateway cond-15 until mergeable tables are available
-found 3 tables that could be placed: [ fwd_port_0, tbl_flep_process377, is_verify_tbl_0 ]
+  - skipping tbl_flep_process449 because metadata deps not satisfied
+tbl_flep_process522 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_process522, stage=0)
+    Initial # of stages is 0, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_process522 
+  Picking layout option for table : tbl_flep_process522 with requested entries : 1
+  picked layout for tbl_flep_process522 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_process522 
+  Trying to allocate imem for tbl_flep_process522 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 0    Furthest stage: 0
+    try_place_table returning 1 of tbl_flep_process522 in stage 0
+  Table is  placed
+    Pl vector: tbl_flep_process522 
+found 4 tables that could be placed: [ fwd_port_0, tbl_flep_process377, is_verify_tbl_0, tbl_flep_process522 ]
 Initial best is first table seen: fwd_port_0
 For trial t : tbl_flep_process377 with best: fwd_port_0
     Updating best to tbl_flep_process377 from fwd_port_0 for reason: longer downward prop control-included dependence tail chain
 For trial t : is_verify_tbl_0 with best: tbl_flep_process377
     Keeping best tbl_flep_process377 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_flep_process522 with best: tbl_flep_process377
+    Keeping best tbl_flep_process377 for reason: longer downward prop control-included dependence tail chain
 Adding table:fwd_port_0 in the initial stage option
 Adding table:tbl_flep_process377 in the initial stage option
 Adding table:is_verify_tbl_0 in the initial stage option
+Adding table:tbl_flep_process522 in the initial stage option
 placing 1 entries of tbl_flep_process377 ( tbl_flep_process377 )  (with gw cond-9, result tag $true) in stage 0(0) FormatType(02)
-stage 0, work: [ 2996366 ], partly placed 0, placed 1
+stage 0, work: [ 3030120, 3037755 ], partly placed 0, placed 1
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
 fwd_port_0 is not a gateway! Aborting search for merge choices
 try_place_table(fwd_port_0, stage=0)
@@ -174,12 +196,30 @@ try_place_table(cond-13, stage=0)
     - removing flep_processing_0 from merge list because it depends on cond-10
     - removing tbl_flep_process442 from merge list because it depends on cond-10
     - skipping gateway cond-15 until mergeable tables are available
-found 2 tables that could be placed: [ fwd_port_0, is_verify_tbl_0 ]
+  - skipping tbl_flep_process449 because metadata deps not satisfied
+tbl_flep_process522 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_process522, stage=0)
+    Initial # of stages is 0, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_process522 
+  Picking layout option for table : tbl_flep_process522 with requested entries : 1
+  picked layout for tbl_flep_process522 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_process522 
+  Trying to allocate imem for tbl_flep_process522 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_flep_process522 in stage 0
+  Table is  placed
+    Pl vector: tbl_flep_process522 
+found 3 tables that could be placed: [ fwd_port_0, is_verify_tbl_0, tbl_flep_process522 ]
 Initial best is first table seen: fwd_port_0
 For trial t : is_verify_tbl_0 with best: fwd_port_0
     Keeping best fwd_port_0 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_flep_process522 with best: fwd_port_0
+    Keeping best fwd_port_0 for reason: longer downward prop control-included dependence tail chain
 placing 5120 entries of fwd_port_0 ( Ingress.fwd_port )  in stage 0(1) FormatType(02)
-stage 0, work: [ 2996366 ], partly placed 0, placed 2
+stage 0, work: [ 3030120, 3037755 ], partly placed 0, placed 2
     { id=2 ram=1 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-9 as its already done
@@ -221,12 +261,30 @@ try_place_table(cond-13, stage=0)
     - removing flep_processing_0 from merge list because it depends on cond-10
     - removing tbl_flep_process442 from merge list because it depends on cond-10
     - skipping gateway cond-15 until mergeable tables are available
-found 2 tables that could be placed: [ tbl_setfleptopo, is_verify_tbl_0 ]
+  - skipping tbl_flep_process449 because metadata deps not satisfied
+tbl_flep_process522 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_process522, stage=0)
+    Initial # of stages is 0, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_process522 
+  Picking layout option for table : tbl_flep_process522 with requested entries : 1
+  picked layout for tbl_flep_process522 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_process522 
+  Trying to allocate imem for tbl_flep_process522 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_flep_process522 in stage 0
+  Table is  placed
+    Pl vector: tbl_flep_process522 
+found 3 tables that could be placed: [ tbl_setfleptopo, is_verify_tbl_0, tbl_flep_process522 ]
 Initial best is first table seen: tbl_setfleptopo
 For trial t : is_verify_tbl_0 with best: tbl_setfleptopo
     Updating best to is_verify_tbl_0 from tbl_setfleptopo for reason: earlier stage calculated
+For trial t : tbl_flep_process522 with best: is_verify_tbl_0
+    Keeping best is_verify_tbl_0 for reason: longer downward prop control-included dependence tail chain
 placing 512 entries of is_verify_tbl_0 ( Ingress.is_verify_tbl )  (with gw cond-13, result tag $true) in stage 0(2) FormatType(02)
-stage 0, work: [ 2996366 ], partly placed 0, placed 3
+stage 0, work: [ 3030120, 3037755 ], partly placed 0, placed 3
     { id=3 ram=2 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-9 as its already done
@@ -255,11 +313,62 @@ try_place_table(cond-10, stage=0)
     - removing flep_processing_0 from merge list because it depends on cond-10
     - removing tbl_flep_process442 from merge list because it depends on cond-10
     - skipping gateway cond-15 until mergeable tables are available
+  - skipping tbl_flep_process449 because metadata deps not satisfied
+tbl_flep_process522 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_process522, stage=0)
+    Initial # of stages is 0, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_process522 
+  Picking layout option for table : tbl_flep_process522 with requested entries : 1
+  picked layout for tbl_flep_process522 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_process522 
+  Trying to allocate imem for tbl_flep_process522 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 0    Furthest stage: 1
+    try_place_table returning 1 of tbl_flep_process522 in stage 0
+  Table is  placed
+    Pl vector: tbl_flep_process522 
+found 2 tables that could be placed: [ tbl_setfleptopo, tbl_flep_process522 ]
+Initial best is first table seen: tbl_setfleptopo
+For trial t : tbl_flep_process522 with best: tbl_setfleptopo
+    Updating best to tbl_flep_process522 from tbl_setfleptopo for reason: earlier stage calculated
+placing 1 entries of tbl_flep_process522 ( tbl_flep_process522 )  in stage 0(3) FormatType(02)
+stage 0, work: [ 3030120 ], partly placed 0, placed 4
+    { id=4 ram=2 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping fwd_port_0 as its already done
+    - skipping cond-9 as its already done
+try_place_table(cond-10, stage=0)
+    Merging with match table tbl_setfleptopo and tag $true
+    - dependency between tbl_flep_process377 and table advances stage
+    Initial # of stages is 1, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_setfleptopo 
+  Picking layout option for table : tbl_setfleptopo with requested entries : 1
+  picked layout for tbl_setfleptopo FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:8/4 ov:32 imm:32
+  entries:1 srams:1 local_tinds: 0 maprams:0 tcams:0 afi:1
+  Trying to allocate adb for tbl_setfleptopo 
+  Trying to allocate imem for tbl_setfleptopo 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 1    Furthest stage: 1
+    try_place_table returning 1 of tbl_setfleptopo in stage 1
+  Table is  placed
+  Gateway is  placed
+    Pl vector: tbl_setfleptopo 
+    - skipping cond-13 as its already done
+  - skipping cond-14 because it depends on cond-10
+    - removing key_match_tbl_0 from merge list because it depends on cond-10
+    - skipping gateway cond-14 until mergeable tables are available
+  - skipping cond-15 because it depends on cond-10
+    - removing flep_processing_0 from merge list because it depends on cond-10
+    - removing tbl_flep_process442 from merge list because it depends on cond-10
+    - skipping gateway cond-15 until mergeable tables are available
+  - skipping tbl_flep_process449 because metadata deps not satisfied
 found 1 tables that could be placed: [ tbl_setfleptopo ]
 Initial best is first table seen: tbl_setfleptopo
 Adding table:tbl_setfleptopo in the initial stage option
 placing 1 entries of tbl_setfleptopo ( tbl_setfleptopo )  (with gw cond-10, result tag $true) in stage 1(10) FormatType(02)
-stage 1, work: [ 2996611, 2997556 ], partly placed 0, placed 4
+stage 1, work: [ 3030365, 3031310 ], partly placed 0, placed 5
     { id=1 ram=1 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -300,7 +409,7 @@ Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : tbl_flep_process397 with best: multicast_send_fleptopo_0
     Updating best to tbl_flep_process397 from multicast_send_fleptopo_0 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_process397 ( tbl_flep_process397 )  (with gw cond-11, result tag $true) in stage 1(11) FormatType(02)
-stage 1, work: [ 2996611, 2996842, 2997554 ], partly placed 0, placed 5
+stage 1, work: [ 3030365, 3030596, 3031308 ], partly placed 0, placed 6
     { id=2 ram=1 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -376,7 +485,7 @@ For trial t : tbl_flep_process407 with best: tbl_flep_process399
 For trial t : tbl_drop with best: tbl_flep_process407
     Keeping best tbl_flep_process407 for reason: longer downward prop control-included dependence tail chain
 placing 1 entries of tbl_flep_process407 ( tbl_flep_process407 )  (with gw cond-12, result tag $true) in stage 1(12) FormatType(02)
-stage 1, work: [ 2996611, 2996842, 2997013 ], partly placed 0, placed 6
+stage 1, work: [ 3030365, 3030596, 3030767 ], partly placed 0, placed 7
     { id=3 ram=1 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -458,7 +567,7 @@ For trial t : tbl_flep_process410 with best: tbl_flep_process399
 For trial t : tbl_drop with best: tbl_flep_process410
     Updating best to tbl_drop from tbl_flep_process410 for reason: earlier stage calculated
 placing 1 entries of tbl_drop ( tbl_drop )  in stage 1(13) FormatType(02)
-stage 1, work: [ 2996611, 2996842, 2997013 ], partly placed 0, placed 7
+stage 1, work: [ 3030365, 3030596, 3030767 ], partly placed 0, placed 8
     { id=4 ram=1 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -527,7 +636,7 @@ Adding table:multicast_send_fleptopo_0 in the initial stage option
 Adding table:tbl_flep_process399 in the initial stage option
 Adding table:tbl_flep_process410 in the initial stage option
 placing 1 entries of tbl_flep_process410 ( tbl_flep_process410 )  in stage 2(20) FormatType(02)
-stage 2, work: [ 2996611, 2996842, 2997013 ], partly placed 0, placed 8
+stage 2, work: [ 3030365, 3030596, 3030767 ], partly placed 0, placed 9
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -592,7 +701,7 @@ For trial t : tbl_flep_process399 with best: multicast_send_fleptopo_0
 For trial t : get_port_index_0 with best: tbl_flep_process399
     Keeping best tbl_flep_process399 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_process399 ( tbl_flep_process399 )  in stage 2(21) FormatType(02)
-stage 2, work: [ 2996611, 2997013 ], partly placed 0, placed 9
+stage 2, work: [ 3030365, 3030767 ], partly placed 0, placed 10
     { id=2 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -639,7 +748,7 @@ Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : get_port_index_0 with best: multicast_send_fleptopo_0
     Keeping best multicast_send_fleptopo_0 for reason: earlier stage calculated
 placing 3072 entries of multicast_send_fleptopo_0 ( Ingress.multicast_send_fleptopo )  in stage 2(22) FormatType(02)
-stage 2, work: [ 2997013 ], partly placed 0, placed 10
+stage 2, work: [ 3030767 ], partly placed 0, placed 11
     { id=3 ram=1 tcam=0 mram=0 eixb=1 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_process407 as its already done
     - skipping tbl_flep_process410 as its already done
@@ -668,7 +777,7 @@ found 1 tables that could be placed: [ get_port_index_0 ]
 Initial best is first table seen: get_port_index_0
 Adding table:get_port_index_0 in the initial stage option
 placing 20480 entries of get_port_index_0 ( Ingress.get_port_index )  in stage 3(30) FormatType(02)
-stage 3, work: [ 2997013 ], partly placed 0, placed 11
+stage 3, work: [ 3030767 ], partly placed 0, placed 12
     { id=1 ram=4 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_process407 as its already done
     - skipping tbl_flep_process410 as its already done
@@ -735,7 +844,7 @@ Adding table:tbl_flep_process199 in the initial stage option
 Adding table:tbl_flep_process214 in the initial stage option
 Adding table:tbl_flep_process229 in the initial stage option
 placing 1 entries of tbl_flep_process229 ( tbl_flep_process229 )  in stage 4(40) FormatType(022)
-stage 4, work: [ 2997013 ], partly placed 0, placed 12
+stage 4, work: [ 3030767 ], partly placed 0, placed 13
     { id=1 ram=2 tcam=0 mram=2 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_process407 as its already done
     - skipping tbl_flep_process410 as its already done
@@ -779,7 +888,7 @@ Initial best is first table seen: tbl_flep_process199
 For trial t : tbl_flep_process214 with best: tbl_flep_process199
     Updating best to tbl_flep_process214 from tbl_flep_process199 for reason: default choice
 placing 1 entries of tbl_flep_process214 ( tbl_flep_process214 )  in stage 4(41) FormatType(022)
-stage 4, work: [ 2997013 ], partly placed 0, placed 13
+stage 4, work: [ 3030767 ], partly placed 0, placed 14
     { id=2 ram=4 tcam=0 mram=4 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_process407 as its already done
     - skipping tbl_flep_process410 as its already done
@@ -806,7 +915,7 @@ try_place_table(tbl_flep_process199, stage=4)
 found 1 tables that could be placed: [ tbl_flep_process199 ]
 Initial best is first table seen: tbl_flep_process199
 placing 1 entries of tbl_flep_process199 ( tbl_flep_process199 )  in stage 4(42) FormatType(022)
-stage 4, work: [ 2996366 ], partly placed 0, placed 14
+stage 4, work: [ 3030120 ], partly placed 0, placed 15
     { id=3 ram=6 tcam=0 mram=6 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-9 as its already done
@@ -860,6 +969,7 @@ try_place_table(cond-15, stage=4)
   Table is  placed
   Gateway is  placed
     Pl vector: flep_processing_0 tbl_flep_process442 
+  - skipping tbl_flep_process449 because metadata deps not satisfied
 found 3 tables that could be placed: [ key_match_tbl_0, flep_processing_0, tbl_flep_process442 ]
 Initial best is first table seen: key_match_tbl_0
 For trial t : flep_processing_0 with best: key_match_tbl_0
@@ -867,7 +977,7 @@ For trial t : flep_processing_0 with best: key_match_tbl_0
 For trial t : tbl_flep_process442 with best: flep_processing_0
     Updating best to tbl_flep_process442 from flep_processing_0 for reason: longer downward prop control-included dependence tail chain
 placing 1 entries of tbl_flep_process442 ( tbl_flep_process442 )  (with gw cond-15, result tag $true) in stage 4(43) FormatType(02)
-stage 4, work: [ 2998015 ], partly placed 0, placed 15
+stage 4, work: [ 3031769 ], partly placed 0, placed 16
     { id=4 ram=6 tcam=0 mram=6 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
 flep_processing_0 is not a gateway! Aborting search for merge choices
 try_place_table(flep_processing_0, stage=4)
@@ -908,7 +1018,7 @@ Initial best is first table seen: flep_processing_0
 For trial t : tbl_flep_decapsulation with best: flep_processing_0
     Keeping best flep_processing_0 for reason: earlier stage calculated
 placing 20480 entries of flep_processing_0 ( Ingress.flep_processing )  in stage 4(44) FormatType(02)
-stage 4, work: [ 2998015 ], partly placed 0, placed 16
+stage 4, work: [ 3031769 ], partly placed 0, placed 17
     { id=5 ram=10 tcam=0 mram=6 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping flep_processing_0 as its already done
     - skipping tbl_flep_process442 as its already done
@@ -933,7 +1043,7 @@ found 1 tables that could be placed: [ tbl_flep_decapsulation ]
 Initial best is first table seen: tbl_flep_decapsulation
 Adding table:tbl_flep_decapsulation in the initial stage option
 placing 1 entries of tbl_flep_decapsulation ( tbl_flep_decapsulation )  (with gw cond-16, result tag $true) in stage 5(50) FormatType(02)
-stage 5, work: [ 2996366 ], partly placed 0, placed 17
+stage 5, work: [ 3030120 ], partly placed 0, placed 18
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-9 as its already done
@@ -957,10 +1067,11 @@ try_place_table(cond-14, stage=5)
   Gateway is  placed
     Pl vector: key_match_tbl_0 
     - skipping cond-15 as its already done
+  - skipping tbl_flep_process449 because metadata deps not satisfied
 found 1 tables that could be placed: [ key_match_tbl_0 ]
 Initial best is first table seen: key_match_tbl_0
 placing 12288 entries of key_match_tbl_0 ( Ingress.key_match_tbl )  (with gw cond-14, result tag $true) in stage 5(51) FormatType(02)
-stage 5, work: [ 2998007, 2997810 ], partly placed 0, placed 18
+stage 5, work: [ 3031761, 3031564 ], partly placed 0, placed 19
     { id=2 ram=4 tcam=0 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
 tbl_flep_process154 is not a gateway! Aborting search for merge choices
 try_place_table(tbl_flep_process154, stage=5)
@@ -1031,7 +1142,7 @@ For trial t : tbl_flep_process169 with best: tbl_flep_process154_0
 For trial t : tbl_flep_process184 with best: tbl_flep_process169
     Updating best to tbl_flep_process184 from tbl_flep_process169 for reason: default choice
 placing 1 entries of tbl_flep_process184 ( tbl_flep_process184 )  in stage 5(52) FormatType(022)
-stage 5, work: [ 2998007, 2997810 ], partly placed 0, placed 19
+stage 5, work: [ 3031761, 3031564 ], partly placed 0, placed 20
     { id=3 ram=6 tcam=0 mram=2 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
 tbl_flep_process154 is not a gateway! Aborting search for merge choices
 try_place_table(tbl_flep_process154, stage=5)
@@ -1086,7 +1197,7 @@ For trial t : tbl_flep_process154_0 with best: tbl_flep_process154
 For trial t : tbl_flep_process169 with best: tbl_flep_process154_0
     Updating best to tbl_flep_process169 from tbl_flep_process154_0 for reason: default choice
 placing 1 entries of tbl_flep_process169 ( tbl_flep_process169 )  in stage 5(53) FormatType(022)
-stage 5, work: [ 2998007, 2997810 ], partly placed 0, placed 20
+stage 5, work: [ 3031761, 3031564 ], partly placed 0, placed 21
     { id=4 ram=8 tcam=0 mram=4 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
 tbl_flep_process154 is not a gateway! Aborting search for merge choices
 try_place_table(tbl_flep_process154, stage=5)
@@ -1125,7 +1236,7 @@ Initial best is first table seen: tbl_flep_process154
 For trial t : tbl_flep_process154_0 with best: tbl_flep_process154
     Updating best to tbl_flep_process154_0 from tbl_flep_process154 for reason: default choice
 placing 1 entries of tbl_flep_process154_0 ( tbl_flep_process154_0 )  in stage 5(54) FormatType(022)
-stage 5, work: [ 2998007 ], partly placed 0, placed 21
+stage 5, work: [ 3031761 ], partly placed 0, placed 22
     { id=5 ram=10 tcam=0 mram=6 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
 tbl_flep_process154 is not a gateway! Aborting search for merge choices
 try_place_table(tbl_flep_process154, stage=5)
@@ -1145,12 +1256,39 @@ try_place_table(tbl_flep_process154, stage=5)
 found 1 tables that could be placed: [ tbl_flep_process154 ]
 Initial best is first table seen: tbl_flep_process154
 placing 1 entries of tbl_flep_process154 ( tbl_flep_process154 )  in stage 5(55) FormatType(022)
+stage 5, work: [ 3030120 ], partly placed 0, placed 23
+    { id=6 ram=12 tcam=0 mram=8 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping fwd_port_0 as its already done
+    - skipping cond-9 as its already done
+    - skipping cond-10 as its already done
+    - skipping cond-13 as its already done
+    - skipping cond-14 as its already done
+    - skipping cond-15 as its already done
+tbl_flep_process449 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_process449, stage=5)
+    Initial # of stages is 5, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_process449 
+  Picking layout option for table : tbl_flep_process449 with requested entries : 1
+  picked layout for tbl_flep_process449 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_process449 
+  Trying to allocate imem for tbl_flep_process449 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 5    Furthest stage: 6
+    try_place_table returning 1 of tbl_flep_process449 in stage 5
+  Table is  placed
+    Pl vector: tbl_flep_process449 
+found 1 tables that could be placed: [ tbl_flep_process449 ]
+Initial best is first table seen: tbl_flep_process449
+placing 1 entries of tbl_flep_process449 ( tbl_flep_process449 )  in stage 5(56) FormatType(02)
 Adding complete placement for resource mode:0
 Found a complete solution that fit the number of stages required
 Evaluating complete solution with resource:0
 Placement error(s):0 stages required:6
 Updating best final placement with this one
-Table placement placed 22 tables in 6 stages
+Table placement placed 24 tables in 6 stages
+  Table tbl_flep_process449 logical id 0x56 entries=1 stage=5
   Table tbl_flep_process154 logical id 0x55 entries=1 stage=5
     attached table Ingress.pkt_counter.bw_register entries=10
   Table tbl_flep_process154_0 logical id 0x54 entries=1 stage=5
@@ -1183,6 +1321,7 @@ Table placement placed 22 tables in 6 stages
   Gateway cond-11 is also logical id 0x11
   Table tbl_setfleptopo logical id 0x10 entries=1 stage=1
   Gateway cond-10 is also logical id 0x10
+  Table tbl_flep_process522 logical id 0x3 entries=1 stage=0
   Table is_verify_tbl_0 logical id 0x2 entries=512 stage=0
   Gateway cond-13 is also logical id 0x2
   Table fwd_port_0 logical id 0x1 entries=5120 stage=0
@@ -1212,6 +1351,8 @@ folding gateway cond-15 onto tbl_flep_process442
   Adding Ternary Indirect table to tbl_flep_process442
 folding gateway cond-16 onto tbl_flep_decapsulation
   Adding Ternary Indirect table to tbl_flep_decapsulation
+  Adding Ternary Indirect table to tbl_flep_process449
+  Adding Ternary Indirect table to tbl_flep_process522
 table placement completed pipe
 ingress: [15]
     +--tbl_flep_process377
@@ -1220,6 +1361,7 @@ ingress: [15]
     000+--tbl_setfleptopo
     0000+--tbl_flep_process442
     00000+--key_match_tbl_0
+    000000+--tbl_flep_process449
   0: tbl_flep_process377(ingress::hdr.ethernet.ethernetType == 6425;, 1 => $false)
     $false: [29]
   1: fwd_port_0{ E -1+10, 2 [1x5 5K] }
@@ -1269,5 +1411,7 @@ ingress: [15]
       54: tbl_flep_process154_0{ E 0+10, 0 0K }
         stateful Ingress.pkt_counter.bw_register   10
     $false: [32]
+  56: tbl_flep_process449
 egress: [28]
+  3: tbl_flep_process522
 

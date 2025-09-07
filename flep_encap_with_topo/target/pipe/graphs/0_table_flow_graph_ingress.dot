@@ -180,13 +180,19 @@ W:\l
  "];
 cond_32 [ shape=record, style="filled", fillcolor=cornsilk, label="hdr.ethernet.ethernetType == 4660\l\l
  "];
+tbl_flep_encap529 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap529\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+\lW:\l
+ hdr.ethernet.srcAddr\l
+ "];
 tbl_send [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_send\l\l
 R:\l
  hdr.tempforward.temp_port\l
 \lW:\l
  ig_intr_md_for_tm.ucast_egress_port\l
  "];
-tbl_flep_encap533 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap533\l\l
+tbl_flep_encap534 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_encap534\l\l
 R:\l
  hdr.tempforward.temp_routing_type\l
 \lW:\l
@@ -233,9 +239,10 @@ R:\l
     tbl_flep_encap519 -> cond_31
     cond_31 -> tbl_recirculate
     cond_31 -> cond_32
-    tbl_recirculate -> cond_32
+    tbl_recirculate -> tbl_flep_encap529
+    tbl_flep_encap529 -> cond_32
     cond_32 -> tbl_send
     cond_32 -> DEPARSER
-    tbl_send -> tbl_flep_encap533
-    tbl_flep_encap533 -> DEPARSER
+    tbl_send -> tbl_flep_encap534
+    tbl_flep_encap534 -> DEPARSER
 }

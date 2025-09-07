@@ -1,11 +1,11 @@
 {
   "schema_version": "3.0.1",
   "target": "tofino",
-  "build_date": "Wed Oct 23 15:06:43 2024",
+  "build_date": "Sun Sep  7 21:52:06 2025",
   "compiler_version": "9.13.2 (1baf055)",
   "compilation_succeeded": true,
-  "compilation_time": "13.526905298233032",
-  "run_id": "ecebbea5b3f94ca9",
+  "compilation_time": "8.263042211532593",
+  "run_id": "175ba4a4b5f943bf",
   "target_data": {
     "architecture": "tna",
     "architectureConfig": {
@@ -38,7 +38,7 @@
       "event_log_file": "events.json",
       "frontend_ir_log_file": "frontend-ir.json",
       "source_files": {
-        "src_root": "/home/gys/sub_final_com/sw1/flep_encap_with_topo",
+        "src_root": "/home/gys/code_latency/flep_encap_with_topo",
         "src_map": "source.json",
         "includes": [],
         "defines": []
@@ -59,9 +59,15 @@
             ],
             "graphs": [
               {
-                "path": "pipe/graphs/IngressParser.dot",
-                "gress": "ingress",
+                "path": "pipe/graphs/EgressParser.dot",
+                "gress": "egress",
                 "graph_type": "parser",
+                "graph_format": ".dot"
+              },
+              {
+                "path": "pipe/graphs/Egress.dot",
+                "gress": "egress",
+                "graph_type": "control",
                 "graph_format": ".dot"
               },
               {
@@ -71,8 +77,8 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/EgressParser.dot",
-                "gress": "egress",
+                "path": "pipe/graphs/IngressParser.dot",
+                "gress": "ingress",
                 "graph_type": "parser",
                 "graph_format": ".dot"
               },
@@ -83,9 +89,9 @@
                 "graph_format": ".dot"
               },
               {
-                "path": "pipe/graphs/Egress.dot",
-                "gress": "egress",
-                "graph_type": "control",
+                "path": "pipe/graphs/power_graph.dot",
+                "gress": "ingress",
+                "graph_type": "table",
                 "graph_format": ".dot"
               },
               {
@@ -96,12 +102,6 @@
               },
               {
                 "path": "pipe/graphs/table_dep_graph_placement_0.dot",
-                "gress": "ingress",
-                "graph_type": "table",
-                "graph_format": ".dot"
-              },
-              {
-                "path": "pipe/graphs/power_graph.dot",
                 "gress": "ingress",
                 "graph_type": "table",
                 "graph_format": ".dot"
@@ -179,5 +179,5 @@
       ]
     }
   ],
-  "compile_command": "/home/gys/bf-sde-9.13.2/install/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ./sw1/flep_encap_with_topo/target/ -g ./sw1/flep_encap_with_topo/flep_encap.p4"
+  "compile_command": "/home/gys/bf-sde-9.13.2/install/bin/bf-p4c --std p4-16 --target tofino --arch tna -o /home/gys/code_latency/flep_encap_with_topo/target/ -g /home/gys/code_latency/flep_encap_with_topo/flep_encap.p4"
 }

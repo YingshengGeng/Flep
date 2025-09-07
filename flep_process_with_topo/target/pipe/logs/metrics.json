@@ -1,37 +1,37 @@
 {
     "program_name": "flep_process.p4", 
-    "build_date": "Wed Oct 23 15:06:53 2024", 
-    "run_id": "a3bd6f1aa3ef4038", 
+    "build_date": "Sun Sep  7 21:52:13 2025", 
+    "run_id": "1ff310e029a548ee", 
     "compiler_version": "9.13.2", 
     "schema_version": "1.1.0", 
     "target": "tofino", 
-    "compilation_time": "7.830053329467773", 
+    "compilation_time": "4.8172571659088135", 
     "phv": {
         "normal": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 7, 
-                "bits_occupied": 38, 
-                "bits_overlaid": 4
+                "containers_occupied": 8, 
+                "bits_occupied": 43, 
+                "bits_overlaid": 6
             }, 
             {
                 "bit_width": 16, 
-                "containers_occupied": 8, 
-                "bits_occupied": 115, 
-                "bits_overlaid": 0
+                "containers_occupied": 10, 
+                "bits_occupied": 153, 
+                "bits_overlaid": 10
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 9, 
-                "bits_occupied": 258, 
+                "containers_occupied": 12, 
+                "bits_occupied": 346, 
                 "bits_overlaid": 0
             }
         ], 
         "tagalong": [
             {
                 "bit_width": 8, 
-                "containers_occupied": 5, 
-                "bits_occupied": 40, 
+                "containers_occupied": 4, 
+                "bits_occupied": 32, 
                 "bits_overlaid": 0
             }, 
             {
@@ -42,8 +42,8 @@
             }, 
             {
                 "bit_width": 32, 
-                "containers_occupied": 7, 
-                "bits_occupied": 224, 
+                "containers_occupied": 5, 
+                "bits_occupied": 160, 
                 "bits_overlaid": 0
             }
         ]
@@ -60,7 +60,7 @@
         "srams": 28, 
         "tcams": 1, 
         "map_rams": 12, 
-        "logical_tables": 22, 
+        "logical_tables": 24, 
         "action_bus_bytes": 26, 
         "exact_crossbar_bytes": 36, 
         "ternary_crossbar_bytes": 4, 
@@ -71,13 +71,13 @@
             }, 
             {
                 "gress": "egress", 
-                "cycles": 168
+                "cycles": 170
             }
         ], 
         "power": [
             {
                 "gress": "ingress", 
-                "estimate": "3.31960101103"
+                "estimate": "4.27800045708"
             }, 
             {
                 "gress": "egress", 
@@ -91,8 +91,8 @@
             "fde_entries": 11
         }, 
         "egress": {
-            "pov_bits": 1, 
-            "fde_entries": 11
+            "pov_bits": 2, 
+            "fde_entries": 12
         }
     }, 
     "clots": {

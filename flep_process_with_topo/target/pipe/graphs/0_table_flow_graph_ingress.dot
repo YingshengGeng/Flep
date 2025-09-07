@@ -132,6 +132,12 @@ M:\l
 \lW:\l
  ig_intr_md_for_tm.ucast_egress_port\l
  "];
+tbl_flep_process449 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process449\l\l
+R:\l
+ ig_intr_md_from_prsr.global_tstamp\l
+\lW:\l
+ hdr.ethernet.srcAddr\l
+ "];
 tbl_flep_process442 [ shape=record, style="filled", fillcolor=cornsilk, label="tbl_flep_process442\l\l
 R:\l
  hdr.flep.label_depth\l
@@ -183,10 +189,11 @@ R:\l
     tbl_flep_process169 -> tbl_flep_process184
     tbl_flep_process184 -> cond_15
     cond_15 -> flep_processing_0
-    cond_15 -> DEPARSER
+    cond_15 -> tbl_flep_process449
     flep_processing_0 -> tbl_flep_process442
     tbl_flep_process442 -> cond_16
     cond_16 -> tbl_flep_decapsulation
-    cond_16 -> DEPARSER
-    tbl_flep_decapsulation -> DEPARSER
+    cond_16 -> tbl_flep_process449
+    tbl_flep_decapsulation -> tbl_flep_process449
+    tbl_flep_process449 -> DEPARSER
 }

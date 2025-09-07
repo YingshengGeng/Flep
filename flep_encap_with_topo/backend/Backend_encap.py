@@ -565,17 +565,19 @@ def get_adjacency():
 def pkt_gen_manager(operation):
     script_path = FILE_PATH + "_set_pkt_gen.py"
     if operation == "start":
-         process = subprocess.Popen(
+        process = subprocess.Popen(
         ["python3", script_path, "1"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
     elif operation == "stop":
-         process = subprocess.Popen(
+        process = subprocess.Popen(
         ["python3", script_path, "0"],
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
+    stdout, stderr = process.communicate()
+    print(stdout.decode())
     response = make_response("Success", 200)
     if process.returncode != 0:
        response = make_response("Failed", 404)

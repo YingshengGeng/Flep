@@ -18,7 +18,7 @@ Extractor usage:
 +--------------------+--------+-------+--------+--------+------------------+-------+
 |State               |Match   |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
 +--------------------+--------+-------+--------+--------+------------------+-------+
-|$init_match         |*       |1      |4       |4       |9                 |       |
+|$init_match         |*       |1      |3       |3       |7                 |       |
 |$entry_point.start  |0x1212  |4      |2       |1       |7                 |       |
 |-                   |0x1145  |2      |1       |3       |6                 |       |
 |-                   |0x****  |0      |0       |0       |0                 |       |
@@ -48,14 +48,14 @@ Extractor usage:
 +---------------------------------------------------------------+-------+-------+--------+--------+------------------+-------+
 |State                                                          |Match  |8-bit  |16-bit  |32-bit  |Total Extractors  |Other  |
 +---------------------------------------------------------------+-------+-------+--------+--------+------------------+-------+
-|$entry_point.start.min_parse_depth_accept_initial              |*      |0      |1       |0       |1                 |       |
+|$entry_point.start.min_parse_depth_accept_initial              |*      |1      |2       |1       |4                 |       |
 |$entry_point.start.min_parse_depth_accept_initial.$ctr_stall0  |*      |0      |0       |0       |0                 |       |
-|$entry_point.start.min_parse_depth_accept_initial.$split_0     |0x0    |2      |1       |2       |5                 |       |
-|-                                                              |0b**   |0      |0       |0       |0                 |       |
-|min_parse_depth_accept_loop.$split_0                           |0x0    |2      |1       |2       |5                 |       |
+|$entry_point.start.min_parse_depth_accept_initial.$split_0     |0x0    |2      |3       |3       |8                 |       |
+|-                                                              |0b**   |0      |2       |1       |3                 |       |
+|min_parse_depth_accept_loop.$split_0                           |0x0    |2      |3       |1       |6                 |       |
 |-                                                              |0b**   |0      |0       |0       |0                 |       |
 |min_parse_depth_accept_loop.$it1.$split_0                      |0x0    |2      |4       |0       |6                 |       |
 |-                                                              |0b**   |0      |0       |0       |0                 |       |
-|min_parse_depth_accept_loop.$it2.$split_0                      |0x0    |2      |4       |1       |7                 |       |
+|min_parse_depth_accept_loop.$it2.$split_0                      |0x0    |0      |1       |0       |1                 |       |
 |-                                                              |0b**   |0      |1       |0       |1                 |       |
 +---------------------------------------------------------------+-------+-------+--------+--------+------------------+-------+

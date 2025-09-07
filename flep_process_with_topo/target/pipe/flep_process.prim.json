@@ -958,6 +958,74 @@
           ]
         }
       ]
+    },
+    {
+      "name" : "tbl_flep_process449",
+      "actions" : [
+        {
+          "name" : "flep_process449",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.srcAddr"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "281474976710655"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_from_prsr.global_tstamp"
+              }
+            },
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "ig_intr_md_for_dprsr.mirror_type"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "7"
+              },
+              "src1" : {
+                "type" : "immediate",
+                "name" : "3w0"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name" : "tbl_flep_process522",
+      "actions" : [
+        {
+          "name" : "flep_process522",
+          "primitives" : [
+            {
+              "name" : "ModifyFieldPrimitive",
+              "operation" : "set",
+              "dst" : {
+                "type" : "phv",
+                "name" : "hdr.ethernet.dstAddr"
+              },
+              "dst_mask" : {
+                "type" : "immediate",
+                "name" : "281474976710655"
+              },
+              "src1" : {
+                "type" : "phv",
+                "name" : "eg_intr_md_from_prsr.global_tstamp"
+              }
+            }
+          ]
+        }
+      ]
     }
   ]
 }

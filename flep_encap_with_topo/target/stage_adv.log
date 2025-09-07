@@ -13,8 +13,8 @@ Stage 0
      B B24 (is_verify_tbl_0$gw)
      C H17 (is_verify_tbl_0)
      D H23 (is_verify_tbl_0)
-     E H4 (tbl_flep_encap459$gw)
-     F W3 (fwd_port_0)
+     E H5 (tbl_flep_encap459$gw)
+     F W4 (fwd_port_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   A... ............  A0001  ... ................................................
   .... ............  .0000  ... ................................................
@@ -74,7 +74,7 @@ Stage 1
      F B9 (tbl_flep_encap479$gw, tbl_flep_encap489$gw, tbl_setfleptopo$gw)
      G H17 (key_match_tbl_0)
      H H23 (key_match_tbl_0)
-     I W7 (tbl_flep_encap489$gw)
+     I W8 (tbl_flep_encap489$gw)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   AAAA B...........  A0003  ... ................................................
   .... B...........  .0000  ... ................................................
@@ -140,8 +140,8 @@ Stage 2
      A B16 (insert_ipv4_label_0)
      B B17 (insert_ipv4_label_0)
      C B21 (insert_ipv4_label_0, insert_past_key_tbl_0)
-     D B22 (cond-36$gw)
-     E B24 (cond-36$gw)
+     D B22 (tbl_flep_encap855$gw)
+     E B24 (tbl_flep_encap855$gw)
      F B5 (multicast_send_fleptopo_0)
      G H18 (insert_ipv4_label_0$gw)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
@@ -165,28 +165,29 @@ Stage 2
      B multicast_send_fleptopo_0
   
   tc  sb  rb  tib ab  st  srams       mapram  ov  gw pay 2p
-  E.  ..  ..  GJ  ..  ..  G.........  ......  ..  ..  ..  .
-  ..  ..  ..  I.  ..  ..  ..........  ......  ..  ..  ..  .
+  D.  ..  ..  FI  ..  ..  F.........  ......  ..  ..  ..  .
+  ..  ..  ..  HK  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
-  ..  DA  BH  ..  FC  ..  BBBFBHCC..  ......  ..  DA  ..  .
+  ..  CJ  AG  ..  EB  ..  AAAEAGBB..  ......  ..  CJ  ..  .
   ..                                                      
   ..                                                      
   ..                                                      
   ..                                                      
-     A cond-36$gw
-     B insert_ipv4_label_0
-     C insert_ipv4_label_0$action_data
-     D insert_ipv4_label_0$gw
-     E insert_past_key_tbl_0
-     F insert_past_key_tbl_0$action_data
-     G insert_past_key_tbl_0$tind
-     H multicast_send_fleptopo_0
-     I tbl_flep_encap481$tind
-     J tbl_flep_encap492$tind
+     A insert_ipv4_label_0
+     B insert_ipv4_label_0$action_data
+     C insert_ipv4_label_0$gw
+     D insert_past_key_tbl_0
+     E insert_past_key_tbl_0$action_data
+     F insert_past_key_tbl_0$tind
+     G multicast_send_fleptopo_0
+     H tbl_flep_encap481$tind
+     I tbl_flep_encap492$tind
+     J tbl_flep_encap855$gw
+     K tbl_flep_encap855$tind
   
 can't place get_port_index_0 in stage 2 : dependency on table tbl_flep_encap492
 can't place insert_ipv6_label_0 in stage 2 : dependency on table insert_ipv4_label_0
@@ -200,11 +201,11 @@ Stage 3
   ................................  .......... .. ..........
   ................................
   ................................
-     A B16 (insert_ipv6_label_0, tbl_flep_encap840$gw)
+     A B16 (insert_ipv6_label_0, tbl_flep_encap841$gw)
      B B17 (insert_ipv6_label_0)
      C B21 (insert_ipv6_label_0)
      D H18 (insert_ipv6_label_0$gw)
-     E W5 (get_port_index_0)
+     E W6 (get_port_index_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   BBBB CCCCCCC.....  B0001  ... ................................................
   AAAA ............  A0002  ... ................................................
@@ -224,7 +225,7 @@ Stage 3
   .... ............         ... ................................................
      A get_port_index_0
      B insert_ipv6_label_0
-     C tbl_flep_encap840$gw
+     C tbl_flep_encap841$gw
   
   tc  sb  rb  tib ab  st  srams       mapram  ov  gw pay 2p
   ..  ..  ..  FH  ..  ..  ..........  ......  ..  ..  ..  .
@@ -243,10 +244,10 @@ Stage 3
      B insert_ipv6_label_0
      C insert_ipv6_label_0$action_data
      D insert_ipv6_label_0$gw
-     E tbl_flep_encap830$tind
-     F tbl_flep_encap833$tind
-     G tbl_flep_encap840$gw
-     H tbl_flep_encap840$tind
+     E tbl_flep_encap831$tind
+     F tbl_flep_encap834$tind
+     G tbl_flep_encap841$gw
+     H tbl_flep_encap841$tind
   
 can't place tbl_flep_encap256 in stage 3 : dependency on table get_port_index_0
 can't place tbl_flep_encap271 in stage 3 : dependency on table get_port_index_0
@@ -254,11 +255,11 @@ can't place tbl_flep_encap286 in stage 3 : dependency on table get_port_index_0
 can't place flep_processing_0 in stage 3 : dependency on table insert_ipv6_label_0
 Stage 4
   exact ixbar groups                  ternary ixbar groups
-  C0C1B0..........J0J1J2J3....M2..  N0N1N2N3N0 N1 N2N3O0O1O2
-  ................M0M1............  O3D0D1D2D3 N0 A0N2E3O0O1
-  ................K0K1............  O2F3E0E1E2 N3 F0F1F2G3G0
-  ................................  G1G2H3H0H1 .. L3L0L1L2..
-  ................................  .......... .. H2I3I0I1I2
+  C0C1B0..........J0J1J2J3....N2..  O0O1O2O3O0 O1 O2O3D0D1D2
+  ................N0N1............  D3E0E1E2E3 O0 A0O2F3D0D1
+  ................M0M1............  D2G3F0F1F2 O3 G0G1G2H3H0
+  ................................  H1H2I3I0I1 .. L3L0L1L2..
+  ................................  .......... .. I2K3K0K1K2
   ................................  .......... .. ..........
   ................................
   ................................
@@ -266,16 +267,16 @@ Stage 4
      B B9 (flep_ipv4_classifier_0$gw, flep_ipv6_classifier_0$gw)
      C H28 (flep_processing_0)
      D W10 (flep_ipv4_classifier_0, flep_ipv6_classifier_0)
-     E W11 (flep_ipv6_classifier_0)
+     E W11 (flep_ipv4_classifier_0, flep_ipv6_classifier_0)
      F W12 (flep_ipv6_classifier_0)
      G W13 (flep_ipv6_classifier_0)
      H W14 (flep_ipv6_classifier_0)
      I W15 (flep_ipv6_classifier_0)
-     J W2 (tbl_flep_encap286$salu)
-     K W3 (tbl_flep_encap256$salu)
-     L W32 (flep_ipv6_classifier_0)
-     M W5 (tbl_flep_encap256$hash_dist0, tbl_flep_encap271$hash_dist0, tbl_flep_encap271$salu, tbl_flep_encap286$hash_dist0)
-     N W8 (flep_ipv4_classifier_0, flep_ipv6_classifier_0)
+     J W3 (tbl_flep_encap286$salu)
+     K W32 (flep_ipv6_classifier_0)
+     L W33 (flep_ipv6_classifier_0)
+     M W4 (tbl_flep_encap256$salu)
+     N W6 (tbl_flep_encap256$hash_dist0, tbl_flep_encap271$hash_dist0, tbl_flep_encap271$salu, tbl_flep_encap286$hash_dist0)
      O W9 (flep_ipv4_classifier_0, flep_ipv6_classifier_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: 1 -1)
   AAAA ............  A0001  ... ................................................
@@ -330,13 +331,13 @@ Stage 4
      Q tbl_flep_encap286$gw
      R tbl_flep_encap286$salu.Ingress.latencydatacache.bw_register
   
-can't place tbl_flep_encap840_0 in stage 4 : dependency on table flep_processing_0
+can't place tbl_flep_encap841_0 in stage 4 : dependency on table flep_processing_0
 can't place ipv4_lpm_0 in stage 4 : dependency on table flep_ipv4_classifier_0
 can't place ipv6_lpm_0 in stage 4 : dependency on table flep_ipv6_classifier_0
 Stage 5
   exact ixbar groups                  ternary ixbar groups
-  B0A0............................  F0C1F2F3C0 F1 C2C3D0D1D2
-  ................................  D3E0E1E2E3 .. F1F2F3F0..
+  B0A0............................  C0D1C2C3D0 C1 D2D3E0E1E2
+  ................................  E3F0F1F2F3 .. C1C2C3C0..
   ................................  .......... .. ..........
   ................................  .......... .. ..........
   ................................  .......... .. ..........
@@ -345,10 +346,10 @@ Stage 5
   ................................
      A B6 (cond-29$gw)
      B B9 (cond-29$gw, ipv4_lpm_0$gw, ipv6_lpm_0$gw, tbl_flep_encap519$gw)
-     C W10 (ipv6_lpm_0)
+     C W10 (ipv4_lpm_0, ipv6_lpm_0)
      D W11 (ipv6_lpm_0)
      E W12 (ipv6_lpm_0)
-     F W9 (ipv4_lpm_0, ipv6_lpm_0)
+     F W13 (ipv6_lpm_0)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   .... ............  .0000  ... ................................................
   .... ............  .0000  ... ................................................
@@ -389,10 +390,11 @@ Stage 5
      G ipv6_lpm_0$tind
      H tbl_flep_encap519$gw
      I tbl_flep_encap519$tind
-     J tbl_flep_encap840_0$tind
+     J tbl_flep_encap841_0$tind
   
-can't place tbl_flep_decapsulation in stage 5 : dependency on table tbl_flep_encap840_0
+can't place tbl_flep_decapsulation in stage 5 : dependency on table tbl_flep_encap841_0
 can't place tbl_recirculate in stage 5 : dependency on table tbl_flep_encap519
+can't place tbl_flep_encap529 in stage 5 : dependency on table tbl_flep_encap519
 Stage 6
   exact ixbar groups                  ternary ixbar groups
   B0B1A0..........................  .......... .. ..........
@@ -404,7 +406,7 @@ Stage 6
   ................................
   ................................
      A B18 (tbl_flep_decapsulation$gw)
-     B H4 (tbl_flep_encap533$gw, tbl_recirculate$gw)
+     B H5 (tbl_flep_encap534$gw, tbl_recirculate$gw)
   hash select bits  Groups  hd  /- hash dist bits --- (Groups: -1 -1)
   .... ............  .0000  ... ................................................
   .... ............  .0000  ... ................................................
@@ -424,8 +426,8 @@ Stage 6
   .... ............         ... ................................................
   
   tc  sb  rb  tib ab  st  srams       mapram  ov  gw pay 2p
-  ..  AE  ..  BF  ..  ..  ..........  ......  ..  AE  ..  .
-  ..  C.  ..  D.  ..  ..  ..........  ......  ..  C.  ..  .
+  ..  AF  ..  CB  ..  ..  ..........  ......  ..  AF  ..  .
+  ..  D.  ..  GE  ..  ..  ..........  ......  ..  D.  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
   ..  ..  ..  ..  ..  ..  ..........  ......  ..  ..  ..  .
@@ -438,12 +440,13 @@ Stage 6
   ..                                                      
      A tbl_flep_decapsulation$gw
      B tbl_flep_decapsulation$tind
-     C tbl_flep_encap533$gw
-     D tbl_flep_encap533$tind
-     E tbl_recirculate$gw
-     F tbl_recirculate$tind
+     C tbl_flep_encap529$tind
+     D tbl_flep_encap534$gw
+     E tbl_flep_encap534$tind
+     F tbl_recirculate$gw
+     G tbl_recirculate$tind
   
-can't place tbl_flep_encap850 in stage 6 : dependency on table tbl_flep_decapsulation
+can't place tbl_flep_encap851 in stage 6 : dependency on table tbl_flep_decapsulation
 can't place tbl_send in stage 6 : dependency on table tbl_recirculate
 Stage 7
   exact ixbar groups                  ternary ixbar groups
@@ -486,7 +489,7 @@ Stage 7
   ..                                                      
   ..                                                      
   ..                                                      
-     A tbl_flep_encap850$tind
-     B tbl_flep_encap852$tind
+     A tbl_flep_encap851$tind
+     B tbl_flep_encap853$tind
      C tbl_send$tind
   

@@ -1,7 +1,7 @@
-# 0 "./sw1/flep_process_with_topo/flep_process.p4"
+# 0 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
 # 0 "<built-in>"
 # 0 "<command-line>"
-# 1 "./sw1/flep_process_with_topo/flep_process.p4"
+# 1 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
 /* -*- P4_16 -*- */
 
 # 1 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/core.p4" 1
@@ -98,7 +98,7 @@ extern bool static_assert(bool check, string message);
 
 /// Like the above but using a default message.
 extern bool static_assert(bool check);
-# 4 "./sw1/flep_process_with_topo/flep_process.p4" 2
+# 4 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4" 2
 # 1 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/tna.p4" 1
 /**
  * Copyright 2013-2024 Intel Corporation.
@@ -1207,14 +1207,14 @@ package MultiParserSwitch<IH0, IM0, EH0, EM0, IH1, IM1, EH1, EM1,
     @optional MultiParserPipeline<IH2, IM2, EH2, EM2> pipe2,
     @optional MultiParserPipeline<IH3, IM3, EH3, EM3> pipe3);
 # 25 "/home/gys/bf-sde-9.13.2/install/share/p4c/p4include/tna.p4" 2
-# 5 "./sw1/flep_process_with_topo/flep_process.p4" 2
+# 5 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4" 2
 
 /*************************************************************************
 
  ************* C O N S T A N T S  A N D   T Y P E S  *******************
 
 **************************************************************************/
-# 9 "./sw1/flep_process_with_topo/flep_process.p4"
+# 9 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
 // for flep
 const bit<16> ETHERTYPE_FLEP = 0x1212; //an unused type, set for FLEP
 
@@ -1232,7 +1232,7 @@ const bit<32> INVALID_KEY = 0xFFFFFFFF;
  ***********************  H E A D E R S  *********************************
 
  *************************************************************************/
-# 25 "./sw1/flep_process_with_topo/flep_process.p4"
+# 25 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
 /*  Define all the headers the program will recognize       */
 /*  The actual sets of headers processed by each gress can differ */
 
@@ -1283,7 +1283,7 @@ header Topoinfo_h{
  **************  I N G R E S S   P R O C E S S I N G   *******************
 
  *************************************************************************/
-# 74 "./sw1/flep_process_with_topo/flep_process.p4"
+# 74 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
   /***********************  H E A D E R S  ************************/
 
 struct my_ingress_headers_t{
@@ -1659,6 +1659,7 @@ control Ingress(
         flep_decapsulation();
       }
     }
+    hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
   }
 }
 
@@ -1686,10 +1687,11 @@ control IngressDeparser(packet_out pkt,
  ****************  E G R E S S   P R O C E S S I N G   *******************
 
  *************************************************************************/
-# 475 "./sw1/flep_process_with_topo/flep_process.p4"
+# 476 "/home/gys/code_latency/flep_process_with_topo/flep_process.p4"
   /***********************  H E A D E R S  ************************/
 
 struct my_egress_headers_t {
+  Ethernet_h ethernet;
 }
 
   /********  G L O B A L   E G R E S S   M E T A D A T A  *********/
@@ -1709,6 +1711,12 @@ parser EgressParser(packet_in pkt,
   /* This is a mandatory state, required by Tofino Architecture */
   state start {
     pkt.extract(eg_intr_md);
+    transition parse_ethernet;
+
+  }
+
+  state parse_ethernet {
+    pkt.extract(hdr.ethernet);
     transition accept;
   }
 }
@@ -1726,7 +1734,7 @@ control Egress(
   inout egress_intrinsic_metadata_for_output_port_t eg_oport_md)
 {
   apply {
-
+    hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
   }
 }
 

@@ -60,12 +60,13 @@ ingress: [29]
         $false: [41]
           tbl_flep_encap519
   cond-31(ingress::hdr.ethernet.ethernetType == 9252; => $true, 1 => $false)
-    $true: [43]
+    $true: [43] 0
       tbl_recirculate
+      tbl_flep_encap529
   cond-32(ingress::hdr.ethernet.ethernetType == 4660; => $true, 1 => $false)
     $true: [44] 0
       tbl_send
-      tbl_flep_encap533
+      tbl_flep_encap534
 egress: [45] 1 11
   cond-33(egress::hdr.flep.$valid == 1; => $true, 1 => $false)
     $true: [46]
@@ -80,7 +81,7 @@ egress: [45] 1 11
             $miss: [47]
               insert_past_key_tbl_0{ T 8+1, 8 0K }
   cond-36(egress::hdr.flep.$valid != 1; => $false, egress::hdr.flep.flags == 0; => $false, 1 => $true)
-    $true: [51] 1 11
+    $true: [51] 1 11 000
       cond-37(egress::hdr.flep.routing_type == 2048; => $true, 1 => $false)
         $true: [52]
           insert_ipv4_label_0{ E 14+3, 16 0K }
@@ -89,25 +90,26 @@ egress: [45] 1 11
           insert_ipv6_label_0{ E 14+3, 16 0K }
       cond-39(egress::hdr.insert.remain_labels_count[7:5] in 0xfe; => $true, egress::hdr.insert.remain_labels_count[7:5] in 0x1 && egress::hdr.insert.remain_labels_count[4:1] in 0xfff8; => $true, 1 => $false)
         $true: [54]
-          tbl_flep_encap830
+          tbl_flep_encap831
         $false: [55]
-            +--tbl_flep_encap833
+            +--tbl_flep_encap834
             0+--flep_processing_0
-            00+--tbl_flep_encap840
-            011+--tbl_flep_encap840_0
+            00+--tbl_flep_encap841
+            011+--tbl_flep_encap841_0
             0111+--cond-40
-            01111+--tbl_flep_encap852
-          tbl_flep_encap833
+            01111+--tbl_flep_encap853
+          tbl_flep_encap834
           flep_processing_0{ E 6+1, 2 0K }
-          tbl_flep_encap840
-          tbl_flep_encap840_0
+          tbl_flep_encap841
+          tbl_flep_encap841_0
           cond-40(egress::hdr.flep.label_depth == 0; => $true, 1 => $false)
             $true: [56] 1
               tbl_flep_decapsulation
-              tbl_flep_encap850
-          tbl_flep_encap852
+              tbl_flep_encap851
+          tbl_flep_encap853
+      tbl_flep_encap855
 
-stage 0, work: [ 4056199, 4075045 ], partly placed 0, placed 0
+stage 0, work: [ 4069759, 4088982 ], partly placed 0, placed 0
     { id=0 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
 fwd_port_0 is not a gateway! Aborting search for merge choices
 try_place_table(fwd_port_0, stage=0)
@@ -166,6 +168,8 @@ try_place_table(cond-33, stage=0)
     Pl vector: is_verify_tbl_0 
   - skipping cond-34 due to in-sequence control dependence on cond-33
   - skipping cond-36 because it depends on cond-33
+    - removing tbl_flep_encap855 from merge list because it depends on cond-33
+    - skipping gateway cond-36 until mergeable tables are available
 found 3 tables that could be placed: [ fwd_port_0, tbl_flep_encap459, is_verify_tbl_0 ]
 Initial best is first table seen: fwd_port_0
 For trial t : tbl_flep_encap459 with best: fwd_port_0
@@ -176,7 +180,7 @@ Adding table:fwd_port_0 in the initial stage option
 Adding table:tbl_flep_encap459 in the initial stage option
 Adding table:is_verify_tbl_0 in the initial stage option
 placing 512 entries of is_verify_tbl_0 ( Egress.is_verify_tbl )  (with gw cond-33, result tag $true) in stage 0(0) FormatType(02)
-stage 0, work: [ 4056199, 4075045 ], partly placed 0, placed 1
+stage 0, work: [ 4069759, 4088982 ], partly placed 0, placed 1
     { id=1 ram=1 tcam=1 mram=0 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
 fwd_port_0 is not a gateway! Aborting search for merge choices
 try_place_table(fwd_port_0, stage=0)
@@ -234,6 +238,8 @@ try_place_table(cond-34, stage=0)
   Table is  placed
     Pl vector: cond-34 
   - skipping cond-36 because it depends on cond-34
+    - removing tbl_flep_encap855 from merge list because it depends on cond-34
+    - skipping gateway cond-36 until mergeable tables are available
 found 3 tables that could be placed: [ fwd_port_0, tbl_flep_encap459, cond-34 ]
 Initial best is first table seen: fwd_port_0
 For trial t : tbl_flep_encap459 with best: fwd_port_0
@@ -241,7 +247,7 @@ For trial t : tbl_flep_encap459 with best: fwd_port_0
 For trial t : cond-34 with best: tbl_flep_encap459
     Keeping best tbl_flep_encap459 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap459 ( tbl_flep_encap459 )  (with gw cond-21, result tag $true) in stage 0(1) FormatType(02)
-stage 0, work: [ 4056199, 4075045 ], partly placed 0, placed 2
+stage 0, work: [ 4069759, 4088982 ], partly placed 0, placed 2
     { id=2 ram=1 tcam=1 mram=0 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
 fwd_port_0 is not a gateway! Aborting search for merge choices
 try_place_table(fwd_port_0, stage=0)
@@ -286,12 +292,14 @@ try_place_table(cond-34, stage=0)
   Table is  placed
     Pl vector: cond-34 
   - skipping cond-36 because it depends on cond-34
+    - removing tbl_flep_encap855 from merge list because it depends on cond-34
+    - skipping gateway cond-36 until mergeable tables are available
 found 2 tables that could be placed: [ fwd_port_0, cond-34 ]
 Initial best is first table seen: fwd_port_0
 For trial t : cond-34 with best: fwd_port_0
     Keeping best fwd_port_0 for reason: earlier stage calculated
 placing 5120 entries of fwd_port_0 ( Ingress.fwd_port )  in stage 0(2) FormatType(02)
-stage 0, work: [ 4056199, 4075045 ], partly placed 0, placed 3
+stage 0, work: [ 4069759, 4088982 ], partly placed 0, placed 3
     { id=3 ram=2 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
@@ -335,6 +343,8 @@ try_place_table(cond-34, stage=0)
   Table is  placed
     Pl vector: cond-34 
   - skipping cond-36 because it depends on cond-34
+    - removing tbl_flep_encap855 from merge list because it depends on cond-34
+    - skipping gateway cond-36 until mergeable tables are available
 found 2 tables that could be placed: [ tbl_setfleptopo, cond-34 ]
 Initial best is first table seen: tbl_setfleptopo
 For trial t : cond-34 with best: tbl_setfleptopo
@@ -342,7 +352,7 @@ For trial t : cond-34 with best: tbl_setfleptopo
 Adding table:tbl_setfleptopo in the initial stage option
 Adding table:cond-34 in the initial stage option
 placing 0 entries of cond-34 ( cond-34 )  in stage 1(10) FormatType(02)
-stage 1, work: [ 4056199, 4075474 ], partly placed 0, placed 4
+stage 1, work: [ 4069759, 4089411 ], partly placed 0, placed 4
     { id=0 ram=0 tcam=0 mram=0 eixb=1 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
@@ -406,7 +416,7 @@ For trial t : insert_key_tbl_0 with best: tbl_setfleptopo
 For trial t : key_match_tbl_0 with best: insert_key_tbl_0
     Keeping best insert_key_tbl_0 for reason: longer downward prop control-included dependence tail chain
 placing 512 entries of insert_key_tbl_0 ( Egress.insert_key_tbl )  (with gw cond-35, result tag $false) in stage 1(11) FormatType(02)
-stage 1, work: [ 4056199, 4075470, 4075468 ], partly placed 0, placed 5
+stage 1, work: [ 4069759, 4089407, 4089405 ], partly placed 0, placed 5
     { id=1 ram=2 tcam=1 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
@@ -471,7 +481,7 @@ For trial t : key_match_tbl_0 with best: tbl_setfleptopo
 For trial t : insert_past_key_tbl_0 with best: key_match_tbl_0
     Keeping best key_match_tbl_0 for reason: earlier stage calculated
 placing 12288 entries of key_match_tbl_0 ( Egress.key_match_tbl )  in stage 1(12) FormatType(02)
-stage 1, work: [ 4056199, 4075468 ], partly placed 0, placed 6
+stage 1, work: [ 4069759, 4089405 ], partly placed 0, placed 6
     { id=2 ram=6 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
@@ -518,7 +528,7 @@ Initial best is first table seen: tbl_setfleptopo
 For trial t : insert_past_key_tbl_0 with best: tbl_setfleptopo
     Keeping best tbl_setfleptopo for reason: earlier stage calculated
 placing 1 entries of tbl_setfleptopo ( tbl_setfleptopo )  (with gw cond-22, result tag $true) in stage 1(13) FormatType(02)
-stage 1, work: [ 4075468, 4056444, 4057389 ], partly placed 0, placed 7
+stage 1, work: [ 4089405, 4070004, 4070949 ], partly placed 0, placed 7
     { id=3 ram=7 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
 insert_past_key_tbl_0 is not a gateway! Aborting search for merge choices
 try_place_table(insert_past_key_tbl_0, stage=1)
@@ -577,7 +587,7 @@ For trial t : multicast_send_fleptopo_0 with best: insert_past_key_tbl_0
 For trial t : tbl_flep_encap479 with best: insert_past_key_tbl_0
     Updating best to tbl_flep_encap479 from insert_past_key_tbl_0 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap479 ( tbl_flep_encap479 )  (with gw cond-23, result tag $true) in stage 1(14) FormatType(02)
-stage 1, work: [ 4075468, 4056444, 4056675, 4057387 ], partly placed 0, placed 8
+stage 1, work: [ 4089405, 4070004, 4070235, 4070947 ], partly placed 0, placed 8
     { id=4 ram=7 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
 insert_past_key_tbl_0 is not a gateway! Aborting search for merge choices
 try_place_table(insert_past_key_tbl_0, stage=1)
@@ -671,7 +681,7 @@ For trial t : tbl_flep_encap489 with best: insert_past_key_tbl_0
 For trial t : tbl_drop with best: tbl_flep_encap489
     Keeping best tbl_flep_encap489 for reason: longer downward prop control-included dependence tail chain
 placing 1 entries of tbl_flep_encap489 ( tbl_flep_encap489 )  (with gw cond-24, result tag $true) in stage 1(15) FormatType(02)
-stage 1, work: [ 4075468, 4056444, 4056675, 4056846 ], partly placed 0, placed 9
+stage 1, work: [ 4089405, 4070004, 4070235, 4070406 ], partly placed 0, placed 9
     { id=5 ram=7 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
 insert_past_key_tbl_0 is not a gateway! Aborting search for merge choices
 try_place_table(insert_past_key_tbl_0, stage=1)
@@ -771,7 +781,7 @@ For trial t : tbl_flep_encap492 with best: insert_past_key_tbl_0
 For trial t : tbl_drop with best: insert_past_key_tbl_0
     Updating best to tbl_drop from insert_past_key_tbl_0 for reason: earlier stage calculated
 placing 1 entries of tbl_drop ( tbl_drop )  in stage 1(16) FormatType(02)
-stage 1, work: [ 4075468, 4056444, 4056675, 4056846 ], partly placed 0, placed 10
+stage 1, work: [ 4089405, 4070004, 4070235, 4070406 ], partly placed 0, placed 10
     { id=6 ram=7 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
 insert_past_key_tbl_0 is not a gateway! Aborting search for merge choices
 try_place_table(insert_past_key_tbl_0, stage=1)
@@ -859,7 +869,7 @@ Adding table:multicast_send_fleptopo_0 in the initial stage option
 Adding table:tbl_flep_encap481 in the initial stage option
 Adding table:tbl_flep_encap492 in the initial stage option
 placing 512 entries of insert_past_key_tbl_0 ( Egress.insert_past_key_tbl )  in stage 2(20) FormatType(02)
-stage 2, work: [ 4056444, 4056675, 4056846, 4075045 ], partly placed 0, placed 11
+stage 2, work: [ 4070004, 4070235, 4070406, 4088982 ], partly placed 0, placed 11
     { id=1 ram=2 tcam=1 mram=0 eixb=1 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
@@ -918,30 +928,32 @@ try_place_table(tbl_flep_encap492, stage=2)
     - skipping cond-33 as its already done
     - skipping cond-34 as its already done
 try_place_table(cond-36, stage=2)
-    Initial # of stages is 2, initial # of entries is 0
+    Merging with match table tbl_flep_encap855 and tag $true
+    Initial # of stages is 2, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for cond-36 
-  Picking layout option for table : cond-36 with requested entries : 0
-  picked layout for cond-36 FormatType(02) layout: 0gV ixbar:2B/0b match:0B/0b
-  entries:0 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for cond-36 
-  Trying to allocate imem for cond-36 
-  Entries : 0, needed_entries: 0, need_more: 0
+  Trying to allocate layout for tbl_flep_encap855 
+  Picking layout option for table : tbl_flep_encap855 with requested entries : 1
+  picked layout for tbl_flep_encap855 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_encap855 
+  Trying to allocate imem for tbl_flep_encap855 
+  Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 2    Furthest stage: 3
-    try_place_table returning 0 of cond-36 in stage 2
+    try_place_table returning 1 of tbl_flep_encap855 in stage 2
   Table is  placed
-    Pl vector: cond-36 
-found 4 tables that could be placed: [ multicast_send_fleptopo_0, tbl_flep_encap481, tbl_flep_encap492, cond-36 ]
+  Gateway is  placed
+    Pl vector: tbl_flep_encap855 
+found 4 tables that could be placed: [ multicast_send_fleptopo_0, tbl_flep_encap481, tbl_flep_encap492, tbl_flep_encap855 ]
 Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : tbl_flep_encap481 with best: multicast_send_fleptopo_0
     Updating best to tbl_flep_encap481 from multicast_send_fleptopo_0 for reason: longer downward prop control-included dependence tail chain
 For trial t : tbl_flep_encap492 with best: tbl_flep_encap481
     Keeping best tbl_flep_encap481 for reason: longer downward prop control-included dependence tail chain
-For trial t : cond-36 with best: tbl_flep_encap481
-    Updating best to cond-36 from tbl_flep_encap481 for reason: longer downward prop control-included dependence tail chain
-placing 0 entries of cond-36 ( cond-36 )  in stage 2(21) FormatType(02)
-stage 2, work: [ 4056444, 4056675, 4056846, 4075480 ], partly placed 0, placed 12
-    { id=1 ram=2 tcam=1 mram=0 eixb=3 tixb=0 malu=0 salu=0 local_tinds=0 }
+For trial t : tbl_flep_encap855 with best: tbl_flep_encap481
+    Updating best to tbl_flep_encap855 from tbl_flep_encap481 for reason: longer downward prop control-included dependence tail chain
+placing 1 entries of tbl_flep_encap855 ( tbl_flep_encap855 )  (with gw cond-36, result tag $true) in stage 2(21) FormatType(02)
+stage 2, work: [ 4070004, 4070235, 4070406, 4089417 ], partly placed 0, placed 12
+    { id=2 ram=2 tcam=1 mram=0 eixb=1 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
 try_place_table(multicast_send_fleptopo_0, stage=2)
@@ -1017,11 +1029,12 @@ try_place_table(cond-37, stage=2)
     - removing insert_ipv6_label_0 from merge list because it depends on cond-37
     - skipping gateway cond-38 until mergeable tables are available
   - skipping cond-39 because it depends on cond-37
-    - removing tbl_flep_encap833 from merge list because it depends on cond-37
+    - removing tbl_flep_encap834 from merge list because it depends on cond-37
     - removing flep_processing_0 from merge list because it depends on cond-37
-    - removing tbl_flep_encap840 from merge list because it depends on cond-37
-    - removing tbl_flep_encap830 from merge list because it depends on cond-37
+    - removing tbl_flep_encap841 from merge list because it depends on cond-37
+    - removing tbl_flep_encap831 from merge list because it depends on cond-37
     - skipping gateway cond-39 until mergeable tables are available
+    - skipping tbl_flep_encap855 as its already done
 found 4 tables that could be placed: [ multicast_send_fleptopo_0, tbl_flep_encap481, tbl_flep_encap492, insert_ipv4_label_0 ]
 Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : tbl_flep_encap481 with best: multicast_send_fleptopo_0
@@ -1031,8 +1044,8 @@ For trial t : tbl_flep_encap492 with best: tbl_flep_encap481
 For trial t : insert_ipv4_label_0 with best: tbl_flep_encap481
     Updating best to insert_ipv4_label_0 from tbl_flep_encap481 for reason: longer downward prop control-included dependence tail chain
 placing 4096 entries of insert_ipv4_label_0 ( Egress.insert_ipv4_label )  (with gw cond-37, result tag $true) in stage 2(22) FormatType(02)
-stage 2, work: [ 4056444, 4056675, 4056846, 4075480 ], partly placed 0, placed 13
-    { id=2 ram=8 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 2, work: [ 4070004, 4070235, 4070406, 4089417 ], partly placed 0, placed 13
+    { id=3 ram=8 tcam=1 mram=0 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
 try_place_table(multicast_send_fleptopo_0, stage=2)
@@ -1107,11 +1120,12 @@ try_place_table(cond-38, stage=2)
   Gateway is  placed
     Pl vector: insert_ipv6_label_0 
   - skipping cond-39 because it depends on cond-38
-    - removing tbl_flep_encap833 from merge list because it depends on cond-38
+    - removing tbl_flep_encap834 from merge list because it depends on cond-38
     - removing flep_processing_0 from merge list because it depends on cond-38
-    - removing tbl_flep_encap840 from merge list because it depends on cond-38
-    - removing tbl_flep_encap830 from merge list because it depends on cond-38
+    - removing tbl_flep_encap841 from merge list because it depends on cond-38
+    - removing tbl_flep_encap831 from merge list because it depends on cond-38
     - skipping gateway cond-39 until mergeable tables are available
+    - skipping tbl_flep_encap855 as its already done
 found 4 tables that could be placed: [ multicast_send_fleptopo_0, tbl_flep_encap481, tbl_flep_encap492, insert_ipv6_label_0 ]
 Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : tbl_flep_encap481 with best: multicast_send_fleptopo_0
@@ -1121,8 +1135,8 @@ For trial t : tbl_flep_encap492 with best: tbl_flep_encap481
 For trial t : insert_ipv6_label_0 with best: tbl_flep_encap481
     Keeping best tbl_flep_encap481 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap481 ( tbl_flep_encap481 )  in stage 2(23) FormatType(02)
-stage 2, work: [ 4056444, 4056846, 4075480 ], partly placed 0, placed 14
-    { id=3 ram=8 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 2, work: [ 4070004, 4070406, 4089417 ], partly placed 0, placed 14
+    { id=4 ram=8 tcam=1 mram=0 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
 try_place_table(multicast_send_fleptopo_0, stage=2)
@@ -1181,11 +1195,12 @@ try_place_table(cond-38, stage=2)
   Gateway is  placed
     Pl vector: insert_ipv6_label_0 
   - skipping cond-39 because it depends on cond-38
-    - removing tbl_flep_encap833 from merge list because it depends on cond-38
+    - removing tbl_flep_encap834 from merge list because it depends on cond-38
     - removing flep_processing_0 from merge list because it depends on cond-38
-    - removing tbl_flep_encap840 from merge list because it depends on cond-38
-    - removing tbl_flep_encap830 from merge list because it depends on cond-38
+    - removing tbl_flep_encap841 from merge list because it depends on cond-38
+    - removing tbl_flep_encap831 from merge list because it depends on cond-38
     - skipping gateway cond-39 until mergeable tables are available
+    - skipping tbl_flep_encap855 as its already done
 found 3 tables that could be placed: [ multicast_send_fleptopo_0, tbl_flep_encap492, insert_ipv6_label_0 ]
 Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : tbl_flep_encap492 with best: multicast_send_fleptopo_0
@@ -1193,8 +1208,8 @@ For trial t : tbl_flep_encap492 with best: multicast_send_fleptopo_0
 For trial t : insert_ipv6_label_0 with best: tbl_flep_encap492
     Keeping best tbl_flep_encap492 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap492 ( tbl_flep_encap492 )  in stage 2(24) FormatType(02)
-stage 2, work: [ 4056444, 4056846, 4075480 ], partly placed 0, placed 15
-    { id=4 ram=8 tcam=1 mram=0 eixb=6 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 2, work: [ 4070004, 4070406, 4089417 ], partly placed 0, placed 15
+    { id=5 ram=8 tcam=1 mram=0 eixb=4 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_setfleptopo as its already done
 multicast_send_fleptopo_0 is not a gateway! Aborting search for merge choices
 try_place_table(multicast_send_fleptopo_0, stage=2)
@@ -1255,11 +1270,12 @@ try_place_table(cond-38, stage=2)
   Gateway is  placed
     Pl vector: insert_ipv6_label_0 
   - skipping cond-39 because it depends on cond-38
-    - removing tbl_flep_encap833 from merge list because it depends on cond-38
+    - removing tbl_flep_encap834 from merge list because it depends on cond-38
     - removing flep_processing_0 from merge list because it depends on cond-38
-    - removing tbl_flep_encap840 from merge list because it depends on cond-38
-    - removing tbl_flep_encap830 from merge list because it depends on cond-38
+    - removing tbl_flep_encap841 from merge list because it depends on cond-38
+    - removing tbl_flep_encap831 from merge list because it depends on cond-38
     - skipping gateway cond-39 until mergeable tables are available
+    - skipping tbl_flep_encap855 as its already done
 found 3 tables that could be placed: [ multicast_send_fleptopo_0, get_port_index_0, insert_ipv6_label_0 ]
 Initial best is first table seen: multicast_send_fleptopo_0
 For trial t : get_port_index_0 with best: multicast_send_fleptopo_0
@@ -1267,8 +1283,8 @@ For trial t : get_port_index_0 with best: multicast_send_fleptopo_0
 For trial t : insert_ipv6_label_0 with best: multicast_send_fleptopo_0
     Keeping best multicast_send_fleptopo_0 for reason: earlier stage calculated
 placing 3072 entries of multicast_send_fleptopo_0 ( Ingress.multicast_send_fleptopo )  in stage 2(25) FormatType(02)
-stage 2, work: [ 4056846, 4075480 ], partly placed 0, placed 16
-    { id=5 ram=9 tcam=1 mram=0 eixb=7 tixb=0 malu=0 salu=0 local_tinds=0 }
+stage 2, work: [ 4070406, 4089417 ], partly placed 0, placed 16
+    { id=6 ram=9 tcam=1 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
 get_port_index_0 is not a gateway! Aborting search for merge choices
@@ -1312,11 +1328,12 @@ try_place_table(cond-38, stage=2)
   Gateway is  placed
     Pl vector: insert_ipv6_label_0 
   - skipping cond-39 because it depends on cond-38
-    - removing tbl_flep_encap833 from merge list because it depends on cond-38
+    - removing tbl_flep_encap834 from merge list because it depends on cond-38
     - removing flep_processing_0 from merge list because it depends on cond-38
-    - removing tbl_flep_encap840 from merge list because it depends on cond-38
-    - removing tbl_flep_encap830 from merge list because it depends on cond-38
+    - removing tbl_flep_encap841 from merge list because it depends on cond-38
+    - removing tbl_flep_encap831 from merge list because it depends on cond-38
     - skipping gateway cond-39 until mergeable tables are available
+    - skipping tbl_flep_encap855 as its already done
 found 2 tables that could be placed: [ get_port_index_0, insert_ipv6_label_0 ]
 Initial best is first table seen: get_port_index_0
 For trial t : insert_ipv6_label_0 with best: get_port_index_0
@@ -1324,7 +1341,7 @@ For trial t : insert_ipv6_label_0 with best: get_port_index_0
 Adding table:get_port_index_0 in the initial stage option
 Adding table:insert_ipv6_label_0 in the initial stage option
 placing 4096 entries of insert_ipv6_label_0 ( Egress.insert_ipv6_label )  (with gw cond-38, result tag $true) in stage 3(30) FormatType(02)
-stage 3, work: [ 4056846, 4075480 ], partly placed 0, placed 17
+stage 3, work: [ 4070406, 4089417 ], partly placed 0, placed 17
     { id=1 ram=6 tcam=0 mram=0 eixb=3 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1351,18 +1368,18 @@ try_place_table(get_port_index_0, stage=3)
     - skipping cond-37 as its already done
     - skipping cond-38 as its already done
 try_place_table(cond-39, stage=3)
-    Merging with match table tbl_flep_encap833 and tag $false
+    Merging with match table tbl_flep_encap834 and tag $false
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap833 
-  Picking layout option for table : tbl_flep_encap833 with requested entries : 1
-  picked layout for tbl_flep_encap833 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
+  Trying to allocate layout for tbl_flep_encap834 
+  Picking layout option for table : tbl_flep_encap834 with requested entries : 1
+  picked layout for tbl_flep_encap834 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:1
-  Trying to allocate adb for tbl_flep_encap833 
-  Trying to allocate imem for tbl_flep_encap833 
+  Trying to allocate adb for tbl_flep_encap834 
+  Trying to allocate imem for tbl_flep_encap834 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap833 in stage 3
+    try_place_table returning 1 of tbl_flep_encap834 in stage 3
   Table is  placed
   Gateway is  placed
     Merging with match table flep_processing_0 and tag $false
@@ -1381,47 +1398,48 @@ try_place_table(cond-39, stage=3)
     try_place_table returning 20480 of flep_processing_0 in stage 4
   Table is  placed
   Gateway is  placed
-    Merging with match table tbl_flep_encap840 and tag $false
+    Merging with match table tbl_flep_encap841 and tag $false
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840 
-  Picking layout option for table : tbl_flep_encap840 with requested entries : 1
-  picked layout for tbl_flep_encap840 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841 
+  Picking layout option for table : tbl_flep_encap841 with requested entries : 1
+  picked layout for tbl_flep_encap841 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840 
-  Trying to allocate imem for tbl_flep_encap840 
+  Trying to allocate adb for tbl_flep_encap841 
+  Trying to allocate imem for tbl_flep_encap841 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap840 in stage 3
+    try_place_table returning 1 of tbl_flep_encap841 in stage 3
   Table is  placed
   Gateway is  placed
-    Merging with match table tbl_flep_encap830 and tag $true
+    Merging with match table tbl_flep_encap831 and tag $true
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap830 
-  Picking layout option for table : tbl_flep_encap830 with requested entries : 1
-  picked layout for tbl_flep_encap830 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap831 
+  Picking layout option for table : tbl_flep_encap831 with requested entries : 1
+  picked layout for tbl_flep_encap831 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap830 
-  Trying to allocate imem for tbl_flep_encap830 
+  Trying to allocate adb for tbl_flep_encap831 
+  Trying to allocate imem for tbl_flep_encap831 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap830 in stage 3
+    try_place_table returning 1 of tbl_flep_encap831 in stage 3
   Table is  placed
   Gateway is  placed
-    Pl vector: tbl_flep_encap833 flep_processing_0 tbl_flep_encap840 tbl_flep_encap830 
-found 5 tables that could be placed: [ get_port_index_0, tbl_flep_encap833, flep_processing_0, tbl_flep_encap840, tbl_flep_encap830 ]
+    Pl vector: tbl_flep_encap834 flep_processing_0 tbl_flep_encap841 tbl_flep_encap831 
+    - skipping tbl_flep_encap855 as its already done
+found 5 tables that could be placed: [ get_port_index_0, tbl_flep_encap834, flep_processing_0, tbl_flep_encap841, tbl_flep_encap831 ]
 Initial best is first table seen: get_port_index_0
-For trial t : tbl_flep_encap833 with best: get_port_index_0
+For trial t : tbl_flep_encap834 with best: get_port_index_0
     Keeping best get_port_index_0 for reason: longer downward dominance frontier dependence chain
 For trial t : flep_processing_0 with best: get_port_index_0
     Keeping best get_port_index_0 for reason: earlier stage calculated
-For trial t : tbl_flep_encap840 with best: get_port_index_0
+For trial t : tbl_flep_encap841 with best: get_port_index_0
     Keeping best get_port_index_0 for reason: longer downward dominance frontier dependence chain
-For trial t : tbl_flep_encap830 with best: get_port_index_0
+For trial t : tbl_flep_encap831 with best: get_port_index_0
     Keeping best get_port_index_0 for reason: longer downward dominance frontier dependence chain
 placing 20480 entries of get_port_index_0 ( Ingress.get_port_index )  in stage 3(31) FormatType(02)
-stage 3, work: [ 4056846, 4075480 ], partly placed 0, placed 18
+stage 3, work: [ 4070406, 4089417 ], partly placed 0, placed 18
     { id=2 ram=10 tcam=0 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1481,18 +1499,18 @@ try_place_table(tbl_flep_encap286, stage=3)
     - skipping cond-37 as its already done
     - skipping cond-38 as its already done
 try_place_table(cond-39, stage=3)
-    Merging with match table tbl_flep_encap833 and tag $false
+    Merging with match table tbl_flep_encap834 and tag $false
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap833 
-  Picking layout option for table : tbl_flep_encap833 with requested entries : 1
-  picked layout for tbl_flep_encap833 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
+  Trying to allocate layout for tbl_flep_encap834 
+  Picking layout option for table : tbl_flep_encap834 with requested entries : 1
+  picked layout for tbl_flep_encap834 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:1
-  Trying to allocate adb for tbl_flep_encap833 
-  Trying to allocate imem for tbl_flep_encap833 
+  Trying to allocate adb for tbl_flep_encap834 
+  Trying to allocate imem for tbl_flep_encap834 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap833 in stage 3
+    try_place_table returning 1 of tbl_flep_encap834 in stage 3
   Table is  placed
   Gateway is  placed
     Merging with match table flep_processing_0 and tag $false
@@ -1511,51 +1529,52 @@ try_place_table(cond-39, stage=3)
     try_place_table returning 20480 of flep_processing_0 in stage 4
   Table is  placed
   Gateway is  placed
-    Merging with match table tbl_flep_encap840 and tag $false
+    Merging with match table tbl_flep_encap841 and tag $false
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840 
-  Picking layout option for table : tbl_flep_encap840 with requested entries : 1
-  picked layout for tbl_flep_encap840 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841 
+  Picking layout option for table : tbl_flep_encap841 with requested entries : 1
+  picked layout for tbl_flep_encap841 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840 
-  Trying to allocate imem for tbl_flep_encap840 
+  Trying to allocate adb for tbl_flep_encap841 
+  Trying to allocate imem for tbl_flep_encap841 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap840 in stage 3
+    try_place_table returning 1 of tbl_flep_encap841 in stage 3
   Table is  placed
   Gateway is  placed
-    Merging with match table tbl_flep_encap830 and tag $true
+    Merging with match table tbl_flep_encap831 and tag $true
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap830 
-  Picking layout option for table : tbl_flep_encap830 with requested entries : 1
-  picked layout for tbl_flep_encap830 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap831 
+  Picking layout option for table : tbl_flep_encap831 with requested entries : 1
+  picked layout for tbl_flep_encap831 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap830 
-  Trying to allocate imem for tbl_flep_encap830 
+  Trying to allocate adb for tbl_flep_encap831 
+  Trying to allocate imem for tbl_flep_encap831 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap830 in stage 3
+    try_place_table returning 1 of tbl_flep_encap831 in stage 3
   Table is  placed
   Gateway is  placed
-    Pl vector: tbl_flep_encap833 flep_processing_0 tbl_flep_encap840 tbl_flep_encap830 
-found 7 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap833, flep_processing_0, tbl_flep_encap840, tbl_flep_encap830 ]
+    Pl vector: tbl_flep_encap834 flep_processing_0 tbl_flep_encap841 tbl_flep_encap831 
+    - skipping tbl_flep_encap855 as its already done
+found 7 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap834, flep_processing_0, tbl_flep_encap841, tbl_flep_encap831 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
     Updating best to tbl_flep_encap271 from tbl_flep_encap256 for reason: default choice
 For trial t : tbl_flep_encap286 with best: tbl_flep_encap271
     Updating best to tbl_flep_encap286 from tbl_flep_encap271 for reason: default choice
-For trial t : tbl_flep_encap833 with best: tbl_flep_encap286
-    Updating best to tbl_flep_encap833 from tbl_flep_encap286 for reason: earlier stage calculated
-For trial t : flep_processing_0 with best: tbl_flep_encap833
-    Keeping best tbl_flep_encap833 for reason: earlier stage calculated
-For trial t : tbl_flep_encap840 with best: tbl_flep_encap833
-    Updating best to tbl_flep_encap840 from tbl_flep_encap833 for reason: longer downward prop control-included dependence tail chain
-For trial t : tbl_flep_encap830 with best: tbl_flep_encap840
-    Keeping best tbl_flep_encap840 for reason: longer downward prop control-included dependence tail chain
-placing 1 entries of tbl_flep_encap840 ( tbl_flep_encap840 )  (with gw cond-39, result tag $false) in stage 3(32) FormatType(02)
-stage 3, work: [ 4056846, 4076812, 4076895 ], partly placed 0, placed 19
+For trial t : tbl_flep_encap834 with best: tbl_flep_encap286
+    Updating best to tbl_flep_encap834 from tbl_flep_encap286 for reason: earlier stage calculated
+For trial t : flep_processing_0 with best: tbl_flep_encap834
+    Keeping best tbl_flep_encap834 for reason: earlier stage calculated
+For trial t : tbl_flep_encap841 with best: tbl_flep_encap834
+    Updating best to tbl_flep_encap841 from tbl_flep_encap834 for reason: longer downward prop control-included dependence tail chain
+For trial t : tbl_flep_encap831 with best: tbl_flep_encap841
+    Keeping best tbl_flep_encap841 for reason: longer downward prop control-included dependence tail chain
+placing 1 entries of tbl_flep_encap841 ( tbl_flep_encap841 )  (with gw cond-39, result tag $false) in stage 3(32) FormatType(02)
+stage 3, work: [ 4070406, 4090749, 4090832 ], partly placed 0, placed 19
     { id=3 ram=10 tcam=0 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1612,36 +1631,36 @@ try_place_table(tbl_flep_encap286, stage=3)
   Table is  placed
     Pl vector: tbl_flep_encap286 
     - skipping tbl_drop as its already done
-tbl_flep_encap830 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap830, stage=3)
+tbl_flep_encap831 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap831, stage=3)
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap830 
-  Picking layout option for table : tbl_flep_encap830 with requested entries : 1
-  picked layout for tbl_flep_encap830 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap831 
+  Picking layout option for table : tbl_flep_encap831 with requested entries : 1
+  picked layout for tbl_flep_encap831 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap830 
-  Trying to allocate imem for tbl_flep_encap830 
+  Trying to allocate adb for tbl_flep_encap831 
+  Trying to allocate imem for tbl_flep_encap831 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap830 in stage 3
+    try_place_table returning 1 of tbl_flep_encap831 in stage 3
   Table is  placed
-    Pl vector: tbl_flep_encap830 
-tbl_flep_encap833 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap833, stage=3)
+    Pl vector: tbl_flep_encap831 
+tbl_flep_encap834 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap834, stage=3)
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap833 
-  Picking layout option for table : tbl_flep_encap833 with requested entries : 1
-  picked layout for tbl_flep_encap833 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
+  Trying to allocate layout for tbl_flep_encap834 
+  Picking layout option for table : tbl_flep_encap834 with requested entries : 1
+  picked layout for tbl_flep_encap834 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b adb:2 ov:12 imm:12
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:1
-  Trying to allocate adb for tbl_flep_encap833 
-  Trying to allocate imem for tbl_flep_encap833 
+  Trying to allocate adb for tbl_flep_encap834 
+  Trying to allocate imem for tbl_flep_encap834 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap833 in stage 3
+    try_place_table returning 1 of tbl_flep_encap834 in stage 3
   Table is  placed
-    Pl vector: tbl_flep_encap833 
+    Pl vector: tbl_flep_encap834 
 flep_processing_0 is not a gateway! Aborting search for merge choices
 try_place_table(flep_processing_0, stage=3)
     - dependency between insert_ipv6_label_0 and table advances stage
@@ -1659,24 +1678,24 @@ try_place_table(flep_processing_0, stage=3)
     try_place_table returning 20480 of flep_processing_0 in stage 4
   Table is  placed
     Pl vector: flep_processing_0 
-    - skipping tbl_flep_encap840 as its already done
-  - skipping tbl_flep_encap840_0 due to in-sequence control dependence on flep_processing_0
+    - skipping tbl_flep_encap841 as its already done
+  - skipping tbl_flep_encap841_0 due to in-sequence control dependence on flep_processing_0
   - skipping cond-40 due to in-sequence control dependence on flep_processing_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on flep_processing_0
-found 6 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap830, tbl_flep_encap833, flep_processing_0 ]
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on flep_processing_0
+found 6 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap831, tbl_flep_encap834, flep_processing_0 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
     Updating best to tbl_flep_encap271 from tbl_flep_encap256 for reason: default choice
 For trial t : tbl_flep_encap286 with best: tbl_flep_encap271
     Updating best to tbl_flep_encap286 from tbl_flep_encap271 for reason: default choice
-For trial t : tbl_flep_encap830 with best: tbl_flep_encap286
-    Updating best to tbl_flep_encap830 from tbl_flep_encap286 for reason: earlier stage calculated
-For trial t : tbl_flep_encap833 with best: tbl_flep_encap830
-    Updating best to tbl_flep_encap833 from tbl_flep_encap830 for reason: default choice
-For trial t : flep_processing_0 with best: tbl_flep_encap833
-    Keeping best tbl_flep_encap833 for reason: earlier stage calculated
-placing 1 entries of tbl_flep_encap833 ( tbl_flep_encap833 )  in stage 3(33) FormatType(02)
-stage 3, work: [ 4056846, 4076812, 4076895 ], partly placed 0, placed 20
+For trial t : tbl_flep_encap831 with best: tbl_flep_encap286
+    Updating best to tbl_flep_encap831 from tbl_flep_encap286 for reason: earlier stage calculated
+For trial t : tbl_flep_encap834 with best: tbl_flep_encap831
+    Updating best to tbl_flep_encap834 from tbl_flep_encap831 for reason: default choice
+For trial t : flep_processing_0 with best: tbl_flep_encap834
+    Keeping best tbl_flep_encap834 for reason: earlier stage calculated
+placing 1 entries of tbl_flep_encap834 ( tbl_flep_encap834 )  in stage 3(33) FormatType(02)
+stage 3, work: [ 4070406, 4090749, 4090832 ], partly placed 0, placed 20
     { id=4 ram=10 tcam=0 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1733,22 +1752,22 @@ try_place_table(tbl_flep_encap286, stage=3)
   Table is  placed
     Pl vector: tbl_flep_encap286 
     - skipping tbl_drop as its already done
-tbl_flep_encap830 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap830, stage=3)
+tbl_flep_encap831 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap831, stage=3)
     Initial # of stages is 3, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap830 
-  Picking layout option for table : tbl_flep_encap830 with requested entries : 1
-  picked layout for tbl_flep_encap830 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap831 
+  Picking layout option for table : tbl_flep_encap831 with requested entries : 1
+  picked layout for tbl_flep_encap831 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap830 
-  Trying to allocate imem for tbl_flep_encap830 
+  Trying to allocate adb for tbl_flep_encap831 
+  Trying to allocate imem for tbl_flep_encap831 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 3    Furthest stage: 4
-    try_place_table returning 1 of tbl_flep_encap830 in stage 3
+    try_place_table returning 1 of tbl_flep_encap831 in stage 3
   Table is  placed
-    Pl vector: tbl_flep_encap830 
-    - skipping tbl_flep_encap833 as its already done
+    Pl vector: tbl_flep_encap831 
+    - skipping tbl_flep_encap834 as its already done
 flep_processing_0 is not a gateway! Aborting search for merge choices
 try_place_table(flep_processing_0, stage=3)
     - dependency between insert_ipv6_label_0 and table advances stage
@@ -1766,22 +1785,22 @@ try_place_table(flep_processing_0, stage=3)
     try_place_table returning 20480 of flep_processing_0 in stage 4
   Table is  placed
     Pl vector: flep_processing_0 
-    - skipping tbl_flep_encap840 as its already done
-  - skipping tbl_flep_encap840_0 due to in-sequence control dependence on flep_processing_0
+    - skipping tbl_flep_encap841 as its already done
+  - skipping tbl_flep_encap841_0 due to in-sequence control dependence on flep_processing_0
   - skipping cond-40 due to in-sequence control dependence on flep_processing_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on flep_processing_0
-found 5 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap830, flep_processing_0 ]
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on flep_processing_0
+found 5 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap831, flep_processing_0 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
     Updating best to tbl_flep_encap271 from tbl_flep_encap256 for reason: default choice
 For trial t : tbl_flep_encap286 with best: tbl_flep_encap271
     Updating best to tbl_flep_encap286 from tbl_flep_encap271 for reason: default choice
-For trial t : tbl_flep_encap830 with best: tbl_flep_encap286
-    Updating best to tbl_flep_encap830 from tbl_flep_encap286 for reason: earlier stage calculated
-For trial t : flep_processing_0 with best: tbl_flep_encap830
-    Keeping best tbl_flep_encap830 for reason: earlier stage calculated
-placing 1 entries of tbl_flep_encap830 ( tbl_flep_encap830 )  in stage 3(34) FormatType(02)
-stage 3, work: [ 4056846, 4076895 ], partly placed 0, placed 21
+For trial t : tbl_flep_encap831 with best: tbl_flep_encap286
+    Updating best to tbl_flep_encap831 from tbl_flep_encap286 for reason: earlier stage calculated
+For trial t : flep_processing_0 with best: tbl_flep_encap831
+    Keeping best tbl_flep_encap831 for reason: earlier stage calculated
+placing 1 entries of tbl_flep_encap831 ( tbl_flep_encap831 )  in stage 3(34) FormatType(02)
+stage 3, work: [ 4070406, 4090832 ], partly placed 0, placed 21
     { id=5 ram=10 tcam=0 mram=0 eixb=5 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1838,7 +1857,7 @@ try_place_table(tbl_flep_encap286, stage=3)
   Table is  placed
     Pl vector: tbl_flep_encap286 
     - skipping tbl_drop as its already done
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
 flep_processing_0 is not a gateway! Aborting search for merge choices
 try_place_table(flep_processing_0, stage=3)
     - dependency between insert_ipv6_label_0 and table advances stage
@@ -1856,10 +1875,10 @@ try_place_table(flep_processing_0, stage=3)
     try_place_table returning 20480 of flep_processing_0 in stage 4
   Table is  placed
     Pl vector: flep_processing_0 
-    - skipping tbl_flep_encap840 as its already done
-  - skipping tbl_flep_encap840_0 due to in-sequence control dependence on flep_processing_0
+    - skipping tbl_flep_encap841 as its already done
+  - skipping tbl_flep_encap841_0 due to in-sequence control dependence on flep_processing_0
   - skipping cond-40 due to in-sequence control dependence on flep_processing_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on flep_processing_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on flep_processing_0
 found 4 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, flep_processing_0 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
@@ -1873,7 +1892,7 @@ Adding table:tbl_flep_encap271 in the initial stage option
 Adding table:tbl_flep_encap286 in the initial stage option
 Adding table:flep_processing_0 in the initial stage option
 placing 20480 entries of flep_processing_0 ( Egress.flep_processing )  in stage 4(40) FormatType(02)
-stage 4, work: [ 4056846, 4076895 ], partly placed 0, placed 22
+stage 4, work: [ 4070406, 4090832 ], partly placed 0, placed 22
     { id=1 ram=4 tcam=0 mram=0 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1927,37 +1946,37 @@ try_place_table(tbl_flep_encap286, stage=4)
   Table is  placed
     Pl vector: tbl_flep_encap286 
     - skipping tbl_drop as its already done
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
-found 4 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap840_0 ]
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
+found 4 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap286, tbl_flep_encap841_0 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
     Updating best to tbl_flep_encap271 from tbl_flep_encap256 for reason: default choice
 For trial t : tbl_flep_encap286 with best: tbl_flep_encap271
     Updating best to tbl_flep_encap286 from tbl_flep_encap271 for reason: default choice
-For trial t : tbl_flep_encap840_0 with best: tbl_flep_encap286
+For trial t : tbl_flep_encap841_0 with best: tbl_flep_encap286
     Keeping best tbl_flep_encap286 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap286 ( tbl_flep_encap286 )  in stage 4(41) FormatType(022)
-stage 4, work: [ 4056846, 4076895 ], partly placed 0, placed 23
+stage 4, work: [ 4070406, 4090832 ], partly placed 0, placed 23
     { id=2 ram=6 tcam=0 mram=2 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -1996,35 +2015,35 @@ try_place_table(tbl_flep_encap271, stage=4)
     Pl vector: tbl_flep_encap271 
     - skipping tbl_flep_encap286 as its already done
     - skipping tbl_drop as its already done
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
-found 3 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap840_0 ]
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
+found 3 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap271, tbl_flep_encap841_0 ]
 Initial best is first table seen: tbl_flep_encap256
 For trial t : tbl_flep_encap271 with best: tbl_flep_encap256
     Updating best to tbl_flep_encap271 from tbl_flep_encap256 for reason: default choice
-For trial t : tbl_flep_encap840_0 with best: tbl_flep_encap271
+For trial t : tbl_flep_encap841_0 with best: tbl_flep_encap271
     Keeping best tbl_flep_encap271 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap271 ( tbl_flep_encap271 )  in stage 4(42) FormatType(022)
-stage 4, work: [ 4056846, 4076895 ], partly placed 0, placed 24
+stage 4, work: [ 4070406, 4090832 ], partly placed 0, placed 24
     { id=3 ram=8 tcam=0 mram=4 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_encap489 as its already done
     - skipping tbl_flep_encap492 as its already done
@@ -2048,55 +2067,55 @@ try_place_table(tbl_flep_encap256, stage=4)
     - skipping tbl_flep_encap271 as its already done
     - skipping tbl_flep_encap286 as its already done
     - skipping tbl_drop as its already done
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
-found 2 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap840_0 ]
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
+found 2 tables that could be placed: [ tbl_flep_encap256, tbl_flep_encap841_0 ]
 Initial best is first table seen: tbl_flep_encap256
-For trial t : tbl_flep_encap840_0 with best: tbl_flep_encap256
+For trial t : tbl_flep_encap841_0 with best: tbl_flep_encap256
     Keeping best tbl_flep_encap256 for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap256 ( tbl_flep_encap256 )  in stage 4(43) FormatType(022)
-stage 4, work: [ 4076895, 4056199 ], partly placed 0, placed 25
+stage 4, work: [ 4090832, 4069759 ], partly placed 0, placed 25
     { id=4 ram=10 tcam=0 mram=6 eixb=2 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
     - skipping cond-22 as its already done
@@ -2119,34 +2138,34 @@ try_place_table(cond-25, stage=4)
   - skipping cond-29 due to in-sequence control dependence on cond-25
   - skipping cond-31 due to in-sequence control dependence on cond-25
   - skipping cond-32 due to in-sequence control dependence on cond-25
-found 2 tables that could be placed: [ tbl_flep_encap840_0, flep_ipv4_classifier_0 ]
-Initial best is first table seen: tbl_flep_encap840_0
-For trial t : flep_ipv4_classifier_0 with best: tbl_flep_encap840_0
-    Updating best to flep_ipv4_classifier_0 from tbl_flep_encap840_0 for reason: earlier stage calculated
+found 2 tables that could be placed: [ tbl_flep_encap841_0, flep_ipv4_classifier_0 ]
+Initial best is first table seen: tbl_flep_encap841_0
+For trial t : flep_ipv4_classifier_0 with best: tbl_flep_encap841_0
+    Updating best to flep_ipv4_classifier_0 from tbl_flep_encap841_0 for reason: earlier stage calculated
 placing 512 entries of flep_ipv4_classifier_0 ( Ingress.flep_ipv4_classifier )  (with gw cond-25, result tag $true) in stage 4(44) FormatType(02)
-stage 4, work: [ 4076895, 4057395, 4057987 ], partly placed 0, placed 26
+stage 4, work: [ 4090832, 4070955, 4071547 ], partly placed 0, placed 26
     { id=5 ram=12 tcam=3 mram=6 eixb=19 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
     - skipping flep_ipv4_classifier_0 as its already done
 try_place_table(cond-26, stage=4)
     Merging with match table ipv4_lpm_0 and tag $false
@@ -2181,36 +2200,36 @@ try_place_table(cond-27, stage=4)
   Table is  placed
   Gateway is  placed
     Pl vector: flep_ipv6_classifier_0 
-found 3 tables that could be placed: [ tbl_flep_encap840_0, ipv4_lpm_0, flep_ipv6_classifier_0 ]
-Initial best is first table seen: tbl_flep_encap840_0
-For trial t : ipv4_lpm_0 with best: tbl_flep_encap840_0
-    Keeping best tbl_flep_encap840_0 for reason: longer control-excluded dependence tail chain
-For trial t : flep_ipv6_classifier_0 with best: tbl_flep_encap840_0
-    Updating best to flep_ipv6_classifier_0 from tbl_flep_encap840_0 for reason: earlier stage calculated
+found 3 tables that could be placed: [ tbl_flep_encap841_0, ipv4_lpm_0, flep_ipv6_classifier_0 ]
+Initial best is first table seen: tbl_flep_encap841_0
+For trial t : ipv4_lpm_0 with best: tbl_flep_encap841_0
+    Keeping best tbl_flep_encap841_0 for reason: longer control-excluded dependence tail chain
+For trial t : flep_ipv6_classifier_0 with best: tbl_flep_encap841_0
+    Updating best to flep_ipv6_classifier_0 from tbl_flep_encap841_0 for reason: earlier stage calculated
 placing 512 entries of flep_ipv6_classifier_0 ( Ingress.flep_ipv6_classifier )  (with gw cond-27, result tag $true) in stage 4(45) FormatType(02)
-stage 4, work: [ 4076895, 4057395, 4057693 ], partly placed 0, placed 27
+stage 4, work: [ 4090832, 4070955, 4071253 ], partly placed 0, placed 27
     { id=6 ram=14 tcam=11 mram=6 eixb=60 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-tbl_flep_encap840_0 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap840_0, stage=4)
+    - skipping tbl_flep_encap841 as its already done
+tbl_flep_encap841_0 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap841_0, stage=4)
     - dependency between flep_processing_0 and table advances stage
     Initial # of stages is 5, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap840_0 
-  Picking layout option for table : tbl_flep_encap840_0 with requested entries : 1
-  picked layout for tbl_flep_encap840_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap841_0 
+  Picking layout option for table : tbl_flep_encap841_0 with requested entries : 1
+  picked layout for tbl_flep_encap841_0 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap840_0 
-  Trying to allocate imem for tbl_flep_encap840_0 
+  Trying to allocate adb for tbl_flep_encap841_0 
+  Trying to allocate imem for tbl_flep_encap841_0 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 5    Furthest stage: 5
-    try_place_table returning 1 of tbl_flep_encap840_0 in stage 5
+    try_place_table returning 1 of tbl_flep_encap841_0 in stage 5
   Table is  placed
-    Pl vector: tbl_flep_encap840_0 
-  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap840_0
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on tbl_flep_encap840_0
+    Pl vector: tbl_flep_encap841_0 
+  - skipping cond-40 due to in-sequence control dependence on tbl_flep_encap841_0
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on tbl_flep_encap841_0
     - skipping flep_ipv4_classifier_0 as its already done
 try_place_table(cond-26, stage=4)
     Merging with match table ipv4_lpm_0 and tag $false
@@ -2247,25 +2266,25 @@ try_place_table(cond-28, stage=4)
   Table is  placed
   Gateway is  placed
     Pl vector: ipv6_lpm_0 
-found 3 tables that could be placed: [ tbl_flep_encap840_0, ipv4_lpm_0, ipv6_lpm_0 ]
-Initial best is first table seen: tbl_flep_encap840_0
-For trial t : ipv4_lpm_0 with best: tbl_flep_encap840_0
-    Keeping best tbl_flep_encap840_0 for reason: longer control-excluded dependence tail chain
-For trial t : ipv6_lpm_0 with best: tbl_flep_encap840_0
-    Keeping best tbl_flep_encap840_0 for reason: longer control-excluded dependence tail chain
-Adding table:tbl_flep_encap840_0 in the initial stage option
+found 3 tables that could be placed: [ tbl_flep_encap841_0, ipv4_lpm_0, ipv6_lpm_0 ]
+Initial best is first table seen: tbl_flep_encap841_0
+For trial t : ipv4_lpm_0 with best: tbl_flep_encap841_0
+    Keeping best tbl_flep_encap841_0 for reason: longer control-excluded dependence tail chain
+For trial t : ipv6_lpm_0 with best: tbl_flep_encap841_0
+    Keeping best tbl_flep_encap841_0 for reason: longer control-excluded dependence tail chain
+Adding table:tbl_flep_encap841_0 in the initial stage option
 Adding table:ipv4_lpm_0 in the initial stage option
 Adding table:ipv6_lpm_0 in the initial stage option
-placing 1 entries of tbl_flep_encap840_0 ( tbl_flep_encap840_0 )  in stage 5(50) FormatType(02)
-stage 5, work: [ 4076895, 4057395, 4057693 ], partly placed 0, placed 28
+placing 1 entries of tbl_flep_encap841_0 ( tbl_flep_encap841_0 )  in stage 5(50) FormatType(02)
+stage 5, work: [ 4090832, 4070955, 4071253 ], partly placed 0, placed 28
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=5)
     Merging with match table tbl_flep_decapsulation and tag $true
-    - dependency between tbl_flep_encap840_0 and table advances stage
+    - dependency between tbl_flep_encap841_0 and table advances stage
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
   Trying to allocate layout for tbl_flep_decapsulation 
@@ -2280,7 +2299,7 @@ try_place_table(cond-40, stage=5)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
     - skipping flep_ipv4_classifier_0 as its already done
 try_place_table(cond-26, stage=5)
     Merging with match table ipv4_lpm_0 and tag $false
@@ -2322,15 +2341,15 @@ For trial t : ipv4_lpm_0 with best: tbl_flep_decapsulation
 For trial t : ipv6_lpm_0 with best: ipv4_lpm_0
     Updating best to ipv6_lpm_0 from ipv4_lpm_0 for reason: default choice
 placing 512 entries of ipv6_lpm_0 ( Ingress.ipv6_lpm )  (with gw cond-28, result tag $false) in stage 5(51) FormatType(02)
-stage 5, work: [ 4076895, 4057395 ], partly placed 0, placed 29
+stage 5, work: [ 4090832, 4070955 ], partly placed 0, placed 29
     { id=2 ram=1 tcam=3 mram=0 eixb=16 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=5)
     Merging with match table tbl_flep_decapsulation and tag $true
-    - dependency between tbl_flep_encap840_0 and table advances stage
+    - dependency between tbl_flep_encap841_0 and table advances stage
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
   Trying to allocate layout for tbl_flep_decapsulation 
@@ -2345,7 +2364,7 @@ try_place_table(cond-40, stage=5)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
     - skipping flep_ipv4_classifier_0 as its already done
 try_place_table(cond-26, stage=5)
     Merging with match table ipv4_lpm_0 and tag $false
@@ -2368,15 +2387,15 @@ Initial best is first table seen: tbl_flep_decapsulation
 For trial t : ipv4_lpm_0 with best: tbl_flep_decapsulation
     Updating best to ipv4_lpm_0 from tbl_flep_decapsulation for reason: earlier stage calculated
 placing 512 entries of ipv4_lpm_0 ( Ingress.ipv4_lpm )  (with gw cond-26, result tag $false) in stage 5(52) FormatType(02)
-stage 5, work: [ 4076895, 4056199 ], partly placed 0, placed 30
+stage 5, work: [ 4090832, 4069759 ], partly placed 0, placed 30
     { id=3 ram=2 tcam=4 mram=0 eixb=20 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=5)
     Merging with match table tbl_flep_decapsulation and tag $true
-    - dependency between tbl_flep_encap840_0 and table advances stage
+    - dependency between tbl_flep_encap841_0 and table advances stage
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
   Trying to allocate layout for tbl_flep_decapsulation 
@@ -2391,7 +2410,7 @@ try_place_table(cond-40, stage=5)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
     - skipping cond-22 as its already done
@@ -2417,15 +2436,15 @@ Initial best is first table seen: tbl_flep_decapsulation
 For trial t : cond-29 with best: tbl_flep_decapsulation
     Updating best to cond-29 from tbl_flep_decapsulation for reason: earlier stage calculated
 placing 0 entries of cond-29 ( cond-29 )  in stage 5(53) FormatType(02)
-stage 5, work: [ 4076895, 4058104 ], partly placed 0, placed 31
+stage 5, work: [ 4090832, 4071664 ], partly placed 0, placed 31
     { id=3 ram=2 tcam=4 mram=0 eixb=22 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=5)
     Merging with match table tbl_flep_decapsulation and tag $true
-    - dependency between tbl_flep_encap840_0 and table advances stage
+    - dependency between tbl_flep_encap841_0 and table advances stage
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
   Trying to allocate layout for tbl_flep_decapsulation 
@@ -2440,7 +2459,7 @@ try_place_table(cond-40, stage=5)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
 try_place_table(cond-30, stage=5)
     Merging with match table tbl_flep_encap519 and tag $false
     Initial # of stages is 5, initial # of entries is 1
@@ -2462,15 +2481,15 @@ Initial best is first table seen: tbl_flep_decapsulation
 For trial t : tbl_flep_encap519 with best: tbl_flep_decapsulation
     Updating best to tbl_flep_encap519 from tbl_flep_decapsulation for reason: earlier stage calculated
 placing 1 entries of tbl_flep_encap519 ( tbl_flep_encap519 )  (with gw cond-30, result tag $false) in stage 5(54) FormatType(02)
-stage 5, work: [ 4076895, 4056199 ], partly placed 0, placed 32
+stage 5, work: [ 4090832, 4069759 ], partly placed 0, placed 32
     { id=4 ram=2 tcam=4 mram=0 eixb=22 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=5)
     Merging with match table tbl_flep_decapsulation and tag $true
-    - dependency between tbl_flep_encap840_0 and table advances stage
+    - dependency between tbl_flep_encap841_0 and table advances stage
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
   Trying to allocate layout for tbl_flep_decapsulation 
@@ -2485,7 +2504,7 @@ try_place_table(cond-40, stage=5)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
     - skipping cond-22 as its already done
@@ -2507,24 +2526,42 @@ try_place_table(cond-31, stage=5)
     try_place_table returning 1 of tbl_recirculate in stage 6
   Table is  placed
   Gateway is  placed
-    Pl vector: tbl_recirculate 
+    Merging with match table tbl_flep_encap529 and tag $true
+    - dependency between tbl_flep_encap519 and table advances stage
+    Initial # of stages is 6, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_encap529 
+  Picking layout option for table : tbl_flep_encap529 with requested entries : 1
+  picked layout for tbl_flep_encap529 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_encap529 
+  Trying to allocate imem for tbl_flep_encap529 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 6    Furthest stage: 6
+    try_place_table returning 1 of tbl_flep_encap529 in stage 6
+  Table is  placed
+  Gateway is  placed
+    Pl vector: tbl_recirculate tbl_flep_encap529 
   - skipping cond-32 because it depends on cond-31
     - removing tbl_send from merge list because it depends on cond-31
-    - removing tbl_flep_encap533 from merge list because it depends on cond-31
+    - removing tbl_flep_encap534 from merge list because it depends on cond-31
     - skipping gateway cond-32 until mergeable tables are available
-found 2 tables that could be placed: [ tbl_flep_decapsulation, tbl_recirculate ]
+found 3 tables that could be placed: [ tbl_flep_decapsulation, tbl_recirculate, tbl_flep_encap529 ]
 Initial best is first table seen: tbl_flep_decapsulation
 For trial t : tbl_recirculate with best: tbl_flep_decapsulation
     Updating best to tbl_recirculate from tbl_flep_decapsulation for reason: longer downward dominance frontier dependence chain
+For trial t : tbl_flep_encap529 with best: tbl_recirculate
+    Keeping best tbl_recirculate for reason: longer downward prop control-included dependence tail chain
 Adding table:tbl_flep_decapsulation in the initial stage option
 Adding table:tbl_recirculate in the initial stage option
+Adding table:tbl_flep_encap529 in the initial stage option
 placing 1 entries of tbl_recirculate ( tbl_recirculate )  (with gw cond-31, result tag $true) in stage 6(60) FormatType(02)
-stage 6, work: [ 4076895, 4056199 ], partly placed 0, placed 33
+stage 6, work: [ 4090832, 4071670 ], partly placed 0, placed 33
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
 try_place_table(cond-40, stage=6)
     Merging with match table tbl_flep_decapsulation and tag $true
     Initial # of stages is 6, initial # of entries is 1
@@ -2541,53 +2578,87 @@ try_place_table(cond-40, stage=6)
   Table is  placed
   Gateway is  placed
     Pl vector: tbl_flep_decapsulation 
-  - skipping tbl_flep_encap852 due to in-sequence control dependence on cond-40
-    - skipping fwd_port_0 as its already done
-    - skipping cond-21 as its already done
-    - skipping cond-22 as its already done
-    - skipping cond-25 as its already done
-    - skipping cond-29 as its already done
-    - skipping cond-31 as its already done
-try_place_table(cond-32, stage=6)
-    Merging with match table tbl_send and tag $true
-    - dependency between tbl_recirculate and table advances stage
-    Initial # of stages is 7, initial # of entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_send 
-  Picking layout option for table : tbl_send with requested entries : 1
-  picked layout for tbl_send FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
-  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_send 
-  Trying to allocate imem for tbl_send 
-  Entries : 1, needed_entries: 1, need_more: 0
-    Selected stage: 7    Furthest stage: 7
-    try_place_table returning 1 of tbl_send in stage 7
-  Table is  placed
-  Gateway is  placed
-    Merging with match table tbl_flep_encap533 and tag $true
+  - skipping tbl_flep_encap853 due to in-sequence control dependence on cond-40
+    - skipping tbl_recirculate as its already done
+tbl_flep_encap529 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap529, stage=6)
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap533 
-  Picking layout option for table : tbl_flep_encap533 with requested entries : 1
-  picked layout for tbl_flep_encap533 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap529 
+  Picking layout option for table : tbl_flep_encap529 with requested entries : 1
+  picked layout for tbl_flep_encap529 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap533 
-  Trying to allocate imem for tbl_flep_encap533 
+  Trying to allocate adb for tbl_flep_encap529 
+  Trying to allocate imem for tbl_flep_encap529 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 6    Furthest stage: 7
-    try_place_table returning 1 of tbl_flep_encap533 in stage 6
+    try_place_table returning 1 of tbl_flep_encap529 in stage 6
   Table is  placed
-  Gateway is  placed
-    Pl vector: tbl_send tbl_flep_encap533 
-found 3 tables that could be placed: [ tbl_flep_decapsulation, tbl_send, tbl_flep_encap533 ]
+    Pl vector: tbl_flep_encap529 
+found 2 tables that could be placed: [ tbl_flep_decapsulation, tbl_flep_encap529 ]
 Initial best is first table seen: tbl_flep_decapsulation
-For trial t : tbl_send with best: tbl_flep_decapsulation
-    Keeping best tbl_flep_decapsulation for reason: earlier stage calculated
-For trial t : tbl_flep_encap533 with best: tbl_flep_decapsulation
+For trial t : tbl_flep_encap529 with best: tbl_flep_decapsulation
     Keeping best tbl_flep_decapsulation for reason: longer downward prop control-included dependence tail chain
 placing 1 entries of tbl_flep_decapsulation ( tbl_flep_decapsulation )  (with gw cond-40, result tag $true) in stage 6(61) FormatType(02)
-stage 6, work: [ 4056199, 4077252 ], partly placed 0, placed 34
+stage 6, work: [ 4071670, 4091189 ], partly placed 0, placed 34
     { id=2 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping tbl_recirculate as its already done
+tbl_flep_encap529 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap529, stage=6)
+    Initial # of stages is 6, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_encap529 
+  Picking layout option for table : tbl_flep_encap529 with requested entries : 1
+  picked layout for tbl_flep_encap529 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_encap529 
+  Trying to allocate imem for tbl_flep_encap529 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 6    Furthest stage: 7
+    try_place_table returning 1 of tbl_flep_encap529 in stage 6
+  Table is  placed
+    Pl vector: tbl_flep_encap529 
+    - skipping tbl_flep_decapsulation as its already done
+tbl_flep_encap851 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap851, stage=6)
+    - dependency between tbl_flep_decapsulation and table advances stage
+    Initial # of stages is 7, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_encap851 
+  Picking layout option for table : tbl_flep_encap851 with requested entries : 1
+  picked layout for tbl_flep_encap851 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_encap851 
+  Trying to allocate imem for tbl_flep_encap851 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 7    Furthest stage: 7
+    try_place_table returning 1 of tbl_flep_encap851 in stage 7
+  Table is  placed
+    Pl vector: tbl_flep_encap851 
+found 2 tables that could be placed: [ tbl_flep_encap529, tbl_flep_encap851 ]
+Initial best is first table seen: tbl_flep_encap529
+For trial t : tbl_flep_encap851 with best: tbl_flep_encap529
+    Keeping best tbl_flep_encap529 for reason: earlier stage calculated
+placing 1 entries of tbl_flep_encap529 ( tbl_flep_encap529 )  in stage 6(62) FormatType(02)
+stage 6, work: [ 4091189, 4069759 ], partly placed 0, placed 35
+    { id=3 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
+    - skipping tbl_flep_decapsulation as its already done
+tbl_flep_encap851 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap851, stage=6)
+    - dependency between tbl_flep_decapsulation and table advances stage
+    Initial # of stages is 7, initial # of entries is 1
+  Try_alloc_all for Table use
+  Trying to allocate layout for tbl_flep_encap851 
+  Picking layout option for table : tbl_flep_encap851 with requested entries : 1
+  picked layout for tbl_flep_encap851 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
+  Trying to allocate adb for tbl_flep_encap851 
+  Trying to allocate imem for tbl_flep_encap851 
+  Entries : 1, needed_entries: 1, need_more: 0
+    Selected stage: 7    Furthest stage: 7
+    try_place_table returning 1 of tbl_flep_encap851 in stage 7
+  Table is  placed
+    Pl vector: tbl_flep_encap851 
     - skipping fwd_port_0 as its already done
     - skipping cond-21 as its already done
     - skipping cond-22 as its already done
@@ -2610,64 +2681,47 @@ try_place_table(cond-32, stage=6)
     try_place_table returning 1 of tbl_send in stage 7
   Table is  placed
   Gateway is  placed
-    Merging with match table tbl_flep_encap533 and tag $true
+    Merging with match table tbl_flep_encap534 and tag $true
     Initial # of stages is 6, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap533 
-  Picking layout option for table : tbl_flep_encap533 with requested entries : 1
-  picked layout for tbl_flep_encap533 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap534 
+  Picking layout option for table : tbl_flep_encap534 with requested entries : 1
+  picked layout for tbl_flep_encap534 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap533 
-  Trying to allocate imem for tbl_flep_encap533 
+  Trying to allocate adb for tbl_flep_encap534 
+  Trying to allocate imem for tbl_flep_encap534 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 6    Furthest stage: 7
-    try_place_table returning 1 of tbl_flep_encap533 in stage 6
+    try_place_table returning 1 of tbl_flep_encap534 in stage 6
   Table is  placed
   Gateway is  placed
-    Pl vector: tbl_send tbl_flep_encap533 
+    Pl vector: tbl_send tbl_flep_encap534 
+found 3 tables that could be placed: [ tbl_flep_encap851, tbl_send, tbl_flep_encap534 ]
+Initial best is first table seen: tbl_flep_encap851
+For trial t : tbl_send with best: tbl_flep_encap851
+    Keeping best tbl_flep_encap851 for reason: direct control dependency difference
+For trial t : tbl_flep_encap534 with best: tbl_flep_encap851
+    Updating best to tbl_flep_encap534 from tbl_flep_encap851 for reason: earlier stage calculated
+placing 1 entries of tbl_flep_encap534 ( tbl_flep_encap534 )  (with gw cond-32, result tag $true) in stage 6(63) FormatType(02)
+stage 6, work: [ 4091189, 4071806 ], partly placed 0, placed 36
+    { id=4 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_decapsulation as its already done
-tbl_flep_encap850 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap850, stage=6)
+tbl_flep_encap851 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap851, stage=6)
     - dependency between tbl_flep_decapsulation and table advances stage
     Initial # of stages is 7, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap850 
-  Picking layout option for table : tbl_flep_encap850 with requested entries : 1
-  picked layout for tbl_flep_encap850 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap851 
+  Picking layout option for table : tbl_flep_encap851 with requested entries : 1
+  picked layout for tbl_flep_encap851 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap850 
-  Trying to allocate imem for tbl_flep_encap850 
+  Trying to allocate adb for tbl_flep_encap851 
+  Trying to allocate imem for tbl_flep_encap851 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 7    Furthest stage: 7
-    try_place_table returning 1 of tbl_flep_encap850 in stage 7
+    try_place_table returning 1 of tbl_flep_encap851 in stage 7
   Table is  placed
-    Pl vector: tbl_flep_encap850 
-found 3 tables that could be placed: [ tbl_send, tbl_flep_encap533, tbl_flep_encap850 ]
-Initial best is first table seen: tbl_send
-For trial t : tbl_flep_encap533 with best: tbl_send
-    Updating best to tbl_flep_encap533 from tbl_send for reason: earlier stage calculated
-For trial t : tbl_flep_encap850 with best: tbl_flep_encap533
-    Keeping best tbl_flep_encap533 for reason: earlier stage calculated
-placing 1 entries of tbl_flep_encap533 ( tbl_flep_encap533 )  (with gw cond-32, result tag $true) in stage 6(62) FormatType(02)
-stage 6, work: [ 4077252, 4058183 ], partly placed 0, placed 35
-    { id=3 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_decapsulation as its already done
-tbl_flep_encap850 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap850, stage=6)
-    - dependency between tbl_flep_decapsulation and table advances stage
-    Initial # of stages is 7, initial # of entries is 1
-  Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap850 
-  Picking layout option for table : tbl_flep_encap850 with requested entries : 1
-  picked layout for tbl_flep_encap850 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
-  entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap850 
-  Trying to allocate imem for tbl_flep_encap850 
-  Entries : 1, needed_entries: 1, need_more: 0
-    Selected stage: 7    Furthest stage: 7
-    try_place_table returning 1 of tbl_flep_encap850 in stage 7
-  Table is  placed
-    Pl vector: tbl_flep_encap850 
+    Pl vector: tbl_flep_encap851 
 tbl_send is not a gateway! Aborting search for merge choices
 try_place_table(tbl_send, stage=6)
     - dependency between tbl_recirculate and table advances stage
@@ -2684,71 +2738,72 @@ try_place_table(tbl_send, stage=6)
     try_place_table returning 1 of tbl_send in stage 7
   Table is  placed
     Pl vector: tbl_send 
-    - skipping tbl_flep_encap533 as its already done
-found 2 tables that could be placed: [ tbl_flep_encap850, tbl_send ]
-Initial best is first table seen: tbl_flep_encap850
-For trial t : tbl_send with best: tbl_flep_encap850
-    Updating best to tbl_send from tbl_flep_encap850 for reason: default choice
-Adding table:tbl_flep_encap850 in the initial stage option
+    - skipping tbl_flep_encap534 as its already done
+found 2 tables that could be placed: [ tbl_flep_encap851, tbl_send ]
+Initial best is first table seen: tbl_flep_encap851
+For trial t : tbl_send with best: tbl_flep_encap851
+    Updating best to tbl_send from tbl_flep_encap851 for reason: default choice
+Adding table:tbl_flep_encap851 in the initial stage option
 Adding table:tbl_send in the initial stage option
 placing 1 entries of tbl_send ( tbl_send )  in stage 7(70) FormatType(02)
-stage 7, work: [ 4077252 ], partly placed 0, placed 36
+stage 7, work: [ 4091189 ], partly placed 0, placed 37
     { id=1 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
     - skipping tbl_flep_decapsulation as its already done
-tbl_flep_encap850 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap850, stage=7)
+tbl_flep_encap851 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap851, stage=7)
     Initial # of stages is 7, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap850 
-  Picking layout option for table : tbl_flep_encap850 with requested entries : 1
-  picked layout for tbl_flep_encap850 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap851 
+  Picking layout option for table : tbl_flep_encap851 with requested entries : 1
+  picked layout for tbl_flep_encap851 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap850 
-  Trying to allocate imem for tbl_flep_encap850 
+  Trying to allocate adb for tbl_flep_encap851 
+  Trying to allocate imem for tbl_flep_encap851 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 7    Furthest stage: 8
-    try_place_table returning 1 of tbl_flep_encap850 in stage 7
+    try_place_table returning 1 of tbl_flep_encap851 in stage 7
   Table is  placed
-    Pl vector: tbl_flep_encap850 
-found 1 tables that could be placed: [ tbl_flep_encap850 ]
-Initial best is first table seen: tbl_flep_encap850
-placing 1 entries of tbl_flep_encap850 ( tbl_flep_encap850 )  in stage 7(71) FormatType(02)
-stage 7, work: [ 4076895 ], partly placed 0, placed 37
+    Pl vector: tbl_flep_encap851 
+found 1 tables that could be placed: [ tbl_flep_encap851 ]
+Initial best is first table seen: tbl_flep_encap851
+placing 1 entries of tbl_flep_encap851 ( tbl_flep_encap851 )  in stage 7(71) FormatType(02)
+stage 7, work: [ 4090832 ], partly placed 0, placed 38
     { id=2 ram=0 tcam=0 mram=0 eixb=0 tixb=0 malu=0 salu=0 local_tinds=0 }
-    - skipping tbl_flep_encap833 as its already done
+    - skipping tbl_flep_encap834 as its already done
     - skipping flep_processing_0 as its already done
-    - skipping tbl_flep_encap840 as its already done
-    - skipping tbl_flep_encap840_0 as its already done
+    - skipping tbl_flep_encap841 as its already done
+    - skipping tbl_flep_encap841_0 as its already done
     - skipping cond-40 as its already done
-tbl_flep_encap852 is not a gateway! Aborting search for merge choices
-try_place_table(tbl_flep_encap852, stage=7)
+tbl_flep_encap853 is not a gateway! Aborting search for merge choices
+try_place_table(tbl_flep_encap853, stage=7)
     Initial # of stages is 7, initial # of entries is 1
   Try_alloc_all for Table use
-  Trying to allocate layout for tbl_flep_encap852 
-  Picking layout option for table : tbl_flep_encap852 with requested entries : 1
-  picked layout for tbl_flep_encap852 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
+  Trying to allocate layout for tbl_flep_encap853 
+  Picking layout option for table : tbl_flep_encap853 with requested entries : 1
+  picked layout for tbl_flep_encap853 FormatType(02) layout: 0V ixbar:0B/0b match:0B/0b
   entries:1 srams:0 local_tinds: 0 maprams:0 tcams:0 afi:0
-  Trying to allocate adb for tbl_flep_encap852 
-  Trying to allocate imem for tbl_flep_encap852 
+  Trying to allocate adb for tbl_flep_encap853 
+  Trying to allocate imem for tbl_flep_encap853 
   Entries : 1, needed_entries: 1, need_more: 0
     Selected stage: 7    Furthest stage: 8
-    try_place_table returning 1 of tbl_flep_encap852 in stage 7
+    try_place_table returning 1 of tbl_flep_encap853 in stage 7
   Table is  placed
-    Pl vector: tbl_flep_encap852 
-found 1 tables that could be placed: [ tbl_flep_encap852 ]
-Initial best is first table seen: tbl_flep_encap852
-placing 1 entries of tbl_flep_encap852 ( tbl_flep_encap852 )  in stage 7(72) FormatType(02)
+    Pl vector: tbl_flep_encap853 
+found 1 tables that could be placed: [ tbl_flep_encap853 ]
+Initial best is first table seen: tbl_flep_encap853
+placing 1 entries of tbl_flep_encap853 ( tbl_flep_encap853 )  in stage 7(72) FormatType(02)
 Adding complete placement for resource mode:0
 Found a complete solution that fit the number of stages required
 Evaluating complete solution with resource:0
 Placement error(s):0 stages required:8
 Updating best final placement with this one
-Table placement placed 38 tables in 8 stages
-  Table tbl_flep_encap852 logical id 0x72 entries=1 stage=7
-  Table tbl_flep_encap850 logical id 0x71 entries=1 stage=7
+Table placement placed 39 tables in 8 stages
+  Table tbl_flep_encap853 logical id 0x72 entries=1 stage=7
+  Table tbl_flep_encap851 logical id 0x71 entries=1 stage=7
   Table tbl_send logical id 0x70 entries=1 stage=7
-  Table tbl_flep_encap533 logical id 0x62 entries=1 stage=6
-  Gateway cond-32 is also logical id 0x62
+  Table tbl_flep_encap534 logical id 0x63 entries=1 stage=6
+  Gateway cond-32 is also logical id 0x63
+  Table tbl_flep_encap529 logical id 0x62 entries=1 stage=6
   Table tbl_flep_decapsulation logical id 0x61 entries=1 stage=6
   Gateway cond-40 is also logical id 0x61
   Table tbl_recirculate logical id 0x60 entries=1 stage=6
@@ -2760,7 +2815,7 @@ Table placement placed 38 tables in 8 stages
   Gateway cond-26 is also logical id 0x52
   Table ipv6_lpm_0 logical id 0x51 entries=512 stage=5
   Gateway cond-28 is also logical id 0x51
-  Table tbl_flep_encap840_0 logical id 0x50 entries=1 stage=5
+  Table tbl_flep_encap841_0 logical id 0x50 entries=1 stage=5
   Table flep_ipv6_classifier_0 logical id 0x45 entries=512 stage=4
   Gateway cond-27 is also logical id 0x45
   Table flep_ipv4_classifier_0 logical id 0x44 entries=512 stage=4
@@ -2772,9 +2827,9 @@ Table placement placed 38 tables in 8 stages
   Table tbl_flep_encap286 logical id 0x41 entries=1 stage=4
     attached table Ingress.latencydatacache.bw_register entries=128
   Table flep_processing_0 logical id 0x40 entries=20480 stage=4
-  Table tbl_flep_encap830 logical id 0x34 entries=1 stage=3
-  Table tbl_flep_encap833 logical id 0x33 entries=1 stage=3
-  Table tbl_flep_encap840 logical id 0x32 entries=1 stage=3
+  Table tbl_flep_encap831 logical id 0x34 entries=1 stage=3
+  Table tbl_flep_encap834 logical id 0x33 entries=1 stage=3
+  Table tbl_flep_encap841 logical id 0x32 entries=1 stage=3
   Gateway cond-39 is also logical id 0x32
   Table get_port_index_0 logical id 0x31 entries=20480 stage=3
   Table insert_ipv6_label_0 logical id 0x30 entries=4096 stage=3
@@ -2784,7 +2839,8 @@ Table placement placed 38 tables in 8 stages
   Table tbl_flep_encap481 logical id 0x23 entries=1 stage=2
   Table insert_ipv4_label_0 logical id 0x22 entries=4096 stage=2
   Gateway cond-37 is also logical id 0x22
-  Table cond-36 logical id 0x21 entries=0 stage=2
+  Table tbl_flep_encap855 logical id 0x21 entries=1 stage=2
+  Gateway cond-36 is also logical id 0x21
   Table insert_past_key_tbl_0 logical id 0x20 entries=512 stage=2
   Table tbl_drop logical id 0x16 entries=1 stage=1
   Table tbl_flep_encap489 logical id 0x15 entries=1 stage=1
@@ -2829,8 +2885,9 @@ folding gateway cond-30 onto tbl_flep_encap519
   Adding Ternary Indirect table to tbl_flep_encap519
 folding gateway cond-31 onto tbl_recirculate
   Adding Ternary Indirect table to tbl_recirculate
-folding gateway cond-32 onto tbl_flep_encap533
-  Adding Ternary Indirect table to tbl_flep_encap533
+  Adding Ternary Indirect table to tbl_flep_encap529
+folding gateway cond-32 onto tbl_flep_encap534
+  Adding Ternary Indirect table to tbl_flep_encap534
   Adding Ternary Indirect table to tbl_send
 folding gateway cond-33 onto is_verify_tbl_0
   Adding Ternary Indirect table to is_verify_tbl_0
@@ -2839,19 +2896,21 @@ folding gateway cond-35 onto insert_key_tbl_0
   Adding Action Data Table to insert_key_tbl_0
   Adding Ternary Indirect table to insert_past_key_tbl_0
   Adding Action Data Table to insert_past_key_tbl_0
+folding gateway cond-36 onto tbl_flep_encap855
+  Adding Ternary Indirect table to tbl_flep_encap855
 folding gateway cond-37 onto insert_ipv4_label_0
   Adding Action Data Table to insert_ipv4_label_0
 folding gateway cond-38 onto insert_ipv6_label_0
   Adding Action Data Table to insert_ipv6_label_0
-folding gateway cond-39 onto tbl_flep_encap840
-  Adding Ternary Indirect table to tbl_flep_encap840
-  Adding Ternary Indirect table to tbl_flep_encap830
-  Adding Ternary Indirect table to tbl_flep_encap833
-  Adding Ternary Indirect table to tbl_flep_encap840_0
+folding gateway cond-39 onto tbl_flep_encap841
+  Adding Ternary Indirect table to tbl_flep_encap841
+  Adding Ternary Indirect table to tbl_flep_encap831
+  Adding Ternary Indirect table to tbl_flep_encap834
+  Adding Ternary Indirect table to tbl_flep_encap841_0
 folding gateway cond-40 onto tbl_flep_decapsulation
   Adding Ternary Indirect table to tbl_flep_decapsulation
-  Adding Ternary Indirect table to tbl_flep_encap850
-  Adding Ternary Indirect table to tbl_flep_encap852
+  Adding Ternary Indirect table to tbl_flep_encap851
+  Adding Ternary Indirect table to tbl_flep_encap853
 table placement completed pipe
 ingress: [29]
     +--tbl_flep_encap459
@@ -2860,7 +2919,7 @@ ingress: [29]
     000+--flep_ipv4_classifier_0
     0000+--cond-29
     00000+--tbl_recirculate
-    000000+--tbl_flep_encap533
+    000000+--tbl_flep_encap534
   1: tbl_flep_encap459(ingress::hdr.ethernet.ethernetType == 6425;, 1 => $false)
     $false: [57]
   2: fwd_port_0{ E -1+10, 2 [1x5 5K] }
@@ -2905,8 +2964,10 @@ ingress: [29]
       54: tbl_flep_encap519(ingress::hdr.insert.$valid == 1; => $true, 1)
         $true: [62]
   60: tbl_recirculate(ingress::hdr.ethernet.ethernetType == 9252;, 1 => $false){ GE 0+7, 4 0K }
+    $default: [43]
+      62: tbl_flep_encap529
     $false: [63]
-  62: tbl_flep_encap533(ingress::hdr.ethernet.ethernetType == 4660;, 1 => $false)
+  63: tbl_flep_encap534(ingress::hdr.ethernet.ethernetType == 4660;, 1 => $false)
     $default: [44]
       70: tbl_send
     $false: [64]
@@ -2920,22 +2981,23 @@ egress: [45] 0 00
           12: key_match_tbl_0{ E 30+1, 0 [1x3 3K 3K 3K 3K] }
         $miss: [47]
           20: insert_past_key_tbl_0{ T 8+1, 8 0K }
-  21: cond-36(egress::hdr.flep.$valid != 1; => $false, egress::hdr.flep.flags == 0; => $false, 1 => $true)
-    $true: [51] 0 00
+  21: tbl_flep_encap855(egress::hdr.flep.$valid != 1; => $false, egress::hdr.flep.flags == 0; => $false, 1)
+    $default: [51] 0 00
       22: insert_ipv4_label_0(egress::hdr.flep.routing_type == 2048;, 1 => $false){ GE 14+19, 10 [1x1 1K 1K 1K 1K] }
-        $false: [66]
-      30: insert_ipv6_label_0(egress::hdr.flep.routing_type == 34525;, 1 => $false){ GE 14+19, 10 [1x1 1K 1K 1K 1K] }
         $false: [67]
-      32: tbl_flep_encap840(egress::hdr.insert.remain_labels_count[7:5] in 0xfe; => $true, egress::hdr.insert.remain_labels_count[7:5] in 0x1 && egress::hdr.insert.remain_labels_count[4:1] in 0xfff8; => $true, 1)
+      30: insert_ipv6_label_0(egress::hdr.flep.routing_type == 34525;, 1 => $false){ GE 14+19, 10 [1x1 1K 1K 1K 1K] }
+        $false: [68]
+      32: tbl_flep_encap841(egress::hdr.insert.remain_labels_count[7:5] in 0xfe; => $true, egress::hdr.insert.remain_labels_count[7:5] in 0x1 && egress::hdr.insert.remain_labels_count[4:1] in 0xfff8; => $true, 1)
         $true: [54]
-          34: tbl_flep_encap830
+          34: tbl_flep_encap831
         $default: [55] 0 00 000 0000
-          33: tbl_flep_encap833{ E 0+12, 2 0K }
+          33: tbl_flep_encap834{ E 0+12, 2 0K }
           40: flep_processing_0{ E 6+10, 2 [1x5 5K 5K 5K 5K] }
-          50: tbl_flep_encap840_0
+          50: tbl_flep_encap841_0
           61: tbl_flep_decapsulation(egress::hdr.flep.label_depth == 0;, 1 => $false)
             $default: [56]
-              71: tbl_flep_encap850
-            $false: [68]
-          72: tbl_flep_encap852
+              71: tbl_flep_encap851
+            $false: [69]
+          72: tbl_flep_encap853
+    $false: [66]
 

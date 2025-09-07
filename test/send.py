@@ -1,9 +1,9 @@
-from scapy.all import IP, TCP, UDP, send
+from scapy.all import IP, TCP, UDP, Ether, sendp  # 导入Ether和sendp
 import time
 
 def send_packets(data, count=1, interval=0.1, iface=None):
     """
-    发送指定数量的数据包
+    发送指定数量的数据包，优化网卡指定方式
     
     参数:
         data: 包含网络参数的字典
@@ -30,17 +30,18 @@ def send_packets(data, count=1, interval=0.1, iface=None):
     else:
         raise ValueError(f"不支持的协议: {tp}，仅支持tcp和udp")
     
-    # 构建数据包
-    packet = ip / transport
+    # 构建数据包（添加以太网层，使sendp更可靠）
+    # 注意：如果不指定src/dst MAC，Scapy会自动填充
+    packet = Ether() / ip / transport
     print(f"准备发送{count}个{tp}包: {ipv4_src}:{src_port} -> {ipv4_dst}:{dst_port}")
     packet.show()
     
-    # 发送指定数量的数据包
+    # 发送指定数量的数据包（使用sendp替代send，更适合指定网卡）
     for i in range(count):
-        # 传入 iface 参数
-        send(packet, verbose=0, iface=iface)
+        # 发送二层数据包，iface参数在这里更可靠
+        sendp(packet, verbose=0, iface=iface)
         print(f"已发送第{i+1}/{count}个包")
-        if i < count - 1:  # 最后一个包不需要间隔
+        if i < count - 1:
             time.sleep(interval)
 
 # 测试数据
@@ -48,11 +49,10 @@ default_data = {
     "ipv4_src": "10.1.1.2",
     "ipv4_dst": "10.2.2.2",
     "tp": "tcp",
-    "tp_src": "1145",
+    "tp_src": "2001",
     "tp_dst": "2002",
 }
 
 if __name__ == "__main__":
-    # 请将 'your_interface_name' 替换为实际网卡名称，例如 'eth0' 或 'enp0s3'
-    # 发送100个数据包，间隔0.01秒，并指定网卡
-    send_packets(default_data, count=100, interval=0.01, iface='enp0s3')
+    # 指定网卡发送（请替换为实际网卡名称）
+    send_packets(default_data, count=100, interval=0.01, iface='veth1')
