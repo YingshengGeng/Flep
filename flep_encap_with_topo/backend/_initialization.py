@@ -11,7 +11,7 @@ switch_index = sys.argv[1]
 FILE_INTERVAL = '\\' if os.name == 'nt' else '/'
 FILE_PATH = sys.path[0] + FILE_INTERVAL
 f = open(FILE_PATH + 'configuration.yml', 'r')
-content = yaml.load(f.read())
+content = yaml.safe_load(f.read())
 f.close()
 P4_NAME = content['P4_NAME']
 
