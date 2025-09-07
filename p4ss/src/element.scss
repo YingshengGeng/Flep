@@ -1,0 +1,40 @@
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'white': #fff,
+    'black': #222,
+    'primary': (
+      'base': #0059e5
+    ),
+    'success': (
+      'base': #67c23a
+    ),
+    'warning': (
+      'base': #e89e00
+    ),
+    'danger': (
+      'base': #e800cd
+    ),
+    'error': (
+      'base': #e80000
+    ),
+    'info': (
+      'base': #909399
+    )
+  )
+);
+
+@use 'element-plus/theme-chalk/src/index.scss' as *;
+
+.el-pagination {
+  button,
+  .el-pager li {
+    margin-left: 6px;
+    border-radius: 10px !important;
+    background-color: #fff;
+
+    &.is-active {
+      background-color: #0059e5 !important;
+      color: #fff !important;
+    }
+  }
+}

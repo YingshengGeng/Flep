@@ -45,7 +45,7 @@ SERVER_PORT = parameter["SOUTHBOUND_SERVER_PORT"]
 
 PORT_LIST_INDEX = parameter["PORT_LIST" + "_" + str(args.switch_index)]
 PORT_LIST_FOR_MC = list(PORT_LIST_INDEX.keys())
-
+REVERSE_PORT_LIST_INDEX = {str(v): str(k) for k, v in PORT_LIST_INDEX.items()}
 LOCAL_LABEL = parameter["LOCAL_LABEL" + "_" + str(args.switch_index)]
 
 manager = TOTPManager("flep_encap", DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
@@ -405,13 +405,14 @@ def handle_label_rule(operation):
     # Mark
     para["block_name"] = "Egress"
     para["action"] = "flep_send"
-
+    
     # 根据输入填充其他参数
     for key in parakey:
         if key not in data.keys():
             continue
         para[key] = str(data[key])
-
+    if "port" in para.keys():
+        para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
     table = Table(p4_file_name=p4_file_name)
     ret = False
     if operation == "add":
@@ -474,6 +475,7 @@ def handle_label_rule(operation):
             # 4.1 if port exists, reconstruct it
             if temp_port is not None:
                 data["port"] = temp_port
+
             for key in data.keys():
                 if key in previous_data.keys():
                     previous_data[key] = data[key]
@@ -481,7 +483,7 @@ def handle_label_rule(operation):
             # 5. add the new rule
             para["action"] = "flep_send"
             para["label"] = str(previous_data["label"])
-            para["port"] = str(previous_data["port"])
+            para["port"] = REVERSE_PORT_LIST_INDEX[str(previous_data["port"])]
             table.table_add(**para)
             ret = table.execute()
             if ret:

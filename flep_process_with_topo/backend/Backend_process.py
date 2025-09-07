@@ -42,7 +42,7 @@ SERVER_PORT = parameter["SOUTHBOUND_SERVER_PORT"]
 
 PORT_LIST_INDEX = parameter["PORT_LIST" + "_" + str(args.switch_index)]
 PORT_LIST_FOR_MC = list(PORT_LIST_INDEX.keys())
-
+REVERSE_PORT_LIST_INDEX = {str(v): str(k) for k, v in PORT_LIST_INDEX.items()}
 LOCAL_LABEL = parameter["LOCAL_LABEL" + "_" + str(args.switch_index)]
 
 manager = TOTPManager("flep_process", DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
@@ -128,7 +128,8 @@ def handle_label_rule(operation):
         if key not in data.keys():
             continue
         para[key] = str(data[key])
-
+    if "port" in para.keys():
+        para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
     table = Table(p4_file_name=p4_file_name)
     ret = False
     if operation == "add":
@@ -175,7 +176,7 @@ def handle_label_rule(operation):
             # 5. add the new rule
             para["action"] = "flep_send"
             para["label"] = str(data["label"])
-            para["port"] = str(data["port"])
+            para["port"] = REVERSE_PORT_LIST_INDEX[str(data["port"])]
             table.table_add(**para)
             ret = table.execute()
             if ret:

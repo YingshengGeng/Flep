@@ -1,0 +1,63 @@
+{
+  "name": "p4ss-vue",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "vite --mode development",
+    "build": "vue-tsc -b && vite build --mode production",
+    "preview": "vite preview",
+    "lint": "prettier --write ./",
+    "commit": "git add . && git-cz"
+  },
+  "dependencies": {
+    "@antv/layout": "^0.3.25",
+    "@antv/x6": "^2.18.1",
+    "@antv/x6-plugin-history": "^2.2.4",
+    "@antv/x6-plugin-keyboard": "^2.2.3",
+    "@antv/x6-plugin-minimap": "^2.0.7",
+    "@antv/x6-plugin-selection": "^2.2.2",
+    "@antv/x6-plugin-snapline": "^2.1.7",
+    "@antv/x6-plugin-stencil": "^2.1.5",
+    "@antv/x6-plugin-transform": "^2.1.8",
+    "@antv/x6-vue-shape": "^2.1.2",
+    "@element-plus/icons-vue": "^2.3.1",
+    "autofit.js": "^3.2.8",
+    "axios": "^1.10.0",
+    "dayjs": "^1.11.13",
+    "element-plus": "^2.10.4",
+    "gsap": "^3.13.0",
+    "pinia": "^3.0.3",
+    "vue": "^3.5.17",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^24.0.15",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "@vue/tsconfig": "^0.7.0",
+    "autoprefixer": "^10.4.21",
+    "commitizen": "^4.3.1",
+    "cz-customizable": "^7.4.0",
+    "daisyui": "^4.12.24",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "sass": "^1.89.2",
+    "tailwindcss": "^3.4.17",
+    "typescript": "~5.8.3",
+    "vite": "^7.0.4",
+    "vite-plugin-compression2": "^2.2.0",
+    "vite-svg-loader": "^5.1.0",
+    "vue-tsc": "^2.2.12"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
+  }
+}
