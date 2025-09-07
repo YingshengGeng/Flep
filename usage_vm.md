@@ -1,3 +1,5 @@
+# 启动网卡
+sudo bash $SDE/tools/vetn_setup.sh
 # 首先获取
 $SDE
 $SDE_INSTALL
@@ -7,9 +9,11 @@ cat $SDE_INSTALL/lib/python{}/site-packages/tofino/bfrt_grpc/
 
 # 编译
 export SDE_INSTALL_DIR=/home/gys/bf-sde-9.13.2/install
-export PROGRAM_DIR=/home/gys/code_latency
+export PROGRAM_DIR=/home/gys/
 
 sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ${PROGRAM_DIR}/flep_encap_with_topo/target/ -g ${PROGRAM_DIR}/flep_encap_with_topo/flep_encap.p4
+
+sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna  -o ${PROGRAM_DIR}/flep_encap_with_topo/target/ -g ${PROGRAM_DIR}/flep_encap_with_topo/flep_encap.p4
 
 sudo cp ${PROGRAM_DIR}/flep_encap_with_topo/target/flep_encap.conf ${SDE_INSTALL_DIR}/share/p4/targets/tofino/
 
