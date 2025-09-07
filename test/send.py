@@ -1,7 +1,7 @@
 from scapy.all import IP, TCP, UDP, send
 import time
 
-def send_packets(data, count=1, interval=0.1):
+def send_packets(data, count=1, interval=0.1, iface=None):
     """
     发送指定数量的数据包
     
@@ -9,6 +9,7 @@ def send_packets(data, count=1, interval=0.1):
         data: 包含网络参数的字典
         count: 发送数量，默认1个
         interval: 包之间的发送间隔（秒），默认0.1秒
+        iface: 发送数据包的网卡接口名称，默认为None（Scapy自动选择）
     """
     # 提取IP地址（忽略子网掩码）
     ipv4_src = data["ipv4_src"].split('/')[0]
@@ -36,7 +37,8 @@ def send_packets(data, count=1, interval=0.1):
     
     # 发送指定数量的数据包
     for i in range(count):
-        send(packet, verbose=0)
+        # 传入 iface 参数
+        send(packet, verbose=0, iface=iface)
         print(f"已发送第{i+1}/{count}个包")
         if i < count - 1:  # 最后一个包不需要间隔
             time.sleep(interval)
@@ -51,5 +53,6 @@ default_data = {
 }
 
 if __name__ == "__main__":
-    # 发送5个数据包，间隔0.2秒
-    send_packets(default_data, count=5, interval=0.2)
+    # 请将 'your_interface_name' 替换为实际网卡名称，例如 'eth0' 或 'enp0s3'
+    # 发送100个数据包，间隔0.01秒，并指定网卡
+    send_packets(default_data, count=100, interval=0.01, iface='enp0s3')

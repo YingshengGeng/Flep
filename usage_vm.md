@@ -1,3 +1,10 @@
+# 首先获取
+$SDE
+$SDE_INSTALL
+uname -a
+cat $SDE_INSTALL/lib/python{}
+cat $SDE_INSTALL/lib/python{}/site-packages/tofino/bfrt_grpc/
+
 # 编译
 export SDE_INSTALL_DIR=/home/gys/bf-sde-9.13.2/install
 export PROGRAM_DIR=/home/gys/
@@ -18,9 +25,6 @@ cd $SDE
 ./run_tofino_model.sh -p 程序名称
 ./run_switchd.sh -p 程序名称
 ./run_bfshell.sh -b 程序名称
-
-
-
 
 # 其他 
 ## config
@@ -69,9 +73,74 @@ python receive.py
 mx h1 
 python send.py 10.2.2.2 1500
 ```
-## 系统环境
+## 系统软件
+### 版本
 uname -m
+#### Debian 11
+cat > /etc/apt/sources.list << EOF
+deb https://mirrors.aliyun.com/debian/ bullseye main contrib non-free
+deb-src https://mirrors.aliyun.com/debian/ bullseye main contrib non-free
+
+deb https://mirrors.aliyun.com/debian/ bullseye-updates main contrib non-free
+deb-src https://mirrors.aliyun.com/debian/ bullseye-updates main contrib non-free
+
+deb https://mirrors.aliyun.com/debian/ bullseye-backports main contrib non-free
+deb-src https://mirrors.aliyun.com/debian/ bullseye-backports main contrib non-free
+
+deb https://mirrors.aliyun.com/debian-security/ bullseye-security main contrib non-free
+deb-src https://mirrors.aliyun.com/debian-security/ bullseye-security main contrib non-free
+EOF
+
+#### Debian 9
+cat <<EOL > multistrap-debian.list
+deb [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch main contrib non-free
+#deb [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch-proposed-updates main non-free contrib
+#deb [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch-backports main non-free contrib
+deb [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian-security stretch/updates main contrib non-free
+deb-src [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch main contrib non-free
+#deb-src [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch-proposed-updates main contrib non-free
+#deb-src [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian stretch-backports main contrib non-free
+deb-src [arch=amd64] https://mirrors.aliyun.com/debian-archive/debian-security stretch/updates main contrib non-free
+EOL
+
+### screen 
+apt install -y screen
+### mysql
+apt update
+apt install -y mysql-server
+apt install -y mariadb-server
+
+echo "Configuring MySQL databases..."
+mysql -u root <<EOF
+CREATE DATABASE IF NOT EXISTS flep_encap_db;
+CREATE DATABASE IF NOT EXISTS flep_db;
+
+USE flep_encap_db;
+SOURCE ./flep_encap_with_topo/tools/encap_database.sql;
+
+USE flep_db;
+SOURCE ./flep_process_with_topo/tools/process_database.sql;
+
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123456');
+USE mysql;
+UPDATE user SET plugin='mysql_native_password' WHERE User='root';
+FLUSH PRIVILEGES;
+EOF
+
+service mysql restart
+
+### Python 软件
+pip3 install requests -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn
+pip3 install flask -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
+pip3 install pymysql==0.9.3 -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
+pip3 install pyotp -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
+pip3 install wheel -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
+pip3 install scapy -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn
+pip3 install PyYAML==5.4.1 -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn
+pip install flask-cors -i https://mirrors.aliyun.com/pypi/simple/
+
 ### 前端依赖
+uname -m
 node-v20.19.1-linux-arm64.tar.gz
 ###Linux
 #替换版本号为实际最新版（如 v20.19.1）
@@ -92,5 +161,4 @@ cd p4ss
 npm install
 npm run build
 npm install -g serve
-s
 serve dist

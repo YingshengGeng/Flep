@@ -81,8 +81,8 @@ def handle_port(operation):
         para["action"] = "send"
         # 将掩码部分从字符串转换为整数
         # ipv4/ipv6地址
-        para["ingress_port"] = str(data["ingress_port"])
-        para["port"] = str(data["port"])
+        para["ingress_port"] = REVERSE_PORT_LIST_INDEX[str(data["ingress_port"])]
+        para["port"] = REVERSE_PORT_LIST_INDEX[str(data["port"])]
         
         ret = False
         if operation == "add":
