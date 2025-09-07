@@ -37,7 +37,7 @@ class Table:
             parameter = yaml.full_load(content)
             f.close()
             p = Popen(
-                "bash $SDE_INSTALL/bin/run_bfshell.sh -b " + CONFIG_PATH,
+                "bash $SDE/run_bfshell.sh -b " + CONFIG_PATH,
                 shell=True,
                 stdout=PIPE,
                 stderr=PIPE,
