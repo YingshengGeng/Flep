@@ -1,5 +1,8 @@
 # 启动网卡
 sudo bash $SDE/tools/vetn_setup.sh
+export SDE
+export SDE_INSTALL
+uname -a
 # 首先获取
 $SDE
 $SDE_INSTALL
@@ -10,6 +13,7 @@ cat $SDE_INSTALL/lib/python{}/site-packages/tofino/bfrt_grpc/
 # 编译
 export SDE_INSTALL_DIR=/home/gys/bf-sde-9.13.2/install
 export PROGRAM_DIR=/home/gys/
+python 3.9
 
 sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna -o ${PROGRAM_DIR}/flep_encap_with_topo/target/ -g ${PROGRAM_DIR}/flep_encap_with_topo/flep_encap.p4
 
@@ -21,6 +25,8 @@ sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna  -o ${
 
 sudo cp ${PROGRAM_DIR}/flep_process_with_topo/target/flep_process.conf ${SDE_INSTALL_DIR}/share/p4/targets/tofino/
 
+cat ${PROGRAM_DIR}/flep_encap_with_topo/target/flep_encap.conf
+这里的修改
 
 # 运行
 cd $SDE
@@ -80,17 +86,14 @@ python send.py 10.2.2.2 1500
 uname -m
 #### Debian 11
 cat > /etc/apt/sources.list << EOF
-deb https://mirrors.aliyun.com/debian/ bullseye main contrib non-free
-deb-src https://mirrors.aliyun.com/debian/ bullseye main contrib non-free
-
-deb https://mirrors.aliyun.com/debian/ bullseye-updates main contrib non-free
-deb-src https://mirrors.aliyun.com/debian/ bullseye-updates main contrib non-free
-
-deb https://mirrors.aliyun.com/debian/ bullseye-backports main contrib non-free
-deb-src https://mirrors.aliyun.com/debian/ bullseye-backports main contrib non-free
-
-deb https://mirrors.aliyun.com/debian-security/ bullseye-security main contrib non-free
-deb-src https://mirrors.aliyun.com/debian-security/ bullseye-security main contrib non-free
+deb https://mirrors.aliyun.com/debian/ bullseye main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ bullseye main non-free contrib
+deb https://mirrors.aliyun.com/debian-security/ bullseye-security main
+deb-src https://mirrors.aliyun.com/debian-security/ bullseye-security main
+deb https://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib
+deb-src https://mirrors.aliyun.com/debian/ bullseye-updates main non-free contrib
+#deb https://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib
+#deb-src https://mirrors.aliyun.com/debian/ bullseye-backports main non-free contrib
 EOF
 
 #### Debian 9
@@ -139,7 +142,7 @@ pip3 install pyotp -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mir
 pip3 install wheel -i http://mirrors.aliyun.com/pypi/simple/  --trusted-host mirrors.aliyun.com
 pip3 install scapy -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn
 pip3 install PyYAML==5.4.1 -i https://pypi.tuna.tsinghua.edu.cn/simple/ --trusted-host pypi.tuna.tsinghua.edu.cn
-pip install flask-cors -i https://mirrors.aliyun.com/pypi/simple/
+pip3 install flask-cors -i https://mirrors.aliyun.com/pypi/simple/
 
 ### 前端依赖
 uname -m

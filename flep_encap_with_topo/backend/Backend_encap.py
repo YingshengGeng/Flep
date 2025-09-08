@@ -107,7 +107,7 @@ def handle_neighbor(protocol, operation):
         # ipv4/ipv6地址
         para["dstAddr"] = "ip('" + ip_address + "')"
         para["dstAddr" + "_p_length"] = prefix_length_str
-        para["port"] = str(data["port"])
+        para["port"] = REVERSE_PORT_LIST_INDEX[str(data["port"])]
         
         ret = False
         if operation == "add":
