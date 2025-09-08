@@ -6,10 +6,10 @@ import time
 SERVER_IP = "127.0.0.1"
 SERVER_PORT = "11451"
 BASE_URL = "http://{}:{}".format(SERVER_IP, SERVER_PORT)
-print("ADD Port")
+print("ADD IPV$")
 default_data = {
-    "ingress_port":
-    "port":
+    "ip":"10.3.3.3/16",
+    "port":"2"
 }
-response = requests.get("{}/forward/port/add".format(BASE_URL), json=default_data)
+response = requests.post("{}/neighbor/ipv4/add".format(BASE_URL), json=default_data)
 print(response.text)
