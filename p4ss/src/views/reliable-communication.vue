@@ -161,16 +161,30 @@ async function loadDataList() {
     // @ts-ignore
     const model = circularLayout.layout(json)
 
-    ;(model.nodes as Node.Metadata[]).forEach(node => {
-      const position = storageGet(node.id) as { x: number; y: number }
-      if (!position) {
-        return
-      }
-      node.x = position.x
-      node.y = position.y
-    })
+    if (model) {
+      ;(model.nodes as Node.Metadata[]).forEach(node => {
+        const position = storageGet(node.id) as { x: number; y: number }
+        if (!position) {
+          return
+        }
+        node.x = position.x
+        node.y = position.y
+      })
 
-    graph.fromJSON(model)
+      graph.fromJSON(model)
+    } else {
+      json.nodes.forEach(node => {
+        const position = storageGet(node.id) as { x: number; y: number }
+        if (!position) {
+          return
+        }
+        node.x = position.x
+        node.y = position.y
+      })
+
+      graph.fromJSON(json)
+    }
+
     graph.centerContent()
   } catch (error) {
   } finally {

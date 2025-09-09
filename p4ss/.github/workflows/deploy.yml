@@ -1,0 +1,40 @@
+name: 发布脚本
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: 1.拉取代码
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 2.安装 Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.13.0'
+
+      - name: 3.安装依赖
+        run: |
+          npm config set registry "https://registry.npmmirror.com/"
+          npm i pnpm -g
+          pnpm i
+
+      - name: 4.构建项目
+        run: |
+          pnpm build
+
+      - name: 5.部署到服务器
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_PRIVATE_KEY }}
+          REMOTE_HOST: ${{ secrets.SERVER_HOST }}
+          REMOTE_USER: ${{ secrets.SERVER_USER }}
+          ARGS: '-rltgoDzvO --delete'
+          SOURCE: 'dist/'
+          TARGET: /root/h5/p4ss-vue

@@ -9,9 +9,23 @@
       <div class="flex flex-nowrap items-center gap-2">
         <div class="size-2 rounded-full bg-[#0059E5]"></div>
         <p class="flex-auto text-base font-bold text-black">{{ title }}</p>
+        <button
+          class="btn h-9 min-h-9 rounded-[18px] bg-white shadow-lg hover:bg-blue-500 hover:text-white"
+          v-if="currentNode?.type === '封装节点'"
+          @click="onClickCategory('封装')"
+        >
+          封装
+        </button>
+        <button
+          class="btn h-9 min-h-9 rounded-[18px] bg-white shadow-lg hover:bg-blue-500 hover:text-white"
+          v-if="currentNode?.type === '封装节点'"
+          @click="onClickCategory('转发')"
+        >
+          转发
+        </button>
       </div>
-      <!-- 转发节点表单 -->
-      <div v-if="currentNode?.type === '转发节点'">
+      <!-- 转发表单 -->
+      <div v-if="category === '转发'">
         <!-- 匹配标签 -->
         <div class="mt-4 flex flex-row flex-nowrap items-center gap-3">
           <p class="w-16 shrink-0 grow-0 text-xs text-gray-500">匹配标签</p>
@@ -31,7 +45,7 @@
           />
         </div>
       </div>
-      <!-- 封装节点表单 -->
+      <!-- 封装表单 -->
       <div v-else>
         <!-- 网络层协议 -->
         <div class="mt-4 flex flex-row flex-nowrap items-center gap-3">
@@ -142,8 +156,8 @@
         :key="index"
       >
         <p>{{ item.content }}</p>
-        <!-- 转发节点数据 -->
-        <div v-if="currentNode?.type === '转发节点'">
+        <!-- 转发数据 -->
+        <div v-if="category === '转发'">
           <div
             class="list-disc pl-1 text-gray-500"
             v-for="(subItem, subIndex) of item.labels"
@@ -154,7 +168,7 @@
             <span>出端口: {{ subItem.port }}</span>
           </div>
         </div>
-        <!-- 封装节点数据 -->
+        <!-- 封装数据 -->
         <div v-else>
           <div
             class="list-disc pl-1 text-gray-500"
@@ -200,6 +214,7 @@ defineExpose({ open, close })
 
 const visible = ref(false)
 const currentNode = ref<CommonNode>(null)
+const category = ref<'封装' | '转发'>('封装')
 const operationConfig = [
   { key: '添加', svg: AddSvg },
   { key: '修改', svg: AddSvg },
@@ -235,6 +250,7 @@ const title = computed(() =>
 function open(node: CommonNode) {
   visible.value = true
   currentNode.value = node
+  category.value = currentNode.value.type === '转发节点' ? '转发' : '封装'
   operation.value = '添加'
   operations.value = []
   handleInfoReset()
@@ -260,6 +276,13 @@ function handleInfoReset() {
   }
 }
 
+function onClickCategory(selectCategory: '封装' | '转发') {
+  category.value = selectCategory
+  operation.value = '添加'
+  operations.value = []
+  handleInfoReset()
+}
+
 function onClickItems(type: string) {
   operation.value = type
 
@@ -269,7 +292,7 @@ function onClickItems(type: string) {
         try {
           const baseUrl = currentNode.value.baseUrl
           const body = {} as Partial<ForwardInfo & LabelInfo>
-          if (currentNode.value.type === '转发节点') {
+          if (category.value === '转发') {
             isString(info.value.label) && (body.label = info.value.label)
             isString(info.value.port) && (body.port = info.value.port)
             await api.loadLabelAdd(baseUrl, body)
@@ -318,7 +341,7 @@ function onClickItems(type: string) {
         try {
           const baseUrl = currentNode.value.baseUrl
           const body = {} as Partial<ForwardInfo & LabelInfo>
-          if (currentNode.value.type === '转发节点') {
+          if (category.value === '转发') {
             isString(info.value.label) && (body.label = info.value.label)
             isString(info.value.port) && (body.port = info.value.port)
             await api.loadLabelModify(baseUrl, body)
@@ -367,7 +390,7 @@ function onClickItems(type: string) {
         try {
           const baseUrl = currentNode.value.baseUrl
           const body = {} as Partial<ForwardInfo & LabelInfo>
-          if (currentNode.value.type === '转发节点') {
+          if (category.value === '转发') {
             isString(info.value.label) && (body.label = info.value.label)
             const res = await api.loadLabelSearch(baseUrl, body)
             operations.value.push({
@@ -423,7 +446,7 @@ function onClickItems(type: string) {
         try {
           const baseUrl = currentNode.value.baseUrl
           const body = {} as Partial<ForwardInfo & LabelInfo>
-          if (currentNode.value.type === '转发节点') {
+          if (category.value === '转发') {
             isString(info.value.label) && (body.label = info.value.label)
             await api.loadLabelDelete(baseUrl, body)
           } else {
@@ -467,7 +490,7 @@ function onClickItems(type: string) {
       ;(async () => {
         try {
           const baseUrl = currentNode.value.baseUrl
-          if (currentNode.value.type === '转发节点') {
+          if (category.value === '转发') {
             await api.loadLabelReset(baseUrl)
           } else {
             await api.loadForwardReset(baseUrl)
