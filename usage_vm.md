@@ -1,3 +1,5 @@
+# MYSQL
+注意配置一下 mysql
 # 启动网卡
 sudo bash $SDE/tools/vetn_setup.sh
 export SDE
