@@ -101,12 +101,8 @@ class HexPacketTool:
 
 if __name__ == "__main__":
     # 初始化工具，指定网卡（请根据实际情况修改）
-    tool = HexPacketTool(iface="veth5")  # 替换为你的实际网卡名称
-    
-    # 示例：发送测试包（取消注释即可使用）
-    # tool.send_test_packet(ether_type=0x1145)
-    # tool.send_test_packet(ether_type=0x1212)
-    # tool.send_test_packet(ether_type=0x0800, ip_src="10.1.1.2", ip_dst="10.2.2.2")
-    
+    # tool = HexPacketTool(iface="veth5")  # 替换为你的实际网卡名称
+    tool = HexPacketTool(iface="veth7")  # 替换为你的实际网卡名称
+
     # 开始监听
     tool.start_listening()
