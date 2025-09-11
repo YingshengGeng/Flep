@@ -42,6 +42,11 @@ SDE_INSTALL : "/home/gys/bf-sde-9.13.2/install"
 SDE : "/home/gys/bf-sde-9.13.2"
 PYTHON_VERSION: "python3.10"
 
+
+SDE : "/home/ruijie/onl-bf-sde"
+SDE_INSTALL : "/home/ruijie/onl-bf-sde/install"
+PYTHON_VERSION: "python3.9"
+
 ## Table API
 注意两者的程序运行方式不同
 - 硬件上
