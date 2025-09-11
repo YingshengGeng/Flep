@@ -389,8 +389,7 @@ def handle_forward_inquire():
 def handle_label_rule(operation):
     parakey = {"label", "port"}
     table_name = "flep_processing"
-    data = request.get_json()
-
+    data = request.get_json(force=True, silent=True)
     db = DB(DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
     if operation == "inquire":
         # 用于查询, 直接从数据库读
@@ -408,12 +407,13 @@ def handle_label_rule(operation):
     para["action"] = "flep_send"
     
     # 根据输入填充其他参数
-    for key in parakey:
-        if key not in data.keys():
-            continue
-        para[key] = str(data[key])
-    if "port" in para.keys():
-        para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
+    if data != None:
+        for key in parakey:
+            if key not in data.keys():
+                continue
+            para[key] = str(data[key])
+    # if "port" in para.keys():
+    #     para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
     table = Table(p4_file_name=p4_file_name)
     ret = False
     if operation == "add":

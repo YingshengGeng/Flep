@@ -93,6 +93,7 @@ try:
       # Enable packet generation on a specific port
       print("Enabling packet generation on port.")
       src_port = 68  # Source port for packet generation, for tofino limit to 68-71
+      # 自定义生成 Payload
       hex_payload = b"\x01\x00\x00\x03\x00\x01\x00\x06\x07\x08\x09\x0a\x11\x45\x00\x25" \
               b"\x01\xff\xff\xff\xff\xff\xff\x05\x97\xd7\xcd\x33\x30\x74\x68\x69"
       p = simple_eth_payload_packet(pktlen=100, eth_type=0x1919, payload=hex_payload)
