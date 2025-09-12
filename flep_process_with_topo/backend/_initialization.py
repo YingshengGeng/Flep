@@ -124,7 +124,15 @@ try:
         [multicast_table.make_key([gc.KeyTuple('hdr.fleptopo.messagetype', 0)])],
         [multicast_table.make_data([gc.DataTuple('groupid', mgid)], 'multiportsend')]
     )
-
+    #NOTE: modified the arguments of make_data to PORT_LIST_INDEX[port_idx]
+    #Set the port index for each member port
+    print("Setting port index.")
+    for port_idx in mbr_ports:
+        port_index_table.entry_add(
+            target,
+            [port_index_table.make_key([gc.KeyTuple('hdr.topoinfo.port', port_idx)])],
+            [port_index_table.make_data([gc.DataTuple('index', PORT_LIST_INDEX[port_idx])], 'setportindex')]
+        )
 finally:
     # Tear down the stream when done
     client.tear_down_stream()
