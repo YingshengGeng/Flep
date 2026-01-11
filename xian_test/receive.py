@@ -1,4 +1,6 @@
-from scapy.all import Ether, TCP, IP, sendp, sniff, hexdump
+from scapy.all import Ether, TCP, IP, sendp, sniff, hexdump, conf
+# 显式告诉 Scapy 开启混杂模式
+conf.sniff_promisc = True
 import time
 
 class HexPacketTool:

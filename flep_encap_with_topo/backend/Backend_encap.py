@@ -412,8 +412,8 @@ def handle_label_rule(operation):
             if key not in data.keys():
                 continue
             para[key] = str(data[key])
-    # if "port" in para.keys():
-    #     para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
+    if "port" in para.keys():
+        para["port"] = REVERSE_PORT_LIST_INDEX[para["port"]] # str, str
     table = Table(p4_file_name=p4_file_name)
     ret = False
     if operation == "add":

@@ -452,6 +452,9 @@ control Ingress(
   }
 
   apply {
+    if (hdr.ipv4.isValid() || hdr.ipv6.isValid()) {
+        hdr.ethernet.srcAddr = (EthernetAddress)ig_prsr_md.global_tstamp;
+    }
     // for test
     fwd_port.apply();
 
@@ -533,6 +536,9 @@ control Ingress(
       send(hdr.tempforward.temp_port[8:0]);
       hdr.ethernet.ethernetType = hdr.tempforward.temp_routing_type;
       hdr.tempforward.setInvalid();
+    }
+    if (hdr.flep.isValid()) {
+        hdr.ethernet.srcAddr = (EthernetAddress)ig_prsr_md.global_tstamp;
     }
 
   }
@@ -801,6 +807,7 @@ control Egress(
   }
 
   apply {
+    
     // 验证是否开启服务
     if (hdr.flep.isValid()) {
       is_verify_tbl.apply();
@@ -852,7 +859,14 @@ control Egress(
         } 
         hdr.ethernet.ethernetType = ETHERTYPE_INVALID; 
       }
-      hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
+      // hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
+      // if (hdr.ethernet.ethernetType == ETHERTYPE_FLEP) {
+      //   // 计算时延：当前出口时间 - 暂存在 srcAddr 中的入口时间 
+        
+      //   // 将时延结果写入 dstAddr，方便发包仪/Wireshark 读取
+      //   // 比如读到目的MAC是 00:00:00:00:02:58，即为 600ns
+      //   hdr.ethernet.dstAddr =  eg_prsr_md.global_tstamp;
+      // }
     }
   }
 }
