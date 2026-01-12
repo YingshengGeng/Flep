@@ -57,7 +57,8 @@ def add_label(target_ids):
             sw_index = link["sw_ind"]
             data = {
                 "label": route2xlabel_mapping[sw_index],
-                "port": port_mapping[str(port)],
+                "port": str(port),
+                # "port": port_mapping[str(port) if id != 1 else f"{port}_R{id}"],
             }
             send_post_request(url, "label/add", data)
 
@@ -124,8 +125,10 @@ class NetworkConfigCLI(cmd.Cmd):
         url = build_url(router[1:])
         # 这里的输入格式
         data = {
-            "ingress_port": port_mapping[ingress_port],
-            "port": port_mapping[egress_port],
+            # "ingress_port": port_mapping[ingress_port],
+            # "port": port_mapping[egress_port],
+            "ingress_port": ingress_port,
+            "port": egress_port,
         }
         send_post_request(url, "forward/port/add", data)
 
