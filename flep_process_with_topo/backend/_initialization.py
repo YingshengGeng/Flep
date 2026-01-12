@@ -53,14 +53,27 @@ def associate(mgid_table, target, mgid, node_id, xid=None):
 
 def add_port(bfrt_info, target):
     port_table = bfrt_info.table_get("$PORT")
-    print("Add ports")
+    print("Add ports with dynamic FEC configuration")
+    
     for port, limit in PORT_LIMIT.items():
+        # 判断速率是否为 100G
+        if limit == "100G":
+            fec_type = "BF_FEC_TYP_RS"
+            print(f"Port {port}: Speed {limit} -> Setting FEC to RS")
+        else:
+            fec_type = "BF_FEC_TYP_NONE"
+            print(f"Port {port}: Speed {limit} -> Setting FEC to NONE")
+            
         port_table.entry_add(
             target,
             [port_table.make_key([gc.KeyTuple('$DEV_PORT', port)])],
-            [port_table.make_data([gc.DataTuple('$SPEED', str_val="BF_SPEED_" + limit),
-                                        gc.DataTuple('$FEC', str_val="BF_FEC_TYP_NONE"),
-                                        gc.DataTuple('$PORT_ENABLE', bool_val=True)])])
+            [port_table.make_data([
+                gc.DataTuple('$SPEED', str_val="BF_SPEED_" + limit),
+                gc.DataTuple('$FEC', str_val=fec_type), # 使用变量
+                gc.DataTuple('$PORT_ENABLE', bool_val=True)
+            ])]
+        )
+        
     print("Wait for port up")
     time.sleep(5)
     

@@ -117,4 +117,3 @@ test: 用于配置表项的命令行终端相关程序
   可以通过以下命令检查编译结果是否和设定的程序label值一致。
   cat flep_encap_with_topo/target/flep_encap.p4pp  | grep "LOCAL_LABEL ="
   cat flep_process_with_topo/target/flep_process.p4pp  | grep "LOCAL_LABEL ="
-

@@ -14,37 +14,49 @@
       "TYPE": "fz",
       "LOCAL_LABEL": "0x2501",
       "PORT_LIST": {
-        "140": 1,
+        "128": 1,
         "64": 33
       },
       "PORT_LIMIT": {
-        "1": "100G",
-        "33": "10G"
+        "128": "100G",
+        "64": "10G"
       }
     },
     "2": {
       "TYPE": "zf",
       "LOCAL_LABEL": "0x2502",
       "PORT_LIST": {
-        "140": 1,
-        "132": 2
+        "128": 1,
+        "136": 2
       },
       "PORT_LIMIT": {
-        "1": "100G",
-        "2": "100G"
+        "128": "100G",
+        "136": "100G"
       }
     },
     "3": {
-      "TYPE": "zf",
+      "TYPE": "fz",
       "LOCAL_LABEL": "0x2503",
       "PORT_LIST": {
-        "140": 1,
-        "132": 33
+        "128": 1,
+        "64": 33
       },
       "PORT_LIMIT": {
-        "1": "100G",
+        "128": "100G",
         "64": "10G"
       }
     }
+  },
+  "SDE_CONFIG": {
+    "SDE": "/home/ruijie/onl-bf-sde",
+    "SDE_INSTALL": "/home/ruijie/onl-bf-sde/install",
+    "PYTHON_VERSION": "python3.9",
+    "P4_NAME": "flep_process"
+  },
+  "DATABASE": {
+    "DB_NAME": "flep_db",
+    "DB_USER": "root",
+    "DB_PASSWORD": "123456",
+    "DB_PORT": "3306"
   }
 }

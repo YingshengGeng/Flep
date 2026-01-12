@@ -19,7 +19,7 @@ DB_PASSWORD : '123456'
 LOCAL_LABEL_1 : '0x2501'
 # 1/0, 33/0
 PORT_LIST_1 :
-    140 : 1
+    128 : 1
     64 : 33
 PORT_LIMIT_1 :
     1: "100G"
@@ -27,17 +27,16 @@ PORT_LIMIT_1 :
 # 1/0，2/0
 LOCAL_LABEL_2 : '0x2502'
 PORT_LIST_2 :
-    140 : 1
-    132 : 2
+    132 : 1
+    140 : 2
 PORT_LIMIT_2 :
     1: "100G"
     2: "100G"
 # 1/0, 33/0
 LOCAL_LABEL_3 : '0x2503'
 PORT_LIST_3 :
-    140 : 1
-    132 : 33
+    132 : 1
+    64 : 33
 PORT_LIMIT_3 :
     1: "100G"
-    64: "10G"
-
+    33: "10G"
