@@ -262,6 +262,7 @@ def get_adjacency():
 @app.route("/pkt_gen/<operation>", methods=["POST"])
 def pkt_gen_manager(operation):
     script_path = FILE_PATH + "_set_pkt_gen.py"
+    print(script_path)
     if operation == "start":
          process = subprocess.Popen(
         ["python3", script_path, "1"],
@@ -274,6 +275,8 @@ def pkt_gen_manager(operation):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
+    stdout, stderr = process.communicate()
+    print(stdout.decode(), stderr.decode())
     response = make_response("Success", 200)
     if process.returncode != 0:
        response = make_response("Failed", 404)

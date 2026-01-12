@@ -452,11 +452,13 @@ control Ingress(
   }
 
   apply {
-    if (hdr.ipv4.isValid() || hdr.ipv6.isValid()) {
-        hdr.ethernet.srcAddr = (EthernetAddress)ig_prsr_md.global_tstamp;
-    }
     // for test
-    fwd_port.apply();
+    if (!fwd_port.apply().hit) {
+      if (hdr.ipv4.isValid() || hdr.ipv6.isValid()) {
+          hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
+      }
+    }
+    
 
     if (hdr.ethernet.ethernetType == ETHERTYPE_FLEP_NEWGEN) {
       hdr.fleptopo.setValid();
@@ -529,7 +531,6 @@ control Ingress(
 
     if (hdr.ethernet.ethernetType == ETHERTYPE_INSERT) {
       recirculate();
-      // hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
     }
 
     if (hdr.ethernet.ethernetType == ETHERTYPE_INVALID) {
@@ -538,7 +539,7 @@ control Ingress(
       hdr.tempforward.setInvalid();
     }
     if (hdr.flep.isValid()) {
-        hdr.ethernet.srcAddr = (EthernetAddress)ig_prsr_md.global_tstamp;
+        hdr.ethernet.dstAddr = ig_prsr_md.global_tstamp;
     }
 
   }

@@ -51,31 +51,38 @@ def associate(mgid_table, target, mgid, node_id, xid=None):
         bfruntime_pb2.TableModIncFlag.MOD_INC_ADD
     )
 
+REVERSE_PORT_MAP = {v: k for k, v in PORT_LIST_INDEX.items()}
+
 def add_port(bfrt_info, target):
     port_table = bfrt_info.table_get("$PORT")
     print("Add ports with dynamic FEC configuration")
     
-    for port, limit in PORT_LIMIT.items():
-        # 判断速率是否为 100G
+    for panel_idx, limit in PORT_LIMIT.items():
+        # 通过反向映射表获取真正的 Device Port
+        if panel_idx not in REVERSE_PORT_MAP:
+            print(f"Skipping Panel Index {panel_idx}: No device port mapping found.")
+            continue
+            
+        dev_port = REVERSE_PORT_MAP[panel_idx]
+        
+        # 判断速率选择 FEC
         if limit == "100G":
             fec_type = "BF_FEC_TYP_RS"
-            print(f"Port {port}: Speed {limit} -> Setting FEC to RS")
         else:
             fec_type = "BF_FEC_TYP_NONE"
-            print(f"Port {port}: Speed {limit} -> Setting FEC to NONE")
             
+        print(f"Panel {panel_idx} -> DevPort {dev_port}: Speed {limit}, FEC {fec_type}")
+        
+        # 下发配置到 $PORT 表
         port_table.entry_add(
             target,
-            [port_table.make_key([gc.KeyTuple('$DEV_PORT', port)])],
+            [port_table.make_key([gc.KeyTuple('$DEV_PORT', dev_port)])],
             [port_table.make_data([
                 gc.DataTuple('$SPEED', str_val="BF_SPEED_" + limit),
-                gc.DataTuple('$FEC', str_val=fec_type), # 使用变量
+                gc.DataTuple('$FEC', str_val=fec_type),
                 gc.DataTuple('$PORT_ENABLE', bool_val=True)
             ])]
         )
-        
-    print("Wait for port up")
-    time.sleep(5)
     
 # Establish a connection to the BFRuntime server
 try:
@@ -146,6 +153,7 @@ try:
             [port_index_table.make_key([gc.KeyTuple('hdr.topoinfo.port', port_idx)])],
             [port_index_table.make_data([gc.DataTuple('index', PORT_LIST_INDEX[port_idx])], 'setportindex')]
         )
+
 finally:
     # Tear down the stream when done
     client.tear_down_stream()

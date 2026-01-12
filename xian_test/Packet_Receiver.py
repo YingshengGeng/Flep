@@ -133,29 +133,29 @@ class AutoReceiver:
             tf = pkt[TempForward]
             p_info = f"[Port {tf.temp_port}]"
             
-            if pkt.haslayer(IP):
-                ip = pkt[IP]
-                proto, ports = self._get_l4_info(pkt)
-                # 特征: IPv4 + 协议 + 端口
-                signature = f"IPv4 {ip.src}->{ip.dst} [{proto} {ports}]"
-                info_str = f"{p_info} {signature}"
-                
-            elif pkt.haslayer(IPv6):
-                ip = pkt[IPv6]
-                proto, ports = self._get_l4_info(pkt)
-                # 特征: IPv6 + 协议 + 端口
-                signature = f"IPv6 {ip.src}->{ip.dst} [{proto} {ports}]"
-                info_str = f"{p_info} {signature}"
-                
-            elif pkt.haslayer(Felp):
-                flep = pkt[Felp]
-                inner = "IPv4" if flep.routing_type == 0x0800 else "IPv6"
-                # 特征: FLEP 封装包
-                signature = f"FLEP (Labels:{flep.label_depth}) Inner:{inner}"
-                info_str = f"{p_info} FLEP In-Flight | Depth:{flep.label_depth}"
-            else:
-                signature = "TempForward (Unknown Payload)"
-                info_str = f"{p_info} Unknown TempForward payload"
+        if pkt.haslayer(IP):
+            ip = pkt[IP]
+            proto, ports = self._get_l4_info(pkt)
+            # 特征: IPv4 + 协议 + 端口
+            signature = f"IPv4 {ip.src}->{ip.dst} [{proto} {ports}]"
+            info_str = f"{p_info} {signature}"
+            
+        elif pkt.haslayer(IPv6):
+            ip = pkt[IPv6]
+            proto, ports = self._get_l4_info(pkt)
+            # 特征: IPv6 + 协议 + 端口
+            signature = f"IPv6 {ip.src}->{ip.dst} [{proto} {ports}]"
+            info_str = f"{p_info} {signature}"
+            
+        elif pkt.haslayer(Felp):
+            flep = pkt[Felp]
+            inner = "IPv4" if flep.routing_type == 0x0800 else "IPv6"
+            # 特征: FLEP 封装包
+            signature = f"FLEP (Labels:{flep.label_depth}) Inner:{inner}"
+            info_str = f"{p_info} FLEP In-Flight | Depth:{flep.label_depth}"
+        else:
+            signature = "TempForward (Unknown Payload)"
+            info_str = f"{p_info} Unknown TempForward payload"
 
         elif pkt.haslayer(FlepTopo):
             ft = pkt[FlepTopo]

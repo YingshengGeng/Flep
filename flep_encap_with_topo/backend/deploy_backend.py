@@ -8,7 +8,7 @@ import argparse
 
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
-CONFIG_PATH = sys.path[0] + FILE_INTERVAL + "config.py"
+CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
 
 f = open(FILE_PATH + "configuration.yml", "r", encoding="utf-8")
 content = f.read()

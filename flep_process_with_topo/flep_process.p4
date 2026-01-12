@@ -12,7 +12,7 @@ const bit<16> ETHERTYPE_FLEP = 0x1212; //an unused type, set for FLEP
 // for typo
 const bit<16> ETHERTYPE_FLEP_TOPO = 0x1145; //an unused type, set for FLEP
 const bit<16> ETHERTYPE_FLEP_NEWGEN = 0x1919;
-const bit<16> LOCAL_LABEL = 0x2501;
+const bit<16> LOCAL_LABEL = 0x2502;
 
 typedef bit<48> EthernetAddress;
 typedef bit<16> label_t;

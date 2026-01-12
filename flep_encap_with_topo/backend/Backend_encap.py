@@ -15,7 +15,7 @@ from flask_cors import CORS
 
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
-CONFIG_PATH = sys.path[0] + FILE_INTERVAL + "config.py"
+CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
 
 f = open(FILE_PATH + "configuration.yml", "r", encoding="utf-8")
 content = f.read()
@@ -221,6 +221,7 @@ def handle_forward_rule(protocol, operation):
         r = json.dumps(filtered_results)
         response = make_response(r)
         response.headers["Content-Type"] = "application/json"
+        print(r)
         return response
 
     if operation == "clear":
@@ -269,7 +270,7 @@ def handle_forward_rule(protocol, operation):
         # 注意传入的是原始data
         data["label_list"] = data["label_list"].rstrip(",")
         ret = manager.insert_forward_flep(protocol, data)
-
+        print("ret: ", ret, "response: ", data)
     elif operation == "delete":
         # 如果是detele需要从数据库中读取信息， 然后删除所有相关项
         results = db.query(table_name, data)
@@ -577,7 +578,7 @@ def pkt_gen_manager(operation):
         stderr=subprocess.PIPE,
     )
     stdout, stderr = process.communicate()
-    print(stdout.decode())
+    print(stdout.decode(), stderr.decode())
     response = make_response("Success", 200)
     if process.returncode != 0:
        response = make_response("Failed", 404)

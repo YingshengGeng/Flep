@@ -706,7 +706,9 @@ class TOTPManager:
         # print(table_name, para_flep)
         # ret = True
         ret = self.table.execute()
+        print("here", ret)
         if ret:
+            print("DB add", table_name, ori_data)
             self.db.add(table_name, ori_data)
         # print("insert_forward_flep success")
         return ret

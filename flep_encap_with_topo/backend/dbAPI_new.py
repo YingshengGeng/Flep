@@ -25,6 +25,7 @@ class DB:
             SQL = SQL + '"' + str(args[key]) + '"' + ","
         SQL = SQL.strip(",")
         SQL = SQL + ")"
+        print(SQL)
         try:
             self.cur.execute(SQL)
             self.conn.commit()

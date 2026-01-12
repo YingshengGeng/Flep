@@ -448,7 +448,7 @@ control Ingress(
     }  
     // hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
     if (hdr.ethernet.ethernetType == ETHERTYPE_FLEP) {
-        hdr.ethernet.srcAddr = (EthernetAddress)ig_prsr_md.global_tstamp;
+        hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
     }
   }
 }

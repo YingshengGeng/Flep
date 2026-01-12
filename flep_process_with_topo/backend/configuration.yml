@@ -6,7 +6,7 @@ SOUTHBOUND_SERVER_IP_1 :  '10.0.0.11'
 SOUTHBOUND_SERVER_IP_2 :  '10.0.0.12'
 SOUTHBOUND_SERVER_IP_3 :  '10.0.0.13'
 
-SOUTHBOUND_SERVER_PORT : '11452'
+SOUTHBOUND_SERVER_PORT : '11451'
 P4_NAME : 'flep_process'
 
 DB_PORT : '3306'
@@ -20,22 +20,28 @@ LOCAL_LABEL_1 : '0x2501'
 PORT_LIST_1 :
     128 : 1
     64 : 33
+    
 PORT_LIMIT_1 :
     1: "100G"
     33: "10G"
+
 # 1/0，2/0
 LOCAL_LABEL_2 : '0x2502'
 PORT_LIST_2 :
     132 : 1
     140 : 2
+    65 : 34
 PORT_LIMIT_2 :
     1: "100G"
     2: "100G"
+    34: "1G"
 # 1/0, 33/0
 LOCAL_LABEL_3 : '0x2503'
 PORT_LIST_3 :
     132 : 1
     64 : 33
+    65 : 34
 PORT_LIMIT_3 :
     1: "100G"
     33: "10G"
+    34: "1G"
