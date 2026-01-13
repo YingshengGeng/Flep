@@ -62,7 +62,7 @@ class DB:
             SQL = SQL.strip("AND ")
         else:
             SQL = "select * from " + "`" + table + "`"
-
+        # print(SQL)
         try:
             self.cur.execute(SQL)
             result = self.cur.fetchall()

@@ -693,9 +693,9 @@ class TOTPManager:
         # 3. 补全端口
         # 数据库一般存整数或字符串，建议存 "0" 或 "0x0000" 代表通配
         if "tp_src" not in data or data["tp_src"] is None:
-            data["tp_src"] = "0"
+            data["tp_src"] = "-1"
         if "tp_dst" not in data or data["tp_dst"] is None:
-            data["tp_dst"] = "0"
+            data["tp_dst"] = "-1"
 
         return data
     def insert_forward_flep(self, protocol, ori_data):
@@ -738,12 +738,9 @@ class TOTPManager:
         # print(table_name, para_flep)
         # ret = True
         ret = self.table.execute()
-        print("here", ret)
+        # print("here", ret)
         if ret:
-            if "tp_src" not in ori_data or ori_data["tp_src"] == "":
-                ori_data["tp_src"] = "0" # 补回 ori_data，确保 db.add 成功
-            if "tp_dst" not in ori_data or ori_data["tp_dst"] == "":
-                ori_data["tp_dst"] = "0"
+            ori_data = self.complete_record(protocol, ori_data)
             self.db.add(table_name, ori_data)
         # print("insert_forward_flep success")
         return ret

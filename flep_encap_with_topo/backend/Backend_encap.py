@@ -246,6 +246,7 @@ def handle_forward_rule(protocol, operation):
             para_flep.pop("identify_index")
         except:
             pass
+        # print("para_flep", para_flep)
         table.table_delete(**para_flep)
         for para_label in para_labels_list:
             try:
@@ -261,7 +262,10 @@ def handle_forward_rule(protocol, operation):
     para_labels_list = []
     ret = False
     if operation == "add":
-        existing_rules = db.query(table_name, data)
+        pop_list_data = data.copy()
+        pop_list_data.pop("label_list")
+        existing_rules = db.query(table_name, pop_list_data)
+        # print("existing_rules",existing_rules)
         if len(existing_rules) > 0:
             del table
             del db
@@ -275,7 +279,6 @@ def handle_forward_rule(protocol, operation):
             return _response(False)
         # 注意传入的是原始data
         data["label_list"] = data["label_list"].rstrip(",")
-        data = manager.complete_record(protocol, data)
         ret = manager.insert_forward_flep(protocol, data)
         print("ret: ", ret, "response: ", data)
     elif operation == "delete":
@@ -303,9 +306,17 @@ def handle_forward_rule(protocol, operation):
             # 1.2. if more than one, return 409
             response = make_response("More than one item", 409)
         else:
-            # 2. if exists, delete the rule
+            # 2. if exists, delete the rule, 只可能存在一个
             previous_data = results[0]
-            
+            # 去掉填充的 tp_src 参数
+            keys_to_remove = []
+            for key, value in previous_data.items():
+                if key in ['tp_src', 'tp_dst'] and str(value) == '-1':
+                    keys_to_remove.append(key)
+            for key in keys_to_remove:
+                previous_data.pop(key)
+
+            # print("previous_data", previous_data)
             ret = delete_forward_table_item(previous_data)
             if ret:
                 # use res to do exact delete

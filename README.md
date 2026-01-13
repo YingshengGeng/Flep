@@ -64,15 +64,6 @@ test: 用于配置表项的命令行终端相关程序
     -> SOUTHBOUND_SERVER_PORT 用于设定控制器监听端口。
     -> P4_NAME 用于设定正在运行的程序名称。
     -> DB_PORT, DB_NAME, DB_USER, DB_PASSWORD 用于设定数据库端口，数据库名，用户名，用户密码。
-- 配置控制终端（可选, 因为一般可以通过控制器直接控制）。
-  控制终端相关配置在mapping.xml中设定。
-  - MAPPING_LIST 用于设定逻辑端口到实际物理端口索引的映射(比如1应该映射为140)。
-  - MAPPING_LIST_RE 用于设定实际物理端口索引到逻辑端口的映射(比如140应该映射为1)。
-  - MAPPING_LIST_Route 用于设定label值到逻辑交换机索引的映射(比如0x2501应该映射为R1)。
-  - MAPPING_LIST_Route_RE 用于设定逻辑交换机索引到label值的映射(比如R1应该映射为0x2501)。
-  - MAPPING_LIST_IP 用于设定IP地址到逻辑交换机索引的映射。
-  当前物理连接关系在testcmd.py中的connect_dict中设置(如"R15": [{"port": 1, "sw_ind": "R1"}])。
-
 
 ## 运行P4程序
 - 启动swichd来运行相关P4程序。

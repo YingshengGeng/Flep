@@ -197,3 +197,7 @@ serve dist
 
 1.进入平台界面，查看平台界面菜单与选项
 2.检查配套材料
+
+pm port-del 1/0
+pm port-add 1/0 50G NONE
+pm port-enb 1/0
