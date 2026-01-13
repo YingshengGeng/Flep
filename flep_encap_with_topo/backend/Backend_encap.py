@@ -261,6 +261,12 @@ def handle_forward_rule(protocol, operation):
     para_labels_list = []
     ret = False
     if operation == "add":
+        existing_rules = db.query(table_name, data)
+        if len(existing_rules) > 0:
+            del table
+            del db
+            print(f"Rule already exists in DB for {protocol}")
+            return _response(-1) # Returns 409 based on your _response function
         if "label_list" in data.keys():
             label_list = data["label_list"].split(",")
             # 计算有多少个这样的表项
@@ -269,6 +275,7 @@ def handle_forward_rule(protocol, operation):
             return _response(False)
         # 注意传入的是原始data
         data["label_list"] = data["label_list"].rstrip(",")
+        data = manager.complete_record(protocol, data)
         ret = manager.insert_forward_flep(protocol, data)
         print("ret: ", ret, "response: ", data)
     elif operation == "delete":
@@ -298,6 +305,7 @@ def handle_forward_rule(protocol, operation):
         else:
             # 2. if exists, delete the rule
             previous_data = results[0]
+            
             ret = delete_forward_table_item(previous_data)
             if ret:
                 # use res to do exact delete
@@ -647,9 +655,60 @@ def sync_time():
                 logging.error("Error synchronizing time: {}".format(stderr.strip()))
     except Exception as e:
         logging.error("Error synchronizing time: {}".format(e))
-        
+
+def global_initialization_cleanup():
+    """
+    Cleans all P4 tables and Database entries for:
+    1. Processing Labels (flep_processing)
+    2. Forwarding Ports (fwd_port)
+    3. All protocols in manager (neighbor tables + forwarding tables)
+    """
+    print("--- Starting Global Cleanup ---")
+    db = DB(DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
+    table = Table(p4_file_name=p4_file_name)
+    
+    # 1. Clear common tables
+    common_tables = [
+        {"p4": "flep_processing", "block": "Egress", "db": "flep_processing"},
+        {"p4": "fwd_port", "block": "Ingress", "db": "fwd_port"}
+    ]
+
+    for item in common_tables:
+        print(f"Cleaning {item['p4']}...")
+        table.table_clear(table_name=item['p4'], block_name=item['block'])
+        db.clear(item['db'])
+
+    # 2. Clear Protocol Specific Tables (Neighbor & Forwarding)
+    if hasattr(manager, 'forward_flep_protocols'):
+        for protocol in manager.forward_flep_protocols:
+            print(f"Cleaning protocol: {protocol}...")
+            
+            # A. Neighbor Table (LPM)
+            lpm_name = protocol + "_lpm"
+            table.table_clear(table_name=lpm_name, block_name="Ingress")
+            db.clear(lpm_name)
+
+            # B. Forwarding Classifier
+            fwd_name = "flep_" + protocol + "_classifier"
+            table.table_clear(table_name=fwd_name, block_name="Ingress")
+            db.clear(fwd_name)
+
+            # C. Forwarding Label Insertion (Egress)
+            label_name = "insert_" + protocol + "_label"
+            table.table_clear(table_name=label_name, block_name="Egress")
+            # Note: insert_label usually doesn't have a direct DB mapping 1:1 
+            # or is cleared via cascading deletes in your logic, but P4 needs clear.
+
+    # Apply all P4 changes
+    table.execute()
+    
+    del table
+    del db
+    print("--- Global Cleanup Finished ---")
+    
 if __name__ == "__main__":
-    # clear_database_and_tables()
+    
+    global_initialization_cleanup()
     pre_initialization()
     # sync_time()
     # Your main program logic here   

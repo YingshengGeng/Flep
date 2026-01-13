@@ -322,11 +322,16 @@ function onClickItems(type: string) {
             labels: []
           })
         } catch (error) {
+          // 检查是否有响应对象且状态码为 409
+          const axiosError = error as any; // 或者断言为具体的 AxiosError 类型
+          const isConflict = axiosError.response && axiosError.response.status === 409;
+
           operations.value.push({
-            content: '添加失败！',
+            // 如果是 409 则显示“已存在”，否则显示“添加失败！”
+            content: isConflict ? '该规则已存在！' : '添加失败！',
             forwards: [],
             labels: []
-          })
+          });
         } finally {
           nextTick(() => {
             handleInfoReset()

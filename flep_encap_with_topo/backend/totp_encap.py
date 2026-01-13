@@ -557,7 +557,7 @@ class TOTPManager:
         if "identify_index" not in ori_data.keys():
             # 如果无，代表来自add操作, 则补上
             ori_data["identify_index"] = self.identify_counter
-            self.identify_counter += 1
+            self.identify_counter += 1 # 正常来说就是可以一直成功？ 
         para_flep.update({"identify_index": str(ori_data["identify_index"])})
 
         if need_label_para:
@@ -666,6 +666,38 @@ class TOTPManager:
                 # 其实也就是不存在else
                 para_flep[new_key] = str(ori_data[key])
 
+    def complete_record(self, protocol, data):
+        """
+        补全缺失字段，确保满足数据库 Schema 且对 P4 逻辑安全。
+        """
+        # 1. 补全 IP 地址 (必须有，否则数据库或 P4 逻辑会崩)
+        # 使用 '0.0.0.0/0' 或 '::/0' 代表“匹配所有”，既符合逻辑又满足非空约束
+        if protocol == "ipv4":
+            data.setdefault("ipv4_src", "0.0.0.0/0")
+            data.setdefault("ipv4_dst", "0.0.0.0/0")
+            # 清理可能的 IPv6 脏数据
+            data.pop("ipv6_src", None)
+            data.pop("ipv6_dst", None)
+        elif protocol == "ipv6":
+            data.setdefault("ipv6_src", "::/0")
+            data.setdefault("ipv6_dst", "::/0")
+            # 清理可能的 IPv4 脏数据
+            data.pop("ipv4_src", None)
+            data.pop("ipv4_dst", None)
+
+        # 2. 补全协议 (TP)
+        # 如果前端没传 tp，视为空字符串（代表任意协议）
+        if "tp" not in data or data["tp"] is None:
+            data["tp"] = "" 
+
+        # 3. 补全端口
+        # 数据库一般存整数或字符串，建议存 "0" 或 "0x0000" 代表通配
+        if "tp_src" not in data or data["tp_src"] is None:
+            data["tp_src"] = "0"
+        if "tp_dst" not in data or data["tp_dst"] is None:
+            data["tp_dst"] = "0"
+
+        return data
     def insert_forward_flep(self, protocol, ori_data):
         table_name = "flep_" + protocol + "_classifier"
         para_flep = {}
