@@ -18,7 +18,7 @@ add_port_forward R1 33 1
 add_port_forward R2 2 1
 add_port_forward R3 1 33
 
-python Packet_Receiver.py -i "USB2.0 Ethernet Adapter" -hex
+python .\Packet_Receiver.py -i "Realtek PCIe GbE Family Controller" --hex 
 python Packet_Generator.py -i "USB2.0 Ethernet Adapter" --src 10.0.0.15 --dst 10.0.0.16 --sport 1001 --dport 1002 -c 100 --interval 0.01
 
 
@@ -43,7 +43,7 @@ IPV4
 
 add_port_forward R3 1 33(重复添加)
 
-python Packet_Receiver.py -i "USB2.0 Ethernet Adapter" -hex
+python .\Packet_Receiver.py -i "Realtek PCIe GbE Family Controller" --hex 
 python3 Packet_Generator.py -i "USB2.0 Ethernet Adapter" --src 10.0.0.15 --dst 10.0.0.16 --sport 1001 --dport 1002 -c 100 --interval 0.01
 
 
@@ -69,7 +69,7 @@ add_port_forward R2 2 1
 add_port_forward R3 1 33(重复添加)
 
 
-python Packet_Receiver.py -i "USB2.0 Ethernet Adapter" -hex
+python .\Packet_Receiver.py -i "Realtek PCIe GbE Family Controller" --hex 
 python Packet_Generator.py -i "USB2.0 Ethernet Adapter" --src 10.0.0.15 --dst 10.0.0.16 --sport 1001 --dport 1002 -c 100 --interval 0.01
 
 
@@ -88,7 +88,7 @@ add_port_forward R3 1 33 -->
 # 3. 发送命令 (自动识别 IPv6)
 
 # 4. 接收命令
-python Packet_Receiver.py -i "USB2.0 Ethernet Adapter" -hex
+python .\Packet_Receiver.py -i "Realtek PCIe GbE Family Controller" --hex 
 python Packet_Generator.py -i "USB2.0 Ethernet Adapter" --src 2001::15 --dst 2001::16 --sport 1001 --dport 1002 -c 100
 
 <!-- clear_port_forward R2 -->
@@ -107,7 +107,7 @@ add_port_forward R2 1 2
 add_port_forward R3 1 33 -->
 
 # 3. 发送命令 (显式指定 UDP)
-python Packet_Receiver.py -i "USB2.0 Ethernet Adapter" -hex
+python .\Packet_Receiver.py -i "Realtek PCIe GbE Family Controller" --hex 
 python Packet_Generator.py -i "USB2.0 Ethernet Adapter" --src 10.0.0.15 --dst 10.0.0.16 --sport 1001 --dport 1002 --udp -c 100 --interval 0.01
 
 
