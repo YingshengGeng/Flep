@@ -237,6 +237,14 @@ def handle_forward_rule(protocol, operation):
         return _response(ret)
 
     def delete_forward_table_item(res):
+        # 去掉填充的 tp_src 参数
+        keys_to_remove = []
+        for key, value in res.items():
+            if key in ['tp_src', 'tp_dst'] and str(value) == '-1':
+                keys_to_remove.append(key)
+        for key in keys_to_remove:
+            res.pop(key)
+            
         # 构建匹配项部分，传入的是查询到的参数
         manager.convert_match_part_from_data(
             protocol, res, para_flep, para_labels_list
@@ -308,13 +316,6 @@ def handle_forward_rule(protocol, operation):
         else:
             # 2. if exists, delete the rule, 只可能存在一个
             previous_data = results[0]
-            # 去掉填充的 tp_src 参数
-            keys_to_remove = []
-            for key, value in previous_data.items():
-                if key in ['tp_src', 'tp_dst'] and str(value) == '-1':
-                    keys_to_remove.append(key)
-            for key in keys_to_remove:
-                previous_data.pop(key)
 
             # print("previous_data", previous_data)
             ret = delete_forward_table_item(previous_data)
