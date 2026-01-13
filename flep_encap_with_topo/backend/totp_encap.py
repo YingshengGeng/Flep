@@ -708,7 +708,10 @@ class TOTPManager:
         ret = self.table.execute()
         print("here", ret)
         if ret:
-            print("DB add", table_name, ori_data)
+            if "tp_src" not in ori_data or ori_data["tp_src"] == "":
+                ori_data["tp_src"] = "0" # 补回 ori_data，确保 db.add 成功
+            if "tp_dst" not in ori_data or ori_data["tp_dst"] == "":
+                ori_data["tp_dst"] = "0"
             self.db.add(table_name, ori_data)
         # print("insert_forward_flep success")
         return ret

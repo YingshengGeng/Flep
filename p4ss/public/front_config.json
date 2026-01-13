@@ -1,62 +1,62 @@
-{
-  "SOUTHBOUND_SERVER_IP": {
-    "1": "10.0.0.11",
-    "2": "10.0.0.12",
-    "3": "10.0.0.13"
-  },
-  "SOUTHBOUND_SERVER_PORT": {
-    "1": "11451",
-    "2": "11451",
-    "3": "11451"
-  },
-  "Router_List": {
-    "1": {
-      "TYPE": "fz",
-      "LOCAL_LABEL": "0x2501",
-      "PORT_LIST": {
-        "128": 1,
-        "64": 33
+  {
+    "SOUTHBOUND_SERVER_IP": {
+      "1": "10.0.0.11",
+      "2": "10.0.0.12",
+      "3": "10.0.0.13"
+    },
+    "SOUTHBOUND_SERVER_PORT": {
+      "1": "11451",
+      "2": "11451",
+      "3": "11451"
+    },
+    "Router_List": {
+      "1": {
+        "TYPE": "fz",
+        "LOCAL_LABEL": "0x2501",
+        "PORT_LIST": {
+          "128": "1",
+          "64": "33"
+        },
+        "PORT_LIMIT": {
+          "128": "100G",
+          "64": "10G"
+        }
       },
-      "PORT_LIMIT": {
-        "128": "100G",
-        "64": "10G"
+      "2": {
+        "TYPE": "zf",
+        "LOCAL_LABEL": "0x2502",
+        "PORT_LIST": {
+          "132": "1",
+          "140": "2"
+        },
+        "PORT_LIMIT": {
+          "132": "100G",
+          "140": "100G"
+        }
+      },
+      "3": {
+        "TYPE": "fz",
+        "LOCAL_LABEL": "0x2503",
+        "PORT_LIST": {
+          "132": "1",
+          "64": "33"
+        },
+        "PORT_LIMIT": {
+          "132": "100G",
+          "64": "10G"
+        }
       }
     },
-    "2": {
-      "TYPE": "zf",
-      "LOCAL_LABEL": "0x2502",
-      "PORT_LIST": {
-        "128": 1,
-        "136": 2
-      },
-      "PORT_LIMIT": {
-        "128": "100G",
-        "136": "100G"
-      }
+    "SDE_CONFIG": {
+      "SDE": "/home/ruijie/onl-bf-sde",
+      "SDE_INSTALL": "/home/ruijie/onl-bf-sde/install",
+      "PYTHON_VERSION": "python3.9",
+      "P4_NAME": "flep_process"
     },
-    "3": {
-      "TYPE": "fz",
-      "LOCAL_LABEL": "0x2503",
-      "PORT_LIST": {
-        "128": 1,
-        "64": 33
-      },
-      "PORT_LIMIT": {
-        "128": "100G",
-        "64": "10G"
-      }
+    "DATABASE": {
+      "DB_NAME": "flep_db",
+      "DB_USER": "root",
+      "DB_PASSWORD": "123456",
+      "DB_PORT": "3306"
     }
-  },
-  "SDE_CONFIG": {
-    "SDE": "/home/ruijie/onl-bf-sde",
-    "SDE_INSTALL": "/home/ruijie/onl-bf-sde/install",
-    "PYTHON_VERSION": "python3.9",
-    "P4_NAME": "flep_process"
-  },
-  "DATABASE": {
-    "DB_NAME": "flep_db",
-    "DB_USER": "root",
-    "DB_PASSWORD": "123456",
-    "DB_PORT": "3306"
   }
-}

@@ -651,6 +651,6 @@ def sync_time():
 if __name__ == "__main__":
     # clear_database_and_tables()
     pre_initialization()
-    sync_time()
+    # sync_time()
     # Your main program logic here   
     app.run(host=SERVER_IP, port=int(SERVER_PORT), debug=False)

@@ -46,26 +46,52 @@ export async function loadTopology(nodes: CommonNode[]): Promise<CommonEdge[]> {
   const responses = (await Promise.allSettled(
     nodes.map(({ baseUrl }) => instance.get(`${baseUrl}/topology`))
   )) as PromiseSettledResult<CommonTopology[]>[]
+  
   const edges: CommonEdge[] = []
+
   responses.forEach((res, index) => {
+    // 检查点 1: 确认接口请求是否成功
     if (res.status === 'rejected') {
+      console.error(`[DEBUG] 节点 ${nodes[index].localLabel} 接口请求失败:`, res.reason);
       return
     }
+
     try {
       nodes[index].status = '是'
       const source = nodes[index].localLabel
       const ports = nodes[index].ports
+      
+      // 检查点 2: 打印后端返回的原始拓扑数据
+      console.log(`[DEBUG] 节点 ${source} 返回的原始拓扑:`, res.value);
+
       if (!isString(source) || !isArray(res.value)) {
+        console.warn(`[DEBUG] 节点 ${source} 数据格式不正确 (isArray: ${isArray(res.value)})`);
         return
       }
+
       res.value.forEach(topology => {
-        if (!isString(topology.label) || source === topology.label) {
+        // 检查点 3: 检查自环过滤逻辑
+        if (source === topology.label) {
+          console.warn(`[DEBUG] 过滤掉自环条目: ${topology.label}`);
           return
         }
+
+        // 检查点 4: 核心查找逻辑深度对比
+        const matchedPort = ports.find(item => String(item.key) === String(topology.port));
+        
+        console.log(`[DEBUG] 正在匹配端口 - 拓扑中的port: "${topology.port}", 节点可用端口Key:`, 
+                    ports.map(p => p.key));
+        
+        if (!matchedPort) {
+          console.error(`[DEBUG] 匹配失败！在端口列表里找不到 key 为 "${topology.port}" 的项`);
+        }
+
         nodes[index].topologies.push({
           ...topology,
-          index: ports.find(item => item.key === topology.port)?.index || null
+          // 如果这里 matchedPort 为空，index 就会是 null
+          index: matchedPort?.index || null
         })
+
         edges.push({
           source,
           target: topology.label,
@@ -73,10 +99,12 @@ export async function loadTopology(nodes: CommonNode[]): Promise<CommonEdge[]> {
         })
       })
     } catch (error) {
-      console.log(index, error)
+      console.log(`[DEBUG] 处理索引 ${index} 时出错:`, error)
     }
   })
 
+  // 检查点 5: 最终检查节点对象是否已被填充
+  console.log('[DEBUG] 所有节点处理完成，最终 nodes 状态:', nodes);
   return edges
 }
 

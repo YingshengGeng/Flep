@@ -45,6 +45,7 @@ class Table:
             )
             out, err = p.communicate()
             a = out.decode()
+            print(a)
             # MARK: 修改为每次结束清空文件剩余内容，但保留前两行
             with open(CONFIG_PATH, "w", encoding="utf-8") as file:
                 file.write("from ipaddress import ip_address as ip\n")

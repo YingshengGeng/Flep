@@ -7,7 +7,7 @@ import yaml  # pip install pyyaml
 
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
-CONFIG_PATH = sys.path[0] + FILE_INTERVAL + "config.py"
+CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
 
 
 class Table:

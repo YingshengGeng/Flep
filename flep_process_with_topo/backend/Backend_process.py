@@ -12,7 +12,7 @@ from flask_cors import CORS
 
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
-CONFIG_PATH = sys.path[0] + FILE_INTERVAL + "config.py"
+CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
 
 f = open(FILE_PATH + "configuration.yml", "r", encoding="utf-8")
 content = f.read()
@@ -111,6 +111,7 @@ def handle_label_rule(operation):
     data = request.get_json(force=True, silent=True)
     db = DB(DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
     if operation == "inquire":
+        # 用于查询, 直接从数据库读
         results = db.query(table_name, data)
         del db
         r = json.dumps(results)
@@ -120,8 +121,11 @@ def handle_label_rule(operation):
 
     para = {}
     para["table_name"] = table_name
+    # Mark
     para["block_name"] = "Ingress"
     para["action"] = "flep_send"
+    
+    # 根据输入填充其他参数
     if data != None:
         for key in parakey:
             if key not in data.keys():
@@ -146,7 +150,22 @@ def handle_label_rule(operation):
         ret = table.execute()
         if ret:
             db.delete(table_name, data)
+
+    elif operation == "clear":
+        temp = {"table_name": table_name, "block_name": "Ingress"}
+        table.table_clear(**temp)
+        ret = table.execute()
+        if ret:
+            db.clear(table_name)
     elif operation == "modify":
+        temp_port = None
+        if "port" in data.keys():
+            temp_port = data["port"]
+        try:
+            data.pop("port")
+        except:
+            pass
+        # pop in other place
         # 1. check if the rule exists from db
         results = db.query(table_name, data)
         # 1.1 if not exists, return 404
@@ -158,6 +177,7 @@ def handle_label_rule(operation):
             response = make_response("More than one item", 409)
         else:  
             # 2. if exists, delete the rule
+            previous_data = results[0]
             try:
                 para.pop("action")
                 para.pop("port")
@@ -170,12 +190,20 @@ def handle_label_rule(operation):
             else:
                 # if delete failed, return 400
                 return make_response("Failed to delete item", 400)
-            # MARK: 4. modify the corresponding data, but due to all data will given
-            # so don't need to modify data here
+
+            # 4. modify the corresponding data
+            # 4.1 if port exists, reconstruct it
+            if temp_port is not None:
+                data["port"] = temp_port
+
+            for key in data.keys():
+                if key in previous_data.keys():
+                    previous_data[key] = data[key]
+            
             # 5. add the new rule
             para["action"] = "flep_send"
-            para["label"] = str(data["label"])
-            para["port"] = REVERSE_PORT_LIST_INDEX[str(data["port"])]
+            para["label"] = str(previous_data["label"])
+            para["port"] = REVERSE_PORT_LIST_INDEX[str(previous_data["port"])]
             table.table_add(**para)
             ret = table.execute()
             if ret:
@@ -183,18 +211,13 @@ def handle_label_rule(operation):
             response = _response(ret)
         response.headers["Content-Type"] = "application/json"
         return response
-    elif operation == "clear":
-        temp = {"table_name": table_name, "block_name": "Ingress"}
-        table.table_clear(**temp)
-        ret = table.execute()
-        if ret:
-            db.clear(table_name)
     else:
         del table
         response = make_response("Failed", 404)
         return response
     del table
     return _response(ret)
+
 
 
 @app.route("/verification/<operation>", methods=["POST"])
@@ -349,6 +372,6 @@ if __name__ == "__main__":
     clear_database_and_tables()
     pre_initialization()
     # 设置同步时间的频率（例如，每 60 分钟同步一次）
-    sync_time()
+    # sync_time()
     
     app.run(host=SERVER_IP, port=int(SERVER_PORT), debug=False)

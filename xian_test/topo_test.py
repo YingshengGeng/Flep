@@ -7,7 +7,7 @@ import os
 
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
-CONFIG_PATH = sys.path[0] + FILE_INTERVAL + "config.py"
+CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
 
 f = open("mapping.yaml", "r", encoding="utf-8")
 content_2 = f.read()
