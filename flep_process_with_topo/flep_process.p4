@@ -446,7 +446,7 @@ control Ingress(
         flep_decapsulation();
       }
     }  
-    hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
+    // hdr.ethernet.srcAddr = ig_prsr_md.global_tstamp;
   }
 }
 
@@ -519,7 +519,7 @@ control Egress(
   inout egress_intrinsic_metadata_for_output_port_t  eg_oport_md)
 {
   apply {
-    hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
+    // hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
   }
 }
 

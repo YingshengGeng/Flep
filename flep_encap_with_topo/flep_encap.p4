@@ -852,7 +852,7 @@ control Egress(
         } 
         hdr.ethernet.ethernetType = ETHERTYPE_INVALID; 
       }
-      hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
+      // hdr.ethernet.dstAddr = eg_prsr_md.global_tstamp;
     }
   }
 }
