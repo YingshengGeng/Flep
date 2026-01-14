@@ -53,6 +53,38 @@ LOCAL_LABEL = parameter["LOCAL_LABEL" + "_" + str(args.switch_index)]
 manager = TOTPManager("flep_encap", DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
 manager.start()
 
+import logging
+from logging.handlers import RotatingFileHandler
+
+# --- 日志配置开始 ---
+# 获取当前文件名作为日志名的前缀 (例如 Backend_process.log)
+log_filename = os.path.basename(__file__).replace(".py", ".log")
+log_file_path = os.path.join(FILE_PATH, log_filename)
+
+# 创建格式化器
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s')
+
+# 配置文件处理器 (每个文件最大 5MB, 保留 5 个备份)
+file_handler = RotatingFileHandler(log_file_path, maxBytes=5*1024*1024, backupCount=5, encoding='utf-8')
+file_handler.setFormatter(formatter)
+file_handler.setLevel(logging.INFO)
+
+# 配置控制台处理器
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+stream_handler.setLevel(logging.INFO)
+
+# 获取根日志记录器并配置
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+# 禁用 Flask 默认的日志处理器，统一使用我们配置的根 logger
+app_log = logging.getLogger('werkzeug')
+app_log.setLevel(logging.INFO) 
+# --- 日志配置结束 ---
+
 app = Flask(__name__)
 CORS(app)
 
