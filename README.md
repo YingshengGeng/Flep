@@ -85,21 +85,6 @@ test: 用于配置表项的命令行终端相关程序
   可以安装screen软件实现程序的前台和后台运行切换。
 
 
-## 补充
-### 如何修改编译后的文件内容使得可以部署到交换机上
-- 修改编译相关文件(/targets/flep_encap.conf或/targets/flep_process.conf)中的地址信息(提供的软件包中已进行修改)。
-    - flep_encap相关地址
-      "bfrt": share/tofinopd/flep_encap/bfrt.json
-      "context": share/tofinopd/flep_encap/pipeline_profile/context.json
-      "config": share/tofinopd/flep_encap/pipeline_profile/tofino.bin
-      "path": "/root/flep_encap_with_topo/target/"
-      "model_json_path": "/root/flep_encap_with_topo/target/share/flep_encap/aug_model.json"
-    - flep_process相关地址
-      "bfrt": share/tofinopd/flep_process/bfrt.json
-      "context": share/tofinopd/flep_process/pipeline_profile/context.json
-      "config": share/tofinopd/flep_process/pipeline_profile/tofino.bin
-      "path": /root/flep_process_with_topo/target
-      "model_json_path": /root/flep_process_with_topo/target/share/flep_process/aug_model.json
 ### 如何定制化设置程序的label值
 - 修改 .p4程序中以下部分。
   const bit<16> LOCAL_LABEL = [想要设定的label值];

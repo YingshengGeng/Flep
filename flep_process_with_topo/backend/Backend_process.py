@@ -300,9 +300,10 @@ def pkt_gen_manager(operation):
     )
     stdout, stderr = process.communicate()
     print(stdout.decode(), stderr.decode())
-    response = make_response("Success", 200)
+    response = _response(True) 
     if process.returncode != 0:
-       response = make_response("Failed", 404)
+       response = _response(False) 
+       
        
     response.headers["Content-Type"] = "application/json"
     return response
