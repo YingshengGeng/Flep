@@ -13,6 +13,8 @@ import argparse
 import logging
 from flask_cors import CORS
 
+
+        
 FILE_INTERVAL = "\\" if os.name == "nt" else "/"
 FILE_PATH = sys.path[0] + FILE_INTERVAL
 CONFIG_PATH = os.path.dirname(sys.path[0]) + FILE_INTERVAL + "config.py"
@@ -51,9 +53,56 @@ LOCAL_LABEL = parameter["LOCAL_LABEL" + "_" + str(args.switch_index)]
 manager = TOTPManager("flep_encap", DB_PORT, DB_USER, DB_PASSWORD, DB_NAME)
 manager.start()
 
+import logging
+from logging.handlers import RotatingFileHandler
+
+# --- 日志配置开始 ---
+# 获取当前文件名作为日志名的前缀 (例如 Backend_process.log)
+log_filename = os.path.basename(__file__).replace(".py", ".log")
+log_file_path = os.path.join(FILE_PATH, log_filename)
+
+# 创建格式化器
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s')
+
+# 配置文件处理器 (每个文件最大 5MB, 保留 5 个备份)
+file_handler = RotatingFileHandler(log_file_path, maxBytes=5*1024*1024, backupCount=5, encoding='utf-8')
+file_handler.setFormatter(formatter)
+file_handler.setLevel(logging.INFO)
+
+# 配置控制台处理器
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(formatter)
+stream_handler.setLevel(logging.INFO)
+
+# 获取根日志记录器并配置
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(file_handler)
+logger.addHandler(stream_handler)
+
+# 禁用 Flask 默认的日志处理器，统一使用我们配置的根 logger
+app_log = logging.getLogger('werkzeug')
+app_log.setLevel(logging.INFO) 
+# --- 日志配置结束 ---
+
 app = Flask(__name__)
 CORS(app)
 
+@app.before_request
+def log_request_info():
+    if app.debug: # 只有在 debug 模式下才打印
+        app.logger.debug(f"=== 收到请求: {request.method} {request.url} ===")
+        # 打印 JSON Body (如果存在)
+        if request.is_json:
+            app.logger.debug(f"JSON Body: {json.dumps(request.get_json(), indent=2, ensure_ascii=False)}")
+        elif request.data:
+            app.logger.debug(f"Raw Data: {request.data.decode('utf-8')}")
+
+@app.after_request
+def log_response_info(response):
+    if app.debug:
+        app.logger.debug(f"=== 请求结束: 状态码 {response.status_code} ===\n")
+    return response
 
 # construct response
 def _response(ret):
@@ -599,9 +648,9 @@ def pkt_gen_manager(operation):
     )
     stdout, stderr = process.communicate()
     print(stdout.decode(), stderr.decode())
-    response = make_response("Success", 200)
+    response = _response(True) 
     if process.returncode != 0:
-       response = make_response("Failed", 404)
+       response = _response(False) 
        
     response.headers["Content-Type"] = "application/json"
     return response

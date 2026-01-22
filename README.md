@@ -1,4 +1,10 @@
-# 基于标签转发的定制化协议栈V1.0
+
+# 可靠通信验证软硬件平台
+
+## 项目简介
+
+可靠通信验证软硬件平台基于 P4 可编程交换机开发，设计并实现了一种非 IP 标签转发协议。该平台支持基于 IPv4、IPv6、TCP、UDP 等多种协议报文头字段定义标签转发策略，绕过传统路由决策过程，实现路径的快速指定与传输处理。平台包含可视化拓扑与图形化操作界面，用于监控网络和配置策略 。
+
 ## 代码组织
 README.md: 使用文档。
 ┣ flep_encaps.p4: 针对路径封装节点的P4代码。
@@ -23,88 +29,197 @@ flep_process_with_topo: 用于标签转发的节点代码库。
   ->deploy_flep_process.sh: 用于检查是否有占用switchd所需端口的进程，并kill掉。
   ->process_database.sql 标签转发节点控制器所需的数据库配置。
   ->sync_time.sh: 用于同步系统时间。
-test: 用于配置表项的命令行终端相关程序
-┣ mapping.yaml: 命令行终端配置文件。
-┣ testcmd.py: 命令行终端主程序。
-┣ connect_test.py: 用于测试网络是否连通的测试。
-┗ topo_test.py: 用于获取当前拓扑的测试。
-## 开始使用
-要运行flep_encap和flep_process，您需要：
-- 编译P4程序（提供的软件包中已经编译，编译生成的文件在targets中）。
-  - flep_encap编译相关的命令。
-  sudo [SDE_INSTALL路径]/bin/bf-p4c --std p4-16 --target tofino --arch tna  -o [flep_encap_with_topo路径]/target/ -g [flep_encap_with_topo路径]/flep_encap.p4
-  - flep_process编译相关的命令。
-  sudo [SDE_INSTALL路径]/bin/bf-p4c --std p4-16 --target tofino --arch tna  -o [flep_process_with_topo路径]/target/ -g [flep_process_with_topo路径]/flep_process.p4
-- 部署P4程序到交换机。
-  - 修改编译相关文件(/targets/flep_encap.conf或/targets/flep_process.conf)中的地址信息(提供的软件包中已进行修改)，具体命令在补充中介绍。
-  - 拷贝相关文件到SDE目录中。
-    - encap拷贝操作
-      cp /root/flep_encap_with_topo/target/flep_encap.conf $SDE_INSTALL/share/p4/targets/tofino/
-      cd $SDE_INSTALL/share/tofinopd
-      mkdir -p flep_encap/pipeline_profile
-      cd flep_encap
-      cp /root/flep_encap_with_topo/target/{bfrt.json,events.json,frontend-ir.json,source.json} .
-      cp /root/flep_encap_with_topo/target/pipe/{context.json,tofino.bin} pipeline_profile/
-    - process拷贝操作
-      cp /root/flep_process_with_topo/target/flep_process.conf $SDE_INSTALL/share/p4/targets/tofino/
-      cd $SDE_INSTALL/share/tofinopd
-      mkdir -p flep_process/pipeline_profile
-      cd flep_process
-      cp /root/flep_process_with_topo/target/{bfrt.json,events.json,frontend-ir.json,source.json} .
-      cp /root/flep_process_with_topo/target/pipe/{context.json,tofino.bin} pipeline_profile/
-  - 部署相关数据库，具体命令在P4可编程开发环境V1.0数据库配置部分。
-- 配置控制器程序。
-  控制器相关配置在backend/configuration.xml中设定。
-  - SOUTHBOUND_SERVER_IP_[index] 用于设定第index交换机对应的IP地址。
-  - LOCAL_LABEL_[index] 用于设定第index交换机对应的label值。
-  - PORT_LIST_[index], PORT_LIMIT_[index] 用于设定第index交换机对应的打开端口以及速率限制。
-  - 其余可能修改变量（一般不需要修改）。
-    -> SDE, SDE_INSTALL 用于设定sde相关路径信息。
-    -> PYTHON_VERSION 用于设定sde环境所提供的python版本。
-    -> SOUTHBOUND_SERVER_PORT 用于设定控制器监听端口。
-    -> P4_NAME 用于设定正在运行的程序名称。
-    -> DB_PORT, DB_NAME, DB_USER, DB_PASSWORD 用于设定数据库端口，数据库名，用户名，用户密码。
-
-## 运行P4程序
-- 启动swichd来运行相关P4程序。
-  - flep_encap
-      . /root/flep_encap_with_topo/tools/deploy_flep_encap.sh
-      $SDE_INSTALL/bin/run_switchd.sh -p flep_encap
-  - flep_process
-      . /root/flep_process_with_topo/tools/deploy_flep_process.sh
-      $SDE_INSTALL/bin/run_switchd.sh -p flep_process
-- 当启动switchd后，运行控制器程序。
-  - flep_encap
-    python3 /root/flep_encap_with_topo/backend/deploy_backend.py [期望启动的交换机在配置文件中的index，比如1，2,...]。
-  - flep_process
-    python3 /root/flep_process_with_topo/backend/deploy_backend.py [期望启动的交换机在配置文件中的index]。
-- 当前两者运行后，运行控制终端（可选，因为一般可以通过控制器直接控制）
-    cd test
-    python testcmd.py
-- 补充
-  可以安装screen软件实现程序的前台和后台运行切换。
+p4ss: 集成控制器前端
 
 
-## 补充
-### 如何修改编译后的文件内容使得可以部署到交换机上
-- 修改编译相关文件(/targets/flep_encap.conf或/targets/flep_process.conf)中的地址信息(提供的软件包中已进行修改)。
-    - flep_encap相关地址
-      "bfrt": share/tofinopd/flep_encap/bfrt.json
-      "context": share/tofinopd/flep_encap/pipeline_profile/context.json
-      "config": share/tofinopd/flep_encap/pipeline_profile/tofino.bin
-      "path": "/root/flep_encap_with_topo/target/"
-      "model_json_path": "/root/flep_encap_with_topo/target/share/flep_encap/aug_model.json"
-    - flep_process相关地址
-      "bfrt": share/tofinopd/flep_process/bfrt.json
-      "context": share/tofinopd/flep_process/pipeline_profile/context.json
-      "config": share/tofinopd/flep_process/pipeline_profile/tofino.bin
-      "path": /root/flep_process_with_topo/target
-      "model_json_path": /root/flep_process_with_topo/target/share/flep_process/aug_model.json
-### 如何定制化设置程序的label值
-- 修改 .p4程序中以下部分。
-  const bit<16> LOCAL_LABEL = [想要设定的label值];
-- 编译相关 .p4程序。
-- 检查是否一致(可选)。
-  可以通过以下命令检查编译结果是否和设定的程序label值一致。
-  cat flep_encap_with_topo/target/flep_encap.p4pp  | grep "LOCAL_LABEL ="
-  cat flep_process_with_topo/target/flep_process.p4pp  | grep "LOCAL_LABEL ="
+## 安装部署流程
+
+### 1. 基础环境初始化
+
+在服务器及交换机上执行以下配置：
+
+1. 
+**配置 Apt 镜像源**：修改 `/etc/apt/sources.list` 使用阿里云镜像 。
+
+
+2. **安装系统工具与数据库**：
+```bash
+apt update
+apt install -y screen mariadb-server
+
+```
+
+
+3. **配置管理网络**：
+修改 `/etc/network/interfaces` 配置管理口 IP (如 10.0.0.13)，并重启网络服务 。
+
+
+
+### 2. 依赖安装
+
+#### Python 后端依赖
+
+```bash
+pip3 install --upgrade pip
+pip3 install requests flask flask-cors
+pip3 install pymysql==0.9.3
+pip3 install pyotp wheel
+pip3 install PyYAML==5.4.1
+pip3 install scapy -i https://pypi.tuna.tsinghua.edu.cn/simple/
+
+```
+
+
+
+#### Node.js 前端环境
+
+```bash
+# 下载并解压
+wget https://mirrors.aliyun.com/nodejs-release/v20.19.1/node-v20.19.1-linux-x64.tar.xz
+tar -xf node-v20.19.1-linux-x64.tar.xz
+sudo mv node-v20.19.1-linux-x64 /usr/local/nodejs
+
+# 配置环境变量 (写入 ~/.bashrc)
+export PATH=/usr/local/nodejs/bin:$PATH
+
+```
+
+
+
+### 3. 环境变量配置
+
+在用户目录 (`~/.bashrc`) 配置 SDE 和项目路径：
+
+```bash
+export SDE=/home/ruijie/onl-bf-sde
+export SDE_INSTALL=$SDE/install
+export SDE_INSTALL_DIR=$SDE_INSTALL
+export PROGRAM_DIR=/home/ruijie/onl-bf-sde/code_latency
+export LD_LIBRARY_PATH=$SDE_INSTALL/lib:$LD_LIBRARY_PATH
+
+```
+
+
+
+### 4. 软件编译与数据库初始化
+
+#### P4 程序编译
+
+使用 `bf-p4c` 编译封装 (Encap) 和转发 (Process) 程序：
+
+```bash
+# 编译 Encap
+sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna \
+-o ${PROGRAM_DIR}/flep_encap_with_topo/target/ \
+-g ${PROGRAM_DIR}/flep_encap_with_topo/flep_encap.p4
+
+# 编译 Process
+sudo ${SDE_INSTALL_DIR}/bin/bf-p4c --std p4-16 --target tofino --arch tna \
+-o ${PROGRAM_DIR}/flep_process_with_topo/target/ \
+-g ${PROGRAM_DIR}/flep_process_with_topo/flep_process.p4
+
+```
+
+
+
+#### 数据库初始化
+
+进入 MySQL/MariaDB 执行初始化 SQL：
+
+```sql
+CREATE DATABASE IF NOT EXISTS flep_encap_db;
+CREATE DATABASE IF NOT EXISTS flep_db;
+USE flep_encap_db;
+SOURCE ./flep_encap_with_topo/tools/encap_database.sql;
+USE flep_db;
+SOURCE ./flep_process_with_topo/tools/process_database.sql;
+SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123456');
+FLUSH PRIVILEGES;
+
+```
+
+
+
+---
+
+## 配置文件说明
+
+### 后端配置 (`backend/configuration.yml`)
+
+需根据设备逻辑编号 `[index]` 修改以下关键参数：
+
+* 
+`SOUTHBOUND_SERVER_IP_[index]`: 交换机管理 IP 。
+
+
+* 
+`LOCAL_LABEL_[index]`: 设备本地标签值 (Hex) 。
+
+
+* 
+`PORT_LIST_[index]`: 端口映射列表 (硬件端口号:逻辑端口ID) 。
+
+
+* 
+`SDE_INSTALL`: SDE 安装路径 。
+
+
+
+### 前端配置 (`p4ss/public/front_config.json`)
+
+* 
+`SOUTHBOUND_SERVER_IP`: 定义节点 IP 映射，需与后端一致 。
+
+
+* 
+`Router_List`: 定义节点角色 (`TYPE`: "fz" 或 "zf") 及标签 。
+
+
+
+---
+
+## 启动运行
+
+### 1. 启动后端服务
+
+根据设备角色选择启动命令：
+
+* **封装节点 (Encap)**:
+```bash
+bash ${SDE}/run_switchd.sh -p flep_encap
+python3 ${PROGRAM_DIR}/flep_encap_with_topo/backend/deploy_backend.py
+
+```
+
+
+* **转发节点 (Process)**:
+```bash
+bash ${SDE}/run_switchd.sh -p flep_process
+python3 ${PROGRAM_DIR}/flep_process_with_topo/backend/deploy_backend.py
+
+```
+
+
+
+### 2. 端口配置
+
+通过后端 CLI 或 `bf_shell` 激活端口：
+
+```bash
+port-del 1/0        # 清理旧配置
+port-add 1/0 100G RS # 添加端口
+port-enb 1/0        # 使能端口
+
+```
+
+
+### 3. 启动前端服务
+
+```bash
+serve dist
+
+```
+
+## 开发者信息
+
+**开发方**：科大国创软件股份有限公司 

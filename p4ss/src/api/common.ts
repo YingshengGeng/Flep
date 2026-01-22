@@ -84,6 +84,7 @@ export async function loadTopology(nodes: CommonNode[]): Promise<CommonEdge[]> {
         
         if (!matchedPort) {
           console.error(`[DEBUG] 匹配失败！在端口列表里找不到 key 为 "${topology.port}" 的项`);
+          return;
         }
 
         nodes[index].topologies.push({
